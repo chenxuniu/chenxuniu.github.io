@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>1 | Chenxu&#39;s Website# Website name</title>
+    <title>1 | Chenxu&#39;s Website</title>
     <link>https://chenxuniu.github.io/publication-type/1/</link>
       <atom:link href="https://chenxuniu.github.io/publication-type/1/index.xml" rel="self" type="application/rss+xml" />
     <description>1</description>
-    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Mon, 01 Jul 2013 00:00:00 +0000</lastBuildDate>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Fri, 01 Jul 2022 00:00:00 +0000</lastBuildDate>
     <image>
       <url>https://chenxuniu.github.io/media/icon_huc43f0d657a56d8cedb5c8205d4933422_16748_512x512_fill_lanczos_center_3.png</url>
       <title>1</title>
@@ -13,9 +13,9 @@
     </image>
     
     <item>
-      <title>An example conference paper</title>
+      <title>Kv2vec: A Distributed Representation Method for Key-value Pairs from Metadata Attributes</title>
       <link>https://chenxuniu.github.io/publication/conference-paper/</link>
-      <pubDate>Mon, 01 Jul 2013 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 01 Jul 2022 00:00:00 +0000</pubDate>
       <guid>https://chenxuniu.github.io/publication/conference-paper/</guid>
       <description>&lt;div class=&#34;alert alert-note&#34;&gt;
   &lt;div&gt;
