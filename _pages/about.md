@@ -61,7 +61,7 @@ I am a Ph.D. candidate in the Department of Computer Science at Texas Tech Unive
 </div>
 </div> -->
 
-<div class='paper-box'><div class='paper-box-image'><div><div class="badge">Big Data 2023</div><img src='images/explore.png' alt="sym" width="100%"></div></div>
+<div class='paper-box'><div class='paper-box-image'><div><div class="badge">HiPC 2019</div><img src='images/explore.png' alt="sym" width="100%"></div></div>
 <div class='paper-box-text' markdown="1">
 
 [Exploring metadata search essentials for scientific data management](https://sdm.lbl.gov/~sbyna/research/papers/2019/201912-EOD_HDF5_Metadata_Queries-HiPC_2019-DOI.pdf)
