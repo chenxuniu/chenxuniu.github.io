@@ -27,9 +27,20 @@ I am a Ph.D. candidate in the Department of Computer Science at Texas Tech Unive
 - *2011.09 - 2015.06*, Bachelor, Mathematics, University of Science and Technology of China, China
 
 # 🔥 News
-- *2024.08*: &nbsp;🎉🎉 I attended <a href='https://www.hdfgroup.org/hug/hug24/'> HUG24 meeting </a> and gave a presentation named "Semantic Semantic Search and Natural Language Query over HDF5"
+- *2025.06*: &nbsp;🎉🎉 I attended <a href='https://www.hdfgroup.org/hug/hug24/'> SSDBM' 25 conference </a> and gave a presentation named "ICEAGE: Intelligent Contextual Exploration and Answer Generation Engine for Scientific Data Discovery. "
+- *2024.08*: &nbsp;🎉🎉 I attended <a href='https://www.hdfgroup.org/hug/hug24/'> HUG' 24 meeting </a> and gave a presentation named "Semantic Semantic Search and Natural Language Query over HDF5"
 
 # 📝 Publications 
+
+<div class='paper-box'><div class='paper-box-image'><div><div class="badge">SSDBM 2025</div><img src='images/ICEAGE.png' alt="sym" width="100%"></div></div>
+<div class='paper-box-text' markdown="1">
+
+[ICEAGE: Intelligent Contextual Exploration and Answer Generation Engine for Scientific Data Discovery. ](https://sbyna.github.io/research/papers/2023/202312-pre-PSQS-Niu.pdf)
+
+**Chenxu Niu**, Wei Zhang, Mert Side, Yong Chen
+
+</div>
+</div>
 
 <div class='paper-box'><div class='paper-box-image'><div><div class="badge">Big Data 2023</div><img src='images/PSQS.png' alt="sym" width="100%"></div></div>
 <div class='paper-box-text' markdown="1">
@@ -88,6 +99,3 @@ Wei Zhang, Suren Byna, **Chenxu Niu**, Yong Chen
 Computing, Networking, Storage, and Analysis)
 - *2016*, Student volunteer at Mathematics Theory of Chinese Association of Cryptography Conference.
 - *2015*, Student volunteer at first Post Quantum Cryptography Asia Forum (PQCAM).
-
-# 💻 Internships
-- *2017.07 - 2017.09*, Java Engineer Internship, Huawei Technologies Co. Ltd, China.
