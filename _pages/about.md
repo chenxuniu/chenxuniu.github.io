@@ -17,7 +17,7 @@ redirect_from:
 
 <span class='anchor' id='about-me'></span>
 
-I am a Ph.D. candidate in the Department of Computer Science at Texas Tech University. I am part of the research team led by Dr. Yong Chen, collaborating with experts like Dr. Wei Zhang from Lawrence Berkeley National Lab and Dr. Suren Byna from The Ohio State University. My research focuses on High-Performance Computing (HPC) and scientific data management, and large language models on HPC.
+I am a Ph.D. candidate in the Department of Computer Science at Texas Tech University. I am part of the research team led by Dr. Yong Chen, collaborating with experts like Dr. Wei Zhang from Lawrence Berkeley National Lab and Dr. Suren Byna from The Ohio State University. My research focuses on High-Performance Computing (HPC), energy-efficient framework, scientific data management, and large language models on HPC.
 
 <!-- I have published several papers at the top international AI conferences with total <a href='https://scholar.google.com/citations?user=DhtAFkwAAAAJ'>google scholar citations <strong><span id='total_cit'>260000+</span></strong></a> (You can also use google scholar badge <a href='https://scholar.google.com/citations?user=DhtAFkwAAAAJ'><img src="https://img.shields.io/endpoint?url={{ url | url_encode }}&logo=Google%20Scholar&labelColor=f6f6f6&color=9cf&style=flat&label=citations"></a>). -->
 
@@ -27,12 +27,22 @@ I am a Ph.D. candidate in the Department of Computer Science at Texas Tech Unive
 - *2011.09 - 2015.06*, Bachelor, Mathematics, University of Science and Technology of China, China
 
 # 🔥 News
+- *2025.07*: &nbsp;🎉🎉 I attended <a href='https://www.hdfgroup.org/hug/hug24/'> HotCarbon' 25 workshop </a> and gave a presentation named " Energy Efficient or Exhaustive? Benchmarking Power Consumption of LLM Inference Engines."
 - *2025.06*: &nbsp;🎉🎉 I attended <a href='https://www.hdfgroup.org/hug/hug24/'> SSDBM' 25 conference </a> and gave a presentation named "ICEAGE: Intelligent Contextual Exploration and Answer Generation Engine for Scientific Data Discovery. "
-- *2024.08*: &nbsp;🎉🎉 I attended <a href='https://www.hdfgroup.org/hug/hug24/'> HUG' 24 meeting </a> and gave a presentation named "Semantic Semantic Search and Natural Language Query over HDF5"
 
 # 📝 Publications 
 
-<div class='paper-box'><div class='paper-box-image'><div><div class="badge">SSDBM 2025</div><img src='images/ICEAGE.pdf' alt="sym" width="100%"></div></div>
+<div class='paper-box'><div class='paper-box-image'><div><div class="badge">HotCarbon 2025</div><img src='images/hotcarbon.png' alt="sym" width="100%"></div></div>
+<div class='paper-box-text' markdown="1">
+
+[Energy Efficient or Exhaustive? Benchmarking Power Consumption of LLM Inference Engines. ](https://github.com/chenxuniu/LLM-Inference-Engine-Benchmark/blob/main/Camera%20Ready%20Chenxu%20Niu%20Benchmarking%20Power%20Consumption%20of%20LLM%20Inference%20Engines.pdf)
+
+**Chenxu Niu**, Wei Zhang, Yongjian Zhao, Yong Chen
+
+</div>
+</div>
+
+<div class='paper-box'><div class='paper-box-image'><div><div class="badge">SSDBM 2025</div><img src='images/ICEAGE.png' alt="sym" width="100%"></div></div>
 <div class='paper-box-text' markdown="1">
 
 [ICEAGE: Intelligent Contextual Exploration and Answer Generation Engine for Scientific Data Discovery. ](https://sbyna.github.io/research/papers/2023/202312-pre-PSQS-Niu.pdf)
