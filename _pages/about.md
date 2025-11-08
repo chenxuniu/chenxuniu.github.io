@@ -22,15 +22,26 @@ I am a Ph.D. candidate in the Department of Computer Science at Texas Tech Unive
 <!-- I have published several papers at the top international AI conferences with total <a href='https://scholar.google.com/citations?user=DhtAFkwAAAAJ'>google scholar citations <strong><span id='total_cit'>260000+</span></strong></a> (You can also use google scholar badge <a href='https://scholar.google.com/citations?user=DhtAFkwAAAAJ'><img src="https://img.shields.io/endpoint?url={{ url | url_encode }}&logo=Google%20Scholar&labelColor=f6f6f6&color=9cf&style=flat&label=citations"></a>). -->
 
 # 📖 Educations
-- *2019.06 - now*, PhD student, Computer Science, Texas Tech University, Lubbock, Texas
+- *2019.06 - 2025.12*, PhD student, Computer Science, Texas Tech University, Lubbock, Texas
 - *2015.09 - 2018.06*, Master, Information Science and Technology, University of Science and Technology of China, China
 - *2011.09 - 2015.06*, Bachelor, Mathematics, University of Science and Technology of China, China
 
 # 🔥 News
+- *2026.02*: &nbsp;🎉🎉 I will attend <a href='https://aaai.org/conference/aaai/aaai-26/submission-instructions/'> AAAI' 26 conference </a> and gave a presentation named "TokenPoweBench: Benchmarking the Power Consumption of LLM Inference."
 - *2025.07*: &nbsp;🎉🎉 I attended <a href='https://www.hdfgroup.org/hug/hug24/'> HotCarbon' 25 workshop </a> and gave a presentation named " Energy Efficient or Exhaustive? Benchmarking Power Consumption of LLM Inference Engines."
 - *2025.06*: &nbsp;🎉🎉 I attended <a href='https://www.hdfgroup.org/hug/hug24/'> SSDBM' 25 conference </a> and gave a presentation named "ICEAGE: Intelligent Contextual Exploration and Answer Generation Engine for Scientific Data Discovery. "
 
 # 📝 Publications 
+
+<div class='paper-box'><div class='paper-box-image'><div><div class="badge">AAAI 2026</div><img src='images/AAAI.png' alt="sym" width="100%"></div></div>
+  <div class='paper-box-text' markdown="1">
+    
+    [TokenPoweBench: Benchmarking the Power Consumption of LLM Inference.](https://discl.cs.ttu.edu/lib/exe/fetch.php?media=wiki:papers:niu_aaai_2026.pdf)
+    
+    **Chenxu Niu**, Wei Zhang, Jie Li, Yongjian Zhao, Tongyang Wang, Xi Wang and Yong Chen. 
+    
+  </div>
+</div>
 
 <div class='paper-box'><div class='paper-box-image'><div><div class="badge">HotCarbon 2025</div><img src='images/hotcarbon.png' alt="sym" width="100%"></div></div>
 <div class='paper-box-text' markdown="1">
