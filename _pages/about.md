@@ -34,13 +34,13 @@ I am a Ph.D. candidate in the Department of Computer Science at Texas Tech Unive
 # 📝 Publications 
 
 <div class='paper-box'><div class='paper-box-image'><div><div class="badge">AAAI 2026</div><img src='images/AAAI.png' alt="sym" width="100%"></div></div>
-  <div class='paper-box-text' markdown="1">
+<div class='paper-box-text' markdown="1">
     
-    [TokenPoweBench: Benchmarking the Power Consumption of LLM Inference.](https://discl.cs.ttu.edu/lib/exe/fetch.php?media=wiki:papers:niu_aaai_2026.pdf)
+[TokenPoweBench: Benchmarking the Power Consumption of LLM Inference.](https://discl.cs.ttu.edu/lib/exe/fetch.php?media=wiki:papers:niu_aaai_2026.pdf)
     
-    **Chenxu Niu**, Wei Zhang, Jie Li, Yongjian Zhao, Tongyang Wang, Xi Wang and Yong Chen. 
+**Chenxu Niu**, Wei Zhang, Jie Li, Yongjian Zhao, Tongyang Wang, Xi Wang and Yong Chen. 
     
-  </div>
+</div>
 </div>
 
 <div class='paper-box'><div class='paper-box-image'><div><div class="badge">HotCarbon 2025</div><img src='images/hotcarbon.png' alt="sym" width="100%"></div></div>
