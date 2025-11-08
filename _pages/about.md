@@ -17,7 +17,7 @@ redirect_from:
 
 <span class='anchor' id='about-me'></span>
 
-I am a Ph.D. candidate in the Department of Computer Science at Texas Tech University. I am part of the research team led by Dr. Yong Chen, collaborating with experts like Dr. Wei Zhang from Lawrence Berkeley National Lab and Dr. Suren Byna from The Ohio State University. My research focuses on High-Performance Computing (HPC), energy-efficient framework, scientific data management, and large language models on HPC.
+I am a Ph.D. candidate in the Department of Computer Science at Texas Tech University. I am part of the research team led by Dr. Yong Chen, collaborating with experts like Dr. Wei Zhang from Texas Advanced Computing Center and Dr. Suren Byna from The Ohio State University. My research focuses on High-Performance Computing (HPC), energy-efficient framework, scientific data management, and large language models on HPC.
 
 <!-- I have published several papers at the top international AI conferences with total <a href='https://scholar.google.com/citations?user=DhtAFkwAAAAJ'>google scholar citations <strong><span id='total_cit'>260000+</span></strong></a> (You can also use google scholar badge <a href='https://scholar.google.com/citations?user=DhtAFkwAAAAJ'><img src="https://img.shields.io/endpoint?url={{ url | url_encode }}&logo=Google%20Scholar&labelColor=f6f6f6&color=9cf&style=flat&label=citations"></a>). -->
 
