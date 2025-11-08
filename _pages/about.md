@@ -22,7 +22,7 @@ I am a Ph.D. candidate in the Department of Computer Science at Texas Tech Unive
 <!-- I have published several papers at the top international AI conferences with total <a href='https://scholar.google.com/citations?user=DhtAFkwAAAAJ'>google scholar citations <strong><span id='total_cit'>260000+</span></strong></a> (You can also use google scholar badge <a href='https://scholar.google.com/citations?user=DhtAFkwAAAAJ'><img src="https://img.shields.io/endpoint?url={{ url | url_encode }}&logo=Google%20Scholar&labelColor=f6f6f6&color=9cf&style=flat&label=citations"></a>). -->
 
 # 📖 Educations
-- *2019.06 - 2025.12*, PhD student, Computer Science, Texas Tech University, Lubbock, Texas
+- *2019.06 - 2025.12*, PhD, Computer Science, Texas Tech University, Lubbock, Texas
 - *2015.09 - 2018.06*, Master, Information Science and Technology, University of Science and Technology of China, China
 - *2011.09 - 2015.06*, Bachelor, Mathematics, University of Science and Technology of China, China
 
