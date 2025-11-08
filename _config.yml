@@ -7,7 +7,7 @@
 
 # Site Settings
 title                    : "my academic page"
-description              : "research topics: data management on HPC, LLM on HPC "
+description              : "Research topics: HPC, AI Inference, Energy Efficient Framework, metadata management on HPC"
 repository               : "chenxuniu/chenxuniu.github.io"
 google_scholar_stats_use_cdn : true
 
