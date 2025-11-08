@@ -123,5 +123,5 @@ Computing, Networking, Storage, and Analysis)
 # 🌍 Visitor Map
 
 <div align="center" style="margin: 40px 0;">
-  <script type="text/javascript" id="mapmyvisitors" src="//mapmyvisitors.com/map.js?d=dK4rYKej1PnyXS_m0Mykn13KyymmNpSGZ9e3m0xODOk&cl=ffffff&w=a"></script>
+  <script type="text/javascript" id="mapmyvisitors" src="//mapmyvisitors.com/map.js?d=dK4rYKej1PnyXS_m0Mykn13KyymmNpSGZ9e3m0xODOk&cl=ffffff&w=300"></script>
 </div>
