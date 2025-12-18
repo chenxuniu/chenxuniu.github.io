@@ -6,8 +6,8 @@
 # `jekyll serve`. If you change this file, please restart the server process.
 
 # Site Settings
-title                    : "my academic page"
-description              : "Research topics: HPC, AI Inference, Energy Efficient Framework, metadata management on HPC"
+title                         : "my academic page"
+description              : "Research topics: HPC, AI Inference, Energy Efficient Framework"
 repository               : "chenxuniu/chenxuniu.github.io"
 google_scholar_stats_use_cdn : true
 
@@ -23,13 +23,13 @@ baidu_site_verification  :  # get baidu_site_verification from https://ziyuan.ba
 author:
   name             : "Chenxu Niu"
   avatar           : "images/my_photo.jpg"
-  bio              : "PhD student"
-  location         : "Lubbock, TX"
-  employer         :
+  bio                 : "HPC System Engineer @ NVIDIA"
+  location         : "San Jose, CA"
+  employer         : NVIDIA
   pubmed           : 
   googlescholar    : "https://scholar.google.com/citations?user=i1H5XQ8AAAAJ"
-  email            : "ncxhxgtg@gmail.com"
-  researchgate     :  # e.g., "https://www.researchgate.net/profile/yourprofile"
+  email                : "ncxhxgtg@gmail.com"
+  researchgate     :  "https://www.researchgate.net/profile/Chenxu-Niu-2?ev=hdr_xprf"
   uri              :
   bitbucket        :
   codepen          :
@@ -43,7 +43,7 @@ author:
   instagram        :
   impactstory      : # e.g., "https://profiles.impactstory.org/u/xxxx-xxxx-xxxx-xxxx"
   lastfm           :
-  linkedin         : # e.g., "linkedin username"
+  linkedin         : "chenxu-niu-771578274"
   dblp             : # "https://https://dblp.org/pid/258/7033.html"
   orcid            : "https://orcid.org/0000-0002-2142-1731"
   pinterest        :
