@@ -6,7 +6,7 @@
 # `jekyll serve`. If you change this file, please restart the server process.
 
 # Site Settings
-title                         : "my academic page"
+title                    : "my academic page"
 description              : "Research topics: HPC, AI Inference, Energy Efficient Framework"
 repository               : "chenxuniu/chenxuniu.github.io"
 google_scholar_stats_use_cdn : true
@@ -15,7 +15,8 @@ google_scholar_stats_use_cdn : true
 google_analytics_id      :  # get google_analytics_id from https://analytics.google.com/analytics/
 
 # SEO Related
-google_site_verification :  # get google_site_verification from https://search.google.com/search-console/about
+
+google_site_verification :  "SZnSzOee12ngsH-SNe5rndpdlEiD89gA8B7yw-vl7KU"
 bing_site_verification   :  # get bing_site_verification from https://www.bing.com/webmasters/about
 baidu_site_verification  :  # get baidu_site_verification from https://ziyuan.baidu.com/login/index?u=/site/index
 
@@ -23,13 +24,13 @@ baidu_site_verification  :  # get baidu_site_verification from https://ziyuan.ba
 author:
   name             : "Chenxu Niu"
   avatar           : "images/my_photo.jpg"
-  bio                 : "HPC System Engineer @ NVIDIA"
+  bio              : "HPC System Engineer @ NVIDIA"
   location         : "San Jose, CA"
   employer         : NVIDIA
-  pubmed           : 
+  pubmed           :
   googlescholar    : "https://scholar.google.com/citations?user=i1H5XQ8AAAAJ"
-  email                : "ncxhxgtg@gmail.com"
-  researchgate     :  "https://www.researchgate.net/profile/Chenxu-Niu-2?ev=hdr_xprf"
+  email            : "ncxhxgtg@gmail.com"
+  researchgate     : "https://www.researchgate.net/profile/Chenxu-Niu-2?ev=hdr_xprf"
   uri              :
   bitbucket        :
   codepen          :
