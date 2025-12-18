@@ -27,8 +27,9 @@ I will join Nvidia as a solution architect, HPC system engineer from Jan 2026. I
 - *2011.09 - 2015.06*, Bachelor, Mathematics, University of Science and Technology of China, China
 
 # 🔥 News
-- *2026.02*: &nbsp;🎉🎉 I will attend <a href='https://aaai.org/conference/aaai/aaai-26/submission-instructions/'> AAAI' 26 conference </a> and gave a presentation named "TokenPoweBench: Benchmarking the Power Consumption of LLM Inference."
-- *2025.07*: &nbsp;🎉🎉 I attended <a href='https://www.hdfgroup.org/hug/hug24/'> HotCarbon' 25 workshop </a> and gave a presentation named " Energy Efficient or Exhaustive? Benchmarking Power Consumption of LLM Inference Engines."
+- *2026.01*: &nbsp;🎉🎉 I will join NVIDIA from Jan 2026.
+- *2025.11*: &nbsp;🎉🎉 My paper "TokenPoweBench: Benchmarking the Power Consumption of LLM Inference." has been accepted by " <a href='https://aaai.org/conference/aaai/aaai-26/submission-instructions/'> AAAI' 26 conference (acceptance rate = 17.6%)
+- *2025.11*: &nbsp;🎉🎉 My paper "FIXME: Towards End-to-End Benchmarking of LLM-Aided Design Verification." has been accepted by " <a href='https://aaai.org/conference/aaai/aaai-26/submission-instructions/'> AAAI' 26 conference (acceptance rate = 17.6%)
 
 # 📝 Publications 
 
