@@ -115,11 +115,11 @@ Wei Zhang, Suren Byna, **Chenxu Niu**, Yong Chen
 - *2014* National third-class prize of China Undergraduate Mathematical Contest in Modelling in China.
 - *2012-2015* First-class undergraduate scholarship of USTC. (top 10%)
 
-# 💬 Sicieties and community contributions
-- *2024*, Student volunteer at Supercomputing 2024 (The International Conference for High Performance
-Computing, Networking, Storage, and Analysis)
-- *2016*, Student volunteer at Mathematics Theory of Chinese Association of Cryptography Conference.
-- *2015*, Student volunteer at first Post Quantum Cryptography Asia Forum (PQCAM).
+# 💬 Professional Service
+- *Program Committee Member*: AAAI '26
+- *Reproducibility Committee Member*: SC '25
+- *Paper Reviewer*: AAAI ’25, BigData ’25, CCGrid ’24, SSDBM ’24
+- *Conference Volunteer*: SC '21, SC '24
 
 # 🌍 Visitor Map
 

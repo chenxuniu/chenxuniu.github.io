@@ -2,6 +2,9 @@
 main:
   - title: "About Me"
     url: "/#about-me"
+  
+  - title: "Educations"
+    url: "/#-educations"
 
   - title: "News"
     url: "/#-news"
@@ -12,11 +15,9 @@ main:
   - title: "Honors and Awards"
     url: "/#-honors-and-awards"
 
-  - title: "Educations"
-    url: "/#-educations"
+  - title: "Professional Service"
+    url: "/#-professional-service"
 
-  - title: "Invited Talks"
-    url: "/#-invited-talks"
-
-  - title: "Internships"
-    url: "/#-internships"
+# - title: "Internships"
+#   url: "/#-internships"
+    
