@@ -17,7 +17,7 @@ redirect_from:
 
 <span class='anchor' id='about-me'></span>
 
-I will join Nvidia as a solution architect, HPC system engineer from Jan 2026. I received my PhD degree in the Department of Computer Science at Texas Tech University. I was part of the research team led by Dr. Yong Chen, collaborating with experts like Dr. Wei Zhang from Texas Advanced Computing Center and Dr. Suren Byna from The Ohio State University. My research focused on High-Performance Computing (HPC), energy-efficient framework, AI inference on HPC and scientific data management.
+I joined Nvidia as a AI native solutions architect, HPC system engineer from Jan 2026. I received my PhD degree in the Department of Computer Science at Texas Tech University. I was part of the research team led by Dr. Yong Chen, collaborating with experts like Dr. Wei Zhang from Texas Advanced Computing Center and Dr. Suren Byna from The Ohio State University. My research focused on High-Performance Computing (HPC), energy-efficient framework, AI inference on HPC and scientific data management.
 
 <!-- I have published several papers at the top international AI conferences with total <a href='https://scholar.google.com/citations?user=DhtAFkwAAAAJ'>google scholar citations <strong><span id='total_cit'>260000+</span></strong></a> (You can also use google scholar badge <a href='https://scholar.google.com/citations?user=DhtAFkwAAAAJ'><img src="https://img.shields.io/endpoint?url={{ url | url_encode }}&logo=Google%20Scholar&labelColor=f6f6f6&color=9cf&style=flat&label=citations"></a>). -->
 
@@ -27,11 +27,11 @@ I will join Nvidia as a solution architect, HPC system engineer from Jan 2026. I
 - *2011.09 - 2015.06*, Bachelor, Mathematics, University of Science and Technology of China, China
 
 # 🔥 News
-- *2026.01*: &nbsp;🎉🎉 I will join NVIDIA from Jan 2026.
+- *2026.01*: &nbsp;🎉🎉 I joined NVIDIA from Jan 2026.
 - *2025.11*: &nbsp;🎉🎉 My paper "TokenPoweBench: Benchmarking the Power Consumption of LLM Inference." has been accepted by " <a href='https://aaai.org/conference/aaai/aaai-26/submission-instructions/'> AAAI' 26 conference (acceptance rate = 17.6%)
 - *2025.11*: &nbsp;🎉🎉 My paper "FIXME: Towards End-to-End Benchmarking of LLM-Aided Design Verification." has been accepted by " <a href='https://aaai.org/conference/aaai/aaai-26/submission-instructions/'> AAAI' 26 conference (acceptance rate = 17.6%)
 
-# 📝 Publications 
+# 📝 Publications
 
 <div class='paper-box'><div class='paper-box-image'><div><div class="badge">AAAI 2026</div><img src='images/AAAI.png' alt="sym" width="100%"></div></div>
 <div class='paper-box-text' markdown="1">
@@ -39,6 +39,16 @@ I will join Nvidia as a solution architect, HPC system engineer from Jan 2026. I
 [TokenPoweBench: Benchmarking the Power Consumption of LLM Inference.](https://discl.cs.ttu.edu/lib/exe/fetch.php?media=wiki:papers:niu_aaai_2026.pdf)
     
 **Chenxu Niu**, Wei Zhang, Jie Li, Yongjian Zhao, Tongyang Wang, Xi Wang and Yong Chen. 
+    
+</div>
+</div>
+
+<div class='paper-box'><div class='paper-box-image'><div><div class="badge">AAAI 2026</div><img src='images/Fixme.png' alt="sym" width="100%"></div></div>
+<div class='paper-box-text' markdown="1">
+    
+[Fixme: Towards end-to-end benchmarking of llm-aided design verification.](https://discl.cs.ttu.edu/lib/exe/fetch.php?media=wiki:papers:wan_aaai_2026.pdf)
+
+Gwok-Waa Wan, SamZaak Wong, Shengchu Su, **Chenxu Niu**, Ning Wang, Xinlai Wan, Qixiang Chen, Mengnv Xing, Jingyi Zhang, Jianmin Ye, Yubo Wang, Rongchang Song, Tao Ni, Qiang Xu, Nan Guan, Zhe Jiang, Xi Wang, Yong Chen, Jun Yang
     
 </div>
 </div>
