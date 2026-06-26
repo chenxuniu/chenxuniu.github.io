@@ -2,7 +2,10 @@
 main:
   - title: "About Me"
     url: "/#about-me"
-  
+
+  - title: "CV"
+    url: "/cv/"
+
   - title: "Educations"
     url: "/#-educations"
 
@@ -20,4 +23,3 @@ main:
 
 # - title: "Internships"
 #   url: "/#-internships"
-    
