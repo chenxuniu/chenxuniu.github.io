@@ -126,10 +126,10 @@ Wei Zhang, Suren Byna, **Chenxu Niu**, Yong Chen
 - *2012-2015* First-class undergraduate scholarship of USTC. (top 10%)
 
 # 💬 Professional Service
-- *Program Committee Member*: AAAI 2026, PEARC 2026
-- *Reproducibility Committee Member*: SC 2025
-- *Paper Reviewer*: AAAI 2025, BigData 2025, CCGrid 2024, SSDBM 2024
-- *Conference Volunteer*: SC 2021, SC 2024
+- *Program Committee Member*: AAAI ’26, PEARC ’26
+- *Reproducibility Committee Member*: SC ’25
+- *Paper Reviewer*: AAAI ’25, BigData ’25, CCGrid ’24, SSDBM ’24
+- *Conference Volunteer*: SC ’21, SC ’24
 
 # 🌍 Visitor Map
 
