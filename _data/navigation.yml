@@ -4,7 +4,7 @@ main:
     url: "/#about-me"
 
   - title: "CV"
-    url: "/cv/"
+    url: "/assets/pdf/Resume_ChenxuNiu_2026.pdf"
 
   - title: "Educations"
     url: "/#-educations"
