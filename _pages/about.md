@@ -36,7 +36,7 @@ I joined NVIDIA as a AI native solutions architect, HPC system engineer from Jan
 <div class='paper-box'><div class='paper-box-image'><div><div class="badge">AAAI 2026</div><img src='images/AAAI.png' alt="sym" width="100%"></div></div>
 <div class='paper-box-text' markdown="1">
     
-[TokenPoweBench: Benchmarking the Power Consumption of LLM Inference.](https://discl.cs.ttu.edu/lib/exe/fetch.php?media=wiki:papers:niu_aaai_2026.pdf)
+[TokenPoweBench: Benchmarking the Power Consumption of LLM Inference.](/assets/pdf/aaai2026-tokenpowerbench.pdf)
     
 **Chenxu Niu**, Wei Zhang, Jie Li, Yongjian Zhao, Tongyang Wang, Xi Wang and Yong Chen. 
     
@@ -46,7 +46,7 @@ I joined NVIDIA as a AI native solutions architect, HPC system engineer from Jan
 <div class='paper-box'><div class='paper-box-image'><div><div class="badge">AAAI 2026</div><img src='images/Fixme.png' alt="sym" width="100%"></div></div>
 <div class='paper-box-text' markdown="1">
     
-[Fixme: Towards end-to-end benchmarking of llm-aided design verification.](https://discl.cs.ttu.edu/lib/exe/fetch.php?media=wiki:papers:wan_aaai_2026.pdf)
+[Fixme: Towards end-to-end benchmarking of llm-aided design verification.](/assets/pdf/aaai2026-fixme.pdf)
 
 Gwok-Waa Wan, SamZaak Wong, Shengchu Su, **Chenxu Niu**, Ning Wang, Xinlai Wan, Qixiang Chen, Mengnv Xing, Jingyi Zhang, Jianmin Ye, Yubo Wang, Rongchang Song, Tao Ni, Qiang Xu, Nan Guan, Zhe Jiang, Xi Wang, Yong Chen, Jun Yang
     
@@ -56,7 +56,7 @@ Gwok-Waa Wan, SamZaak Wong, Shengchu Su, **Chenxu Niu**, Ning Wang, Xinlai Wan, 
 <div class='paper-box'><div class='paper-box-image'><div><div class="badge">HotCarbon 2025</div><img src='images/hotcarbon.png' alt="sym" width="100%"></div></div>
 <div class='paper-box-text' markdown="1">
 
-[Energy Efficient or Exhaustive? Benchmarking Power Consumption of LLM Inference Engines. ](https://github.com/chenxuniu/LLM-Inference-Engine-Benchmark/blob/main/Camera%20Ready%20Chenxu%20Niu%20Benchmarking%20Power%20Consumption%20of%20LLM%20Inference%20Engines.pdf)
+[Energy Efficient or Exhaustive? Benchmarking Power Consumption of LLM Inference Engines.](/assets/pdf/hotcarbon2025-llm-inference-engines.pdf)
 
 **Chenxu Niu**, Wei Zhang, Yongjian Zhao, Yong Chen
 
@@ -86,7 +86,7 @@ Yongjian Zhao, Jie Li, **Chenxu Niu**, Alan Sill, Yong Chen
 <div class='paper-box'><div class='paper-box-image'><div><div class="badge">Big Data 2023</div><img src='images/PSQS.png' alt="sym" width="100%"></div></div>
 <div class='paper-box-text' markdown="1">
 
-[PSQS: Parallel Semantic Querying Service for Self-describing File Formats](https://sbyna.github.io/research/papers/2023/202312-pre-PSQS-Niu.pdf)
+[PSQS: Parallel Semantic Querying Service for Self-describing File Formats](/assets/pdf/bigdata2023-psqs.pdf)
 
 **Chenxu Niu**, Wei Zhang, Suren Byna, Yong Chen
 
@@ -101,7 +101,7 @@ Yongjian Zhao, Jie Li, **Chenxu Niu**, Alan Sill, Yong Chen
 <div class='paper-box'><div class='paper-box-image'><div><div class="badge">HPEC 2022</div><img src='images/kv2vec.png' alt="sym" width="100%"></div></div>
 <div class='paper-box-text' markdown="1">
 
-[Kv2vec: A distributed representation method for key-value pairs from metadata attributes](https://drive.google.com/file/d/19UUCLtrfQIrLnXcQ2KJowbsGGyP4MydT/view)
+[Kv2vec: A distributed representation method for key-value pairs from metadata attributes](/assets/pdf/hpec2022-kv2vec.pdf)
 
 **Chenxu Niu**, Wei Zhang, Suren Byna, Yong Chen
 
@@ -116,7 +116,7 @@ Yongjian Zhao, Jie Li, **Chenxu Niu**, Alan Sill, Yong Chen
 <div class='paper-box'><div class='paper-box-image'><div><div class="badge">HiPC 2019</div><img src='images/explore.png' alt="sym" width="100%"></div></div>
 <div class='paper-box-text' markdown="1">
 
-[Exploring metadata search essentials for scientific data management](https://sdm.lbl.gov/~sbyna/research/papers/2019/201912-EOD_HDF5_Metadata_Queries-HiPC_2019-DOI.pdf)
+[Exploring metadata search essentials for scientific data management](/assets/pdf/hipc2019-metadata-search.pdf)
 
 Wei Zhang, Suren Byna, **Chenxu Niu**, Yong Chen
 
