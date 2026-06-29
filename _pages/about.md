@@ -76,7 +76,7 @@ Yongjian Zhao, Jie Li, **Chenxu Niu**, Alan Sill, Yong Chen
 <div class='paper-box'><div class='paper-box-image'><div><div class="badge">SSDBM 2025</div><img src='images/ICEAGE.png' alt="sym" width="100%"></div></div>
 <div class='paper-box-text' markdown="1">
 
-[ICEAGE: Intelligent Contextual Exploration and Answer Generation Engine for Scientific Data Discovery. ](https://sbyna.github.io/research/papers/2023/202312-pre-PSQS-Niu.pdf)
+[ICEAGE: Intelligent Contextual Exploration and Answer Generation Engine for Scientific Data Discovery.](/assets/pdf/ssdbm2025-iceage.pdf)
 
 **Chenxu Niu**, Wei Zhang, Mert Side, Yong Chen
 
