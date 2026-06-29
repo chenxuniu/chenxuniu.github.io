@@ -27,9 +27,10 @@ I joined NVIDIA as a AI native solutions architect, HPC system engineer from Jan
 - *2011.09 - 2015.06*, Bachelor, Mathematics, University of Science and Technology of China, China
 
 # 🔥 News
+- *2026.06*: &nbsp;🎉🎉 My paper [Power-Centric Observability for HPC Systems: Design, Deployment, and Evaluation on REPACSS.](https://chenxuniu.github.io/assets/pdf/pearc2026-power-observability.pdf) has been accepted to PEARC 2026.
+- *2026.04*: &nbsp;🎉🎉 My paper "TokenPoweBench: Benchmarking the Power Consumption of LLM Inference." has been published at [AAAI' 26 conference (acceptance rate = 17.6%)](https://aaai.org/conference/aaai/aaai-26/submission-instructions/).
+- *2026.04*: &nbsp;🎉🎉 My paper "FIXME: Towards End-to-End Benchmarking of LLM-Aided Design Verification." has been published at [AAAI' 26 conference (acceptance rate = 17.6%)](https://aaai.org/conference/aaai/aaai-26/submission-instructions/).
 - *2026.01*: &nbsp;🎉🎉 I joined NVIDIA from Jan 2026.
-- *2025.11*: &nbsp;🎉🎉 My paper "TokenPoweBench: Benchmarking the Power Consumption of LLM Inference." has been accepted by " <a href='https://aaai.org/conference/aaai/aaai-26/submission-instructions/'> AAAI' 26 conference (acceptance rate = 17.6%)
-- *2025.11*: &nbsp;🎉🎉 My paper "FIXME: Towards End-to-End Benchmarking of LLM-Aided Design Verification." has been accepted by " <a href='https://aaai.org/conference/aaai/aaai-26/submission-instructions/'> AAAI' 26 conference (acceptance rate = 17.6%)
 
 # 📝 Publications
 
