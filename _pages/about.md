@@ -139,7 +139,7 @@ Wei Zhang, Suren Byna, **Chenxu Niu**, Yong Chen
 # 💬 Professional Service
 - *Program Committee Member*: AAAI ’26, PEARC ’26
 - *Reproducibility Committee Member*: SC ’25
-- *Paper Reviewer*: AAAI ’25, BigData ’25, CCGrid ’24, SSDBM ’24
+- *Paper Reviewer*: AAAI ’27, AAAI ’26, BigData ’25, CCGrid ’24, SSDBM ’24
 - *Conference Volunteer*: SC ’21, SC ’24
 
 # 🌍 Visitor Map
