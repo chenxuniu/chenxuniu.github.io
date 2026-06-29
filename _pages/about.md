@@ -63,6 +63,16 @@ Gwok-Waa Wan, SamZaak Wong, Shengchu Su, **Chenxu Niu**, Ning Wang, Xinlai Wan, 
 </div>
 </div>
 
+<div class='paper-box'><div class='paper-box-image'><div><div class="badge">PEARC 2026</div><img src='images/pearc2026.png' alt="sym" width="100%"></div></div>
+<div class='paper-box-text' markdown="1">
+
+[Power-Centric Observability for HPC Systems: Design, Deployment, and Evaluation on REPACSS.](/assets/pdf/pearc2026-power-observability.pdf)
+
+Yongjian Zhao, Jie Li, **Chenxu Niu**, Alan Sill, Yong Chen
+
+</div>
+</div>
+
 <div class='paper-box'><div class='paper-box-image'><div><div class="badge">SSDBM 2025</div><img src='images/ICEAGE.png' alt="sym" width="100%"></div></div>
 <div class='paper-box-text' markdown="1">
 
