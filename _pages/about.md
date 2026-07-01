@@ -28,7 +28,7 @@ I am an AI-native Solutions Architect and HPC System Engineer at NVIDIA, where I
 
 # 🔥 News
 - *2026.06*: &nbsp;🎉🎉 My paper [Power-Centric Observability for HPC Systems: Design, Deployment, and Evaluation on REPACSS.](https://chenxuniu.github.io/assets/pdf/pearc2026-power-observability.pdf) has been accepted to PEARC 2026.
-- *2026.04*: &nbsp;🎉🎉 My paper [TokenPoweBench: Benchmarking the Power Consumption of LLM Inference.](/assets/pdf/aaai2026-tokenpowerbench.pdf) has been published at AAAI 2026 (acceptance rate = 17.6%).
+- *2026.04*: &nbsp;🎉🎉 My paper [TokenPowerBench: Benchmarking the Power Consumption of LLM Inference.](/assets/pdf/aaai2026-tokenpowerbench.pdf) has been published at AAAI 2026 (acceptance rate = 17.6%).
 - *2026.04*: &nbsp;🎉🎉 My paper [FIXME: Towards End-to-End Benchmarking of LLM-Aided Design Verification.](/assets/pdf/aaai2026-fixme.pdf) has been published at AAAI 2026 (acceptance rate = 17.6%).
 - *2026.01*: &nbsp;🎉🎉 I joined NVIDIA from Jan 2026.
 

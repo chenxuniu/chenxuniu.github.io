@@ -1,10 +1,16 @@
-- title: "TokenPoweBench: Benchmarking the Power Consumption of LLM Inference."
+- title: "TokenPowerBench: Benchmarking the Power Consumption of LLM Inference."
   venue: "AAAI 2026"
   image: "/images/AAAI.png"
   authors: "**Chenxu Niu**, Wei Zhang, Jie Li, Yongjian Zhao, Tongyang Wang, Xi Wang, and Yong Chen."
   links:
     - label: "PDF"
       url: "/assets/pdf/aaai2026-tokenpowerbench.pdf"
+    - label: "Code"
+      url: "https://github.com/chenxuniu/TokenPowerBench"
+    - label: "DOI"
+      url: "https://doi.org/10.1609/aaai.v40i38.40535"
+    - label: "BibTeX"
+      url: "/assets/bib/aaai2026-tokenpowerbench.bib"
 
 - title: "FIXME: Towards End-to-End Benchmarking of LLM-Aided Design Verification."
   venue: "AAAI 2026"
@@ -13,6 +19,10 @@
   links:
     - label: "PDF"
       url: "/assets/pdf/aaai2026-fixme.pdf"
+    - label: "DOI"
+      url: "https://doi.org/10.1609/aaai.v40i2.37079"
+    - label: "BibTeX"
+      url: "/assets/bib/aaai2026-fixme.bib"
 
 - title: "Energy Efficient or Exhaustive? Benchmarking Power Consumption of LLM Inference Engines."
   venue: "HotCarbon 2025"
@@ -23,6 +33,10 @@
       url: "/assets/pdf/hotcarbon2025-llm-inference-engines.pdf"
     - label: "Code"
       url: "https://github.com/chenxuniu/LLM-Inference-Engine-Benchmark"
+    - label: "DOI"
+      url: "https://doi.org/10.1145/3757892.3757900"
+    - label: "BibTeX"
+      url: "/assets/bib/hotcarbon2025-llm-inference-engines.bib"
 
 - title: "Power-Centric Observability for HPC Systems: Design, Deployment, and Evaluation on REPACSS."
   venue: "PEARC 2026"
@@ -31,6 +45,8 @@
   links:
     - label: "PDF"
       url: "/assets/pdf/pearc2026-power-observability.pdf"
+    - label: "BibTeX"
+      url: "/assets/bib/pearc2026-power-observability.bib"
 
 - title: "ICEAGE: Intelligent Contextual Exploration and Answer Generation Engine for Scientific Data Discovery."
   venue: "SSDBM 2025"
@@ -39,6 +55,10 @@
   links:
     - label: "PDF"
       url: "/assets/pdf/ssdbm2025-iceage.pdf"
+    - label: "DOI"
+      url: "https://doi.org/10.1145/3733723.3733731"
+    - label: "BibTeX"
+      url: "/assets/bib/ssdbm2025-iceage.bib"
 
 - title: "PSQS: Parallel Semantic Querying Service for Self-Describing File Formats."
   venue: "Big Data 2023"
@@ -47,6 +67,10 @@
   links:
     - label: "PDF"
       url: "/assets/pdf/bigdata2023-psqs.pdf"
+    - label: "DOI"
+      url: "https://doi.org/10.1109/bigdata59044.2023.10386205"
+    - label: "BibTeX"
+      url: "/assets/bib/bigdata2023-psqs.bib"
 
 - title: "Kv2vec: A Distributed Representation Method for Key-Value Pairs from Metadata Attributes."
   venue: "HPEC 2022"
@@ -55,6 +79,10 @@
   links:
     - label: "PDF"
       url: "/assets/pdf/hpec2022-kv2vec.pdf"
+    - label: "DOI"
+      url: "https://doi.org/10.1109/hpec55821.2022.9926389"
+    - label: "BibTeX"
+      url: "/assets/bib/hpec2022-kv2vec.bib"
 
 - title: "Exploring Metadata Search Essentials for Scientific Data Management."
   venue: "HiPC 2019"
@@ -63,3 +91,7 @@
   links:
     - label: "PDF"
       url: "/assets/pdf/hipc2019-metadata-search.pdf"
+    - label: "DOI"
+      url: "https://doi.org/10.1109/hipc.2019.00021"
+    - label: "BibTeX"
+      url: "/assets/bib/hipc2019-metadata-search.bib"
