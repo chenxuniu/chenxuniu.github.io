@@ -19,6 +19,8 @@ redirect_from:
 
 I am an AI-native Solutions Architect and HPC System Engineer at NVIDIA, where I have worked since January 2026. I received my Ph.D. in Computer Science from Texas Tech University. During my doctoral studies, I worked with Dr. Yong Chen's research group and collaborated with researchers including Dr. Wei Zhang at the Texas Advanced Computing Center and Dr. Suren Byna at The Ohio State University. My research focuses on high-performance computing (HPC), energy-efficient computing frameworks, AI inference on HPC systems, and scientific data management.
 
+<p class="cv-note"><a href="{{ '/assets/pdf/Resume_ChenxuNiu_2026.pdf' | relative_url }}">CV</a>, updated July 2026.</p>
+
 <!-- I have published several papers at the top international AI conferences with total <a href='https://scholar.google.com/citations?user=DhtAFkwAAAAJ'>google scholar citations <strong><span id='total_cit'>260000+</span></strong></a> (You can also use google scholar badge <a href='https://scholar.google.com/citations?user=DhtAFkwAAAAJ'><img src="https://img.shields.io/endpoint?url={{ url | url_encode }}&logo=Google%20Scholar&labelColor=f6f6f6&color=9cf&style=flat&label=citations"></a>). -->
 
 # 📖 Educations
@@ -31,6 +33,41 @@ I am an AI-native Solutions Architect and HPC System Engineer at NVIDIA, where I
 - *2026.04*: &nbsp;🎉🎉 My paper [TokenPowerBench: Benchmarking the Power Consumption of LLM Inference.](/assets/pdf/aaai2026-tokenpowerbench.pdf) has been published at AAAI 2026 (acceptance rate = 17.6%).
 - *2026.04*: &nbsp;🎉🎉 My paper [FIXME: Towards End-to-End Benchmarking of LLM-Aided Design Verification.](/assets/pdf/aaai2026-fixme.pdf) has been published at AAAI 2026 (acceptance rate = 17.6%).
 - *2026.01*: &nbsp;🎉🎉 I joined NVIDIA from Jan 2026.
+
+<span class='anchor' id='projects-software'></span>
+
+# 🧰 Projects / Software
+
+{% for project in site.data.projects %}
+<div class="project-box">
+  {% assign project_primary_link = project.links | first %}
+  {% assign project_title_url = project_primary_link.url %}
+  {% unless project_title_url contains '://' %}
+    {% assign project_title_url = project_title_url | relative_url %}
+  {% endunless %}
+  <p class="project-title"><a href="{{ project_title_url }}">{{ project.name }}</a></p>
+  <p class="project-type">{{ project.type }}</p>
+  <p class="project-description">{{ project.description }}</p>
+  {% if project.tags %}
+    <p class="project-tags">
+      {% for tag in project.tags %}
+        <span>{{ tag }}</span>
+      {% endfor %}
+    </p>
+  {% endif %}
+  {% if project.links %}
+    <p class="project-links">
+      {% for link in project.links %}
+        {% assign link_url = link.url %}
+        {% unless link_url contains '://' %}
+          {% assign link_url = link_url | relative_url %}
+        {% endunless %}
+        <a href="{{ link_url }}">{{ link.label }}</a>{% unless forloop.last %}<span class="paper-link-separator">|</span>{% endunless %}
+      {% endfor %}
+    </p>
+  {% endif %}
+</div>
+{% endfor %}
 
 # 📝 Publications
 
@@ -68,6 +105,8 @@ I am an AI-native Solutions Architect and HPC System Engineer at NVIDIA, where I
   </div>
 </div>
 {% endfor %}
+
+<span class='anchor' id='awards-service'></span>
 
 # 🎖 Honors and Awards
 - *2015* National third-class prize of Mathematical and Cryptographic Algorithm Contest in China 2015.

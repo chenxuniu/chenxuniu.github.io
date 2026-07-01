@@ -6,23 +6,17 @@ main:
   - title: "CV"
     url: "/assets/pdf/Resume_ChenxuNiu_2026.pdf"
 
-  - title: "Educations"
-    url: "/#-educations"
-
   - title: "News"
     url: "/#-news"
+
+  - title: "Projects"
+    url: "/#projects-software"
 
   - title: "Publications"
     url: "/#-publications"
 
-  - title: "Honors and Awards"
-    url: "/#-honors-and-awards"
-
-  - title: "Professional Service"
-    url: "/#-professional-service"
-
-  - title: "Visitor Map"
-    url: "/#-visitor-map"
+  - title: "Awards & Service"
+    url: "/#awards-service"
 
 # - title: "Internships"
 #   url: "/#-internships"

@@ -1,0 +1,40 @@
+- name: "TokenPowerBench"
+  type: "Open-source benchmark suite"
+  description: "Measures LLM inference power consumption across single-node and multi-node GPU settings, with phase-aware metrics for prefill and decode."
+  links:
+    - label: "Code"
+      url: "https://github.com/chenxuniu/TokenPowerBench"
+    - label: "Paper"
+      url: "/assets/pdf/aaai2026-tokenpowerbench.pdf"
+    - label: "DOI"
+      url: "https://doi.org/10.1609/aaai.v40i38.40535"
+  tags:
+    - "LLM Inference"
+    - "Power Benchmarking"
+    - "Multi-Node GPU"
+
+- name: "LLM Inference Engine Benchmark"
+  type: "Open-source benchmarking tool"
+  description: "Benchmarks energy consumption and efficiency trade-offs across LLM inference engines including vLLM, DeepSpeed, TensorRT-LLM, and Transformers."
+  links:
+    - label: "Code"
+      url: "https://github.com/chenxuniu/LLM-Inference-Engine-Benchmark"
+    - label: "Paper"
+      url: "/assets/pdf/hotcarbon2025-llm-inference-engines.pdf"
+    - label: "DOI"
+      url: "https://doi.org/10.1145/3757892.3757900"
+  tags:
+    - "LLM Systems"
+    - "Inference Engines"
+    - "Energy Efficiency"
+
+- name: "Awesome Disaggregated LLM Serving"
+  type: "Curated research map"
+  description: "Organizes papers, systems, and open problems around prefill-decode disaggregation, KV-cache movement, MoE serving, and re-aggregation baselines."
+  links:
+    - label: "Code"
+      url: "https://github.com/chenxuniu/awesome-disaggregated-llm-serving"
+  tags:
+    - "LLM Serving"
+    - "Disaggregation"
+    - "KV Cache"

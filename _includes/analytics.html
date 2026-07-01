@@ -1,5 +1,6 @@
 {% if page.analytics != false %}
 
+{% if site.google_analytics_id %}
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.google_analytics_id }}"></script>
 <script>
@@ -9,5 +10,16 @@
 
   gtag('config', "{{ site.google_analytics_id }}");
 </script>
+{% endif %}
+
+{% if site.plausible_domain %}
+<!-- Plausible Analytics -->
+<script defer data-domain="{{ site.plausible_domain }}" src="https://plausible.io/js/script.js"></script>
+{% endif %}
+
+{% if site.goatcounter_code %}
+<!-- GoatCounter Analytics -->
+<script data-goatcounter="https://{{ site.goatcounter_code }}.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+{% endif %}
 
 {% endif %}

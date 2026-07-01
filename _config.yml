@@ -12,8 +12,10 @@ seo_description          : "Chenxu Niu is an HPC System Engineer at NVIDIA whose
 repository               : "chenxuniu/chenxuniu.github.io"
 google_scholar_stats_use_cdn : true
 
-# google analytics
-google_analytics_id      :  # get google_analytics_id from https://analytics.google.com/analytics/
+# Analytics
+google_analytics_id      :  # e.g., G-XXXXXXXXXX
+plausible_domain         :  # e.g., chenxuniu.github.io
+goatcounter_code         :  # e.g., chenxuniu for https://chenxuniu.goatcounter.com
 
 # SEO Related
 google_site_verification :  "fWOeUyrOqTAzsBivU61U1NY40RhU8K-f3IFXMPNR_CE"
