@@ -1,0 +1,65 @@
+- title: "TokenPoweBench: Benchmarking the Power Consumption of LLM Inference."
+  venue: "AAAI 2026"
+  image: "/images/AAAI.png"
+  authors: "**Chenxu Niu**, Wei Zhang, Jie Li, Yongjian Zhao, Tongyang Wang, Xi Wang, and Yong Chen."
+  links:
+    - label: "PDF"
+      url: "/assets/pdf/aaai2026-tokenpowerbench.pdf"
+
+- title: "FIXME: Towards End-to-End Benchmarking of LLM-Aided Design Verification."
+  venue: "AAAI 2026"
+  image: "/images/Fixme.png"
+  authors: "Gwok-Waa Wan, SamZaak Wong, Shengchu Su, **Chenxu Niu**, Ning Wang, Xinlai Wan, Qixiang Chen, Mengnv Xing, Jingyi Zhang, Jianmin Ye, Yubo Wang, Rongchang Song, Tao Ni, Qiang Xu, Nan Guan, Zhe Jiang, Xi Wang, Yong Chen, and Jun Yang."
+  links:
+    - label: "PDF"
+      url: "/assets/pdf/aaai2026-fixme.pdf"
+
+- title: "Energy Efficient or Exhaustive? Benchmarking Power Consumption of LLM Inference Engines."
+  venue: "HotCarbon 2025"
+  image: "/images/hotcarbon.png"
+  authors: "**Chenxu Niu**, Wei Zhang, Yongjian Zhao, and Yong Chen."
+  links:
+    - label: "PDF"
+      url: "/assets/pdf/hotcarbon2025-llm-inference-engines.pdf"
+    - label: "Code"
+      url: "https://github.com/chenxuniu/LLM-Inference-Engine-Benchmark"
+
+- title: "Power-Centric Observability for HPC Systems: Design, Deployment, and Evaluation on REPACSS."
+  venue: "PEARC 2026"
+  image: "/images/pearc2026.png"
+  authors: "Yongjian Zhao, Jie Li, **Chenxu Niu**, Alan Sill, and Yong Chen."
+  links:
+    - label: "PDF"
+      url: "/assets/pdf/pearc2026-power-observability.pdf"
+
+- title: "ICEAGE: Intelligent Contextual Exploration and Answer Generation Engine for Scientific Data Discovery."
+  venue: "SSDBM 2025"
+  image: "/images/ICEAGE.png"
+  authors: "**Chenxu Niu**, Wei Zhang, Mert Side, and Yong Chen."
+  links:
+    - label: "PDF"
+      url: "/assets/pdf/ssdbm2025-iceage.pdf"
+
+- title: "PSQS: Parallel Semantic Querying Service for Self-Describing File Formats."
+  venue: "Big Data 2023"
+  image: "/images/PSQS.png"
+  authors: "**Chenxu Niu**, Wei Zhang, Suren Byna, and Yong Chen."
+  links:
+    - label: "PDF"
+      url: "/assets/pdf/bigdata2023-psqs.pdf"
+
+- title: "Kv2vec: A Distributed Representation Method for Key-Value Pairs from Metadata Attributes."
+  venue: "HPEC 2022"
+  image: "/images/kv2vec.png"
+  authors: "**Chenxu Niu**, Wei Zhang, Suren Byna, and Yong Chen."
+  links:
+    - label: "PDF"
+      url: "/assets/pdf/hpec2022-kv2vec.pdf"
+
+- title: "Exploring Metadata Search Essentials for Scientific Data Management."
+  venue: "HiPC 2019"
+  image: "/images/explore.png"
+  authors: "Wei Zhang, Suren Byna, **Chenxu Niu**, and Yong Chen."
+  links:
+    - label: "PDF"
+      url: "/assets/pdf/hipc2019-metadata-search.pdf"

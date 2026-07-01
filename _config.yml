@@ -6,8 +6,9 @@
 # `jekyll serve`. If you change this file, please restart the server process.
 
 # Site Settings
-title                    : "my academic page"
-description              : "Research topics: HPC, AI Inference, Energy Efficient Framework"
+title                    : "Chenxu Niu | HPC Systems, AI Inference, Energy-Efficient Computing"
+description              : "Research topics: HPC Systems, AI Inference, Energy-Efficient Computing, Scientific Data Management"
+seo_description          : "Chenxu Niu is an HPC System Engineer at NVIDIA whose research focuses on HPC systems, AI inference, energy-efficient computing, and scientific data management."
 repository               : "chenxuniu/chenxuniu.github.io"
 google_scholar_stats_use_cdn : true
 

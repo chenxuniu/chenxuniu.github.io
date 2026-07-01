@@ -87,6 +87,31 @@
 
 }
 
+.paper-title {
+    margin: 0 0 .45em 0;
+    font-weight: 600;
+    line-height: 1.35;
+}
+
+.paper-authors {
+    margin: .35em 0 .55em 0;
+}
+
+.paper-links {
+    margin: .35em 0 0 0;
+    font-size: .85em;
+    letter-spacing: 0;
+
+    a {
+        font-weight: 600;
+    }
+}
+
+.paper-link-separator {
+    margin: 0 .45em;
+    color: #9a9a9a;
+}
+
 $scroll_offset : 2em;
 h1:before, .anchor:before { 
     content: ''; 

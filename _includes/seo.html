@@ -10,7 +10,7 @@
 
 <title>{{ site.title }} - Homepage</title>
 
-{% assign seo_description = page.description | default: page.excerpt | default: site.description %}
+{% assign seo_description = page.description | default: page.excerpt | default: site.seo_description | default: site.description %}
 {% if seo_description %}
   {% assign seo_description = seo_description | markdownify | strip_html | strip_newlines | escape_once %}
 {% endif %}
@@ -32,14 +32,14 @@
 <meta property="og:locale" content="en">
 <meta property="og:site_name" content="{{ site.title }}">
 <meta property="og:title" content="{{ site.title }}">
+{% if seo_description %}
+  <meta name="description" content="{{ seo_description }}">
+  <meta property="og:description" content="{{ seo_description }}">
+{% endif %}
 
 {% if seo_url %}
   <link rel="canonical" href="{{ page.url | prepend: seo_url | replace: "/index.html", "/" }}">
   <meta property="og:url" content="{{ page.url | prepend: seo_url | replace: "/index.html", "/" }}">
-{% endif %}
-
-{% if page.excerpt %}
-  <meta property="og:description" content="{{ seo_description }}">
 {% endif %}
 
 {% if site.twitter.username %}
