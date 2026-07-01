@@ -9,11 +9,11 @@ main:
   - title: "News"
     url: "/#-news"
 
-  - title: "Projects"
-    url: "/#projects-software"
-
   - title: "Publications"
     url: "/#-publications"
+
+  - title: "Projects"
+    url: "/#projects-software"
 
   - title: "Awards & Service"
     url: "/#awards-service"
