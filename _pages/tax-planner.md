@@ -1,0 +1,274 @@
+---
+permalink: /tax-planner/
+title: "Tax Planner"
+excerpt: "Federal and California 540NR tax estimator"
+author_profile: false
+tax_planner: true
+---
+
+<div class="tax-app" data-tax-app>
+  <header class="tax-header">
+    <div>
+      <p class="tax-kicker">2025 tax year · California + Texas</p>
+      <h1>跨州报税估算器</h1>
+      <p class="tax-subtitle">适合一方在加州工作、另一方在德州工作的家庭，先估算联邦 1040 和加州 540NR 的核心收入税。</p>
+    </div>
+    <div class="tax-route" aria-label="State filing route">
+      <span><img src="{{ '/images/icons/california.svg' | relative_url }}" alt=""> California 540NR</span>
+      <span class="tax-route-line"></span>
+      <span class="tax-route-texas">TX</span>
+    </div>
+  </header>
+
+  <div class="tax-notice" role="note">
+    <strong>边界：</strong>这是估算工具，不是电子报税软件，也不是税务/法律意见。复杂项目如 RSU、股票期权、资本利得、AMT、NIIT、自雇税、HSA 加州调整、community property、军人配偶规则和税收协定需要单独核对。
+  </div>
+
+  <div class="tax-layout">
+    <form id="taxForm" class="tax-form">
+      <section class="tax-panel">
+        <div class="tax-panel-heading">
+          <h2>身份与申报方式</h2>
+        </div>
+        <div class="tax-grid two">
+          <label class="tax-field" for="filingStatus">
+            <span>联邦申报身份</span>
+            <select id="filingStatus">
+              <option value="mfj" selected>Married filing jointly</option>
+              <option value="mfs">Married filing separately</option>
+              <option value="single">Single</option>
+              <option value="hoh">Head of household</option>
+            </select>
+          </label>
+          <label class="tax-field" for="caMode">
+            <span>加州申报模式</span>
+            <select id="caMode">
+              <option value="mixed" selected>540NR · 一方 CA / 一方 TX 或非居民</option>
+              <option value="resident">540 · 全部按 CA 居民估算</option>
+              <option value="none">不估算 CA 州税</option>
+            </select>
+          </label>
+        </div>
+      </section>
+
+      <section class="tax-panel">
+        <div class="tax-panel-heading">
+          <h2>收入</h2>
+        </div>
+        <div class="tax-grid three">
+          <label class="tax-field" for="youWages">
+            <span>你的 W-2 Box 1</span>
+            <input id="youWages" inputmode="decimal" placeholder="0">
+          </label>
+          <label class="tax-field" for="spouseWages">
+            <span>配偶 TX W-2 Box 1</span>
+            <input id="spouseWages" inputmode="decimal" placeholder="0">
+          </label>
+          <label class="tax-field" for="otherFederalIncome">
+            <span>其他联邦收入</span>
+            <input id="otherFederalIncome" inputmode="decimal" placeholder="0">
+          </label>
+          <label class="tax-field" for="federalAdjustments">
+            <span>联邦 AGI 前调整</span>
+            <input id="federalAdjustments" inputmode="decimal" placeholder="0">
+          </label>
+          <label class="tax-field" for="caWages">
+            <span>你的 CA W-2 Box 16</span>
+            <input id="caWages" inputmode="decimal" placeholder="0">
+          </label>
+          <label class="tax-field" for="spouseCaWages">
+            <span>配偶 CA 来源工资</span>
+            <input id="spouseCaWages" inputmode="decimal" placeholder="0">
+          </label>
+          <label class="tax-field" for="caOtherIncome">
+            <span>其他 CA 来源收入</span>
+            <input id="caOtherIncome" inputmode="decimal" placeholder="0">
+          </label>
+          <label class="tax-field" for="caSourceAdjustments">
+            <span>CA 来源 AGI 调整</span>
+            <input id="caSourceAdjustments" inputmode="decimal" placeholder="0">
+          </label>
+          <label class="tax-field" for="caAgiOverride">
+            <span>手动覆盖 CA AGI</span>
+            <input id="caAgiOverride" inputmode="decimal" placeholder="自动">
+          </label>
+        </div>
+      </section>
+
+      <section class="tax-panel">
+        <div class="tax-panel-heading">
+          <h2>扣除与抵免</h2>
+        </div>
+        <div class="tax-grid three">
+          <label class="tax-field" for="fedDeductionMethod">
+            <span>联邦扣除</span>
+            <select id="fedDeductionMethod">
+              <option value="auto" selected>自动取较大值</option>
+              <option value="standard">标准扣除</option>
+              <option value="itemized">逐项扣除</option>
+            </select>
+          </label>
+          <label class="tax-field" for="federalItemized">
+            <span>联邦逐项扣除</span>
+            <input id="federalItemized" inputmode="decimal" placeholder="0">
+          </label>
+          <label class="tax-field" for="federalExtraDeductions">
+            <span>联邦额外扣除</span>
+            <input id="federalExtraDeductions" inputmode="decimal" placeholder="0">
+          </label>
+          <label class="tax-field" for="federalCredits">
+            <span>联邦非退税抵免</span>
+            <input id="federalCredits" inputmode="decimal" placeholder="0">
+          </label>
+          <label class="tax-field" for="caDeductionMethod">
+            <span>加州扣除</span>
+            <select id="caDeductionMethod">
+              <option value="auto" selected>自动取较大值</option>
+              <option value="standard">标准扣除</option>
+              <option value="itemized">逐项扣除</option>
+            </select>
+          </label>
+          <label class="tax-field" for="caItemized">
+            <span>加州逐项扣除</span>
+            <input id="caItemized" inputmode="decimal" placeholder="0">
+          </label>
+          <label class="tax-field" for="caSubtractions">
+            <span>CA 全来源减项</span>
+            <input id="caSubtractions" inputmode="decimal" placeholder="0">
+          </label>
+          <label class="tax-field" for="caAdditions">
+            <span>CA 全来源加项</span>
+            <input id="caAdditions" inputmode="decimal" placeholder="0">
+          </label>
+          <label class="tax-field" for="caCredits">
+            <span>CA 非退税抵免</span>
+            <input id="caCredits" inputmode="decimal" placeholder="0">
+          </label>
+        </div>
+        <div class="tax-grid four compact">
+          <label class="tax-field" for="caPersonalCount">
+            <span>CA personal</span>
+            <input id="caPersonalCount" type="number" min="0" step="1" value="2">
+          </label>
+          <label class="tax-field" for="caDependentCount">
+            <span>CA dependents</span>
+            <input id="caDependentCount" type="number" min="0" step="1" value="0">
+          </label>
+          <label class="tax-field" for="caSeniorBlindCount">
+            <span>CA senior/blind</span>
+            <input id="caSeniorBlindCount" type="number" min="0" step="1" value="0">
+          </label>
+          <label class="tax-field" for="otherCaTaxes">
+            <span>其他 CA 税</span>
+            <input id="otherCaTaxes" inputmode="decimal" placeholder="0">
+          </label>
+        </div>
+      </section>
+
+      <section class="tax-panel">
+        <div class="tax-panel-heading">
+          <h2>预扣税与已付款</h2>
+        </div>
+        <div class="tax-grid three">
+          <label class="tax-field" for="federalWithheld">
+            <span>联邦 W-2 Box 2</span>
+            <input id="federalWithheld" inputmode="decimal" placeholder="0">
+          </label>
+          <label class="tax-field" for="federalEstimated">
+            <span>联邦预缴/其他付款</span>
+            <input id="federalEstimated" inputmode="decimal" placeholder="0">
+          </label>
+          <label class="tax-field" for="caWithheld">
+            <span>CA W-2 Box 17</span>
+            <input id="caWithheld" inputmode="decimal" placeholder="0">
+          </label>
+          <label class="tax-field" for="caEstimated">
+            <span>CA 预缴/其他付款</span>
+            <input id="caEstimated" inputmode="decimal" placeholder="0">
+          </label>
+          <label class="tax-field" for="caRefundableCredits">
+            <span>CA 退税抵免</span>
+            <input id="caRefundableCredits" inputmode="decimal" placeholder="0">
+          </label>
+          <label class="tax-field" for="caIsrPenalty">
+            <span>CA 医保罚金</span>
+            <input id="caIsrPenalty" inputmode="decimal" placeholder="0">
+          </label>
+        </div>
+      </section>
+
+      <div class="tax-actions">
+        <button type="button" id="sampleBtn" class="tax-button secondary" title="填入示例数据"><i class="fas fa-magic" aria-hidden="true"></i><span>示例</span></button>
+        <button type="button" id="printBtn" class="tax-button secondary" title="打印或另存为 PDF"><i class="fas fa-print" aria-hidden="true"></i><span>打印</span></button>
+        <button type="button" id="downloadBtn" class="tax-button secondary" title="下载输入与结果 JSON"><i class="fas fa-download" aria-hidden="true"></i><span>下载</span></button>
+        <button type="reset" class="tax-button ghost" title="清空输入"><i class="fas fa-undo" aria-hidden="true"></i><span>重置</span></button>
+      </div>
+    </form>
+
+    <aside class="tax-results" aria-live="polite">
+      <section class="tax-result-panel">
+        <p class="tax-kicker">Estimated balance</p>
+        <div class="tax-balance-row">
+          <span>联邦</span>
+          <strong id="federalBalance">$0</strong>
+        </div>
+        <div class="tax-balance-row">
+          <span>加州</span>
+          <strong id="caBalance">$0</strong>
+        </div>
+        <div class="tax-total">
+          <span id="combinedLabel">预计合计</span>
+          <strong id="combinedBalance">$0</strong>
+        </div>
+      </section>
+
+      <section class="tax-result-panel muted">
+        <h2>关键指标</h2>
+        <dl class="tax-metrics">
+          <div><dt>联邦 AGI</dt><dd id="fedAgiMetric">$0</dd></div>
+          <div><dt>联邦 taxable</dt><dd id="fedTaxableMetric">$0</dd></div>
+          <div><dt>CA taxable</dt><dd id="caTaxableMetric">$0</dd></div>
+          <div><dt>CA 有效税率</dt><dd id="caRateMetric">0.0000</dd></div>
+        </dl>
+      </section>
+
+      <section class="tax-result-panel muted">
+        <h2>检查清单</h2>
+        <ul id="taxChecklist" class="tax-checklist"></ul>
+      </section>
+    </aside>
+  </div>
+
+  <section class="tax-panel tax-wide">
+    <div class="tax-panel-heading">
+      <h2>计算明细</h2>
+    </div>
+    <div class="tax-details">
+      <div>
+        <h3>Federal 1040</h3>
+        <table class="tax-table">
+          <tbody id="federalRows"></tbody>
+        </table>
+      </div>
+      <div>
+        <h3>California 540NR</h3>
+        <table class="tax-table">
+          <tbody id="caRows"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="tax-panel tax-wide">
+    <div class="tax-panel-heading">
+      <h2>官方资料</h2>
+    </div>
+    <ul class="tax-sources">
+      <li><a href="https://www.irs.gov/pub/irs-pdf/i1040gi.pdf">IRS 2025 Instructions for Form 1040</a></li>
+      <li><a href="https://www.ftb.ca.gov/forms/2025/2025-540nr-booklet.html">California FTB 2025 Form 540NR Booklet</a></li>
+      <li><a href="https://www.ftb.ca.gov/forms/2025/2025-540nr-ca.pdf">California Schedule CA (540NR)</a></li>
+      <li><a href="https://www.ftb.ca.gov/forms/2025/2025-540-booklet.html">California FTB 2025 Form 540 Booklet</a></li>
+      <li><a href="https://comptroller.texas.gov/taxes/">Texas Comptroller · Texas Taxes</a></li>
+    </ul>
+  </section>
+</div>

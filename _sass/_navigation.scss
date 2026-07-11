@@ -174,7 +174,8 @@
 
 .greedy-nav {
   position: relative;
-  min-width: 250px;
+  width: 100%;
+  min-width: 0;
   background: $background-color;
 
   a {
@@ -186,6 +187,13 @@
 
     &:hover {
       color: $masthead-link-color-hover;
+    }
+  }
+
+  @include breakpoint(max-width $small) {
+    a {
+      margin-right: .65rem;
+      margin-left: .65rem;
     }
   }
 

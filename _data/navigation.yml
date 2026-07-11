@@ -15,6 +15,9 @@ main:
   - title: "Projects"
     url: "/#projects-software"
 
+  - title: "Tax Planner"
+    url: "/tax-planner/"
+
   - title: "Awards & Service"
     url: "/#awards-service"
 

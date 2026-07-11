@@ -7,8 +7,10 @@
 
 # Site Settings
 title                    : "Chenxu Niu | HPC Systems, AI Inference, Energy-Efficient Computing"
+url                      : "https://chenxuniu.github.io"
 description              : "Research topics: HPC Systems, AI Inference, Energy-Efficient Computing, Scientific Data Management"
 seo_description          : "Chenxu Niu is an HPC System Engineer at NVIDIA whose research focuses on HPC systems, AI inference, energy-efficient computing, and scientific data management."
+social_image             : "/images/profile-640.jpg"
 repository               : "chenxuniu/chenxuniu.github.io"
 google_scholar_stats_use_cdn : true
 
@@ -25,7 +27,7 @@ baidu_site_verification  :  # get baidu_site_verification from https://ziyuan.ba
 # Site Author
 author:
   name             : "Chenxu Niu"
-  avatar           : "images/my_photo.jpg"
+  avatar           : "/images/profile-640.jpg"
   bio              : "HPC System Engineer @ NVIDIA"
   location         : "San Jose, CA"
   employer         : NVIDIA
