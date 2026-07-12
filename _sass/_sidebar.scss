@@ -287,6 +287,15 @@
     align-items: center;
   }
 
+  img.author__social-icon {
+    display: inline-block;
+    width: 1.15em;
+    height: 1.15em;
+    margin-right: .35em;
+    vertical-align: -.2em;
+    object-fit: contain;
+  }
+
   a {
     display: block;
     margin-bottom: 5px;
@@ -323,6 +332,13 @@
     &:hover {
       text-decoration: underline;
     }
+  }
+
+  img.author__social-icon {
+    display: block;
+    width: 1em;
+    height: 1em;
+    object-fit: contain;
   }
 
   @include breakpoint($large) {

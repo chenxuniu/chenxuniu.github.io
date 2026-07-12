@@ -58,7 +58,7 @@
         <li><a href="https://www.linkedin.com/in/{{ author.linkedin }}" target="_blank" rel="noopener noreferrer" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i> LinkedIn</a></li>
       {% endif %}
       {% if author.dblp %}
-        <li><a href="{{ author.dblp }}"><i class="ai ai-dblp ai-fw" aria-hidden="true"></i> DBLP</a></li>
+        <li><a href="{{ author.dblp }}" target="_blank" rel="noopener noreferrer" itemprop="sameAs"><img src="{{ '/images/icons/dblp.png' | relative_url }}" class="author__social-icon author__social-icon--dblp" alt="" aria-hidden="true"> DBLP</a></li>
       {% endif %}
       {% if author.xing %}
         <li><a href="https://www.xing.com/profile/{{ author.xing }}"><i class="fab fa-fw fa-xing-square" aria-hidden="true"></i> XING</a></li>
@@ -153,7 +153,7 @@
         <a href="https://www.linkedin.com/in/{{ author.linkedin }}" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i></a>
       {% endif %}
       {% if author.dblp %}
-        <a href="{{ author.dblp }}"><i class="ai ai-dblp ai-fw" aria-hidden="true"></i></a>
+        <a href="{{ author.dblp }}" target="_blank" rel="noopener noreferrer" aria-label="DBLP"><img src="{{ '/images/icons/dblp.png' | relative_url }}" class="author__social-icon author__social-icon--dblp" alt="" aria-hidden="true"></a>
       {% endif %}
       {% if author.xing %}
         <a href="https://www.xing.com/profile/{{ author.xing }}"><i class="fab fa-fw fa-xing-square" aria-hidden="true"></i></a>
