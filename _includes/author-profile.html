@@ -13,10 +13,10 @@
     {% if author.bio %}<p class="author__bio" itemprop="jobTitle">{{ author.bio }}</p>{% endif %}
     <div class="author__meta-sm">
       {% if author.location %}
-        <span><img src="{{ '/images/icons/california.svg' | relative_url }}" class="author__icon author__icon--map" alt="" aria-hidden="true">{{ author.location }}</span>
+        <span class="author__meta-item"><span class="author__meta-icon" aria-hidden="true"><i class="fas fa-microchip"></i></span>{{ author.location }}</span>
       {% endif %}
       {% if author.employer %}
-        <span><img src="{{ '/images/icons/nvidia.svg' | relative_url }}" class="author__icon author__icon--nvidia" alt="" aria-hidden="true">{{ author.employer }}</span>
+        <span class="author__meta-item"><span class="author__meta-icon" aria-hidden="true"><img src="{{ '/images/icons/nvidia.svg' | relative_url }}" class="author__icon author__icon--nvidia" alt=""></span>{{ author.employer }}</span>
       {% endif %}
     </div>
   </div>
@@ -28,10 +28,10 @@
         <li><div style="white-space: normal; margin-bottom: 1em;">{{ site.description }}</div></li>
       {% endif %}
       {% if author.location %}
-        <li><img src="{{ '/images/icons/california.svg' | relative_url }}" class="author__icon author__icon--map" alt="" aria-hidden="true"> {{ author.location }}</li>
+        <li class="author__meta-item"><span class="author__meta-icon" aria-hidden="true"><i class="fas fa-microchip"></i></span>{{ author.location }}</li>
       {% endif %}
       {% if author.employer %}
-        <li><img src="{{ '/images/icons/nvidia.svg' | relative_url }}" class="author__icon author__icon--nvidia" alt="" aria-hidden="true"> {{ author.employer }}</li>
+        <li class="author__meta-item"><span class="author__meta-icon" aria-hidden="true"><img src="{{ '/images/icons/nvidia.svg' | relative_url }}" class="author__icon author__icon--nvidia" alt=""></span>{{ author.employer }}</li>
       {% endif %}
       {% if author.uri %}
         <li><a href="{{ author.uri }}"><i class="fas fa-fw fa-link" aria-hidden="true"></i> Website</a></li>
