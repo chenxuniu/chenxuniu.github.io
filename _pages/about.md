@@ -24,12 +24,36 @@ I am an AI-native Solutions Architect and HPC System Engineer at NVIDIA, where I
 <span class='anchor' id='experience'></span>
 
 # 💼 Experience
-- *2026.01 - Present*, AI-native Solutions Architect and HPC System Engineer, NVIDIA
+<ul class="credential-list">
+  <li class="credential-item">
+    <span class="credential-logo credential-logo--nvidia" aria-hidden="true">
+      <img src="{{ '/images/icons/nvidia.svg' | relative_url }}" alt="">
+    </span>
+    <span><em>2026.01 - Present</em>, AI-native Solutions Architect and HPC System Engineer, NVIDIA</span>
+  </li>
+</ul>
 
 # 📖 Education
-- *2019.06 - 2025.12*, PhD, Computer Science, Texas Tech University, Lubbock, Texas
-- *2015.09 - 2018.06*, Master, Information Science and Technology, University of Science and Technology of China, China
-- *2011.09 - 2015.06*, Bachelor, Mathematics, University of Science and Technology of China, China
+<ul class="credential-list">
+  <li class="credential-item">
+    <span class="credential-logo credential-logo--ttu" aria-hidden="true">
+      <img src="https://www.ttu.edu/brand/images/visual-identity/double-t.svg" alt="">
+    </span>
+    <span><em>2019.06 - 2025.12</em>, PhD, Computer Science, Texas Tech University, Lubbock, Texas</span>
+  </li>
+  <li class="credential-item">
+    <span class="credential-logo credential-logo--ustc" aria-hidden="true">
+      <img src="https://en.ustc.edu.cn/images/school-icon.png" alt="">
+    </span>
+    <span><em>2015.09 - 2018.06</em>, Master, Information Science and Technology, University of Science and Technology of China, China</span>
+  </li>
+  <li class="credential-item">
+    <span class="credential-logo credential-logo--ustc" aria-hidden="true">
+      <img src="https://en.ustc.edu.cn/images/school-icon.png" alt="">
+    </span>
+    <span><em>2011.09 - 2015.06</em>, Bachelor, Mathematics, University of Science and Technology of China, China</span>
+  </li>
+</ul>
 
 # 🔥 News
 - *2026.07*: &nbsp;🎉 My paper *MicroEvo: Knowledge-Guided LLM Sampling for Efficient Microarchitecture Design Space Exploration.* has been accepted for presentation at ICCAD 2026.

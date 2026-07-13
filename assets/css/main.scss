@@ -46,6 +46,47 @@
     min-width: 0;
 }
 
+.credential-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.credential-item {
+    display: grid;
+    grid-template-columns: 24px minmax(0, 1fr);
+    column-gap: .65em;
+    align-items: start;
+    margin-bottom: .55em;
+    line-height: 1.55;
+}
+
+.credential-logo {
+    display: flex;
+    width: 24px;
+    height: 24px;
+    align-items: center;
+    justify-content: center;
+    margin-top: .08em;
+
+    img {
+        display: block;
+        width: 22px;
+        height: 22px;
+        object-fit: contain;
+    }
+}
+
+.credential-logo--nvidia img {
+    width: 21px;
+    height: 21px;
+}
+
+.credential-logo--ttu img {
+    width: 20px;
+    height: 20px;
+}
+
 .project-box {
     min-width: 0;
     border-bottom: 1px #efefef solid;
