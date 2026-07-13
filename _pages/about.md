@@ -122,9 +122,3 @@ I am an AI-native Solutions Architect and HPC System Engineer at NVIDIA, where I
 - *Reproducibility Committee Member*: SC ’25
 - *Paper Reviewer*: AAAI ’27, AAAI ’26, ACM TiiS ’26, BigData ’25, CCGrid ’24, SSDBM ’24
 - *Conference Volunteer*: SC ’21, SC ’24
-
-# 🌍 Visitor Map
-
-<div align="center" style="margin: 40px 0;">
-  <script type="text/javascript" id="mapmyvisitors" src="//mapmyvisitors.com/map.js?d=dK4rYKej1PnyXS_m0Mykn13KyymmNpSGZ9e3m0xODOk&cl=ffffff&w=300"></script>
-</div>

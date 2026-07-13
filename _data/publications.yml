@@ -12,6 +12,8 @@
       url: "https://doi.org/10.1609/aaai.v40i38.40535"
     - label: "BibTeX"
       url: "/assets/bib/aaai2026-tokenpowerbench.bib"
+    - label: "Poster"
+      url: "/assets/pdf/aaai2026-tokenpowerbench-poster.pdf"
 
 - title: "FIXME: Towards End-to-End Benchmarking of LLM-Aided Design Verification."
   venue: "AAAI 2026"
