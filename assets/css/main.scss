@@ -87,6 +87,72 @@
     height: 20px;
 }
 
+.news-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.news-item {
+    display: grid;
+    grid-template-columns: 48px minmax(0, 1fr);
+    column-gap: .75em;
+    align-items: start;
+    margin-bottom: .8em;
+}
+
+.news-logo {
+    display: flex;
+    width: 48px;
+    height: 34px;
+    align-items: center;
+    justify-content: center;
+
+    img {
+        display: block;
+        width: auto;
+        height: auto;
+        max-width: 46px;
+        max-height: 32px;
+        object-fit: contain;
+    }
+}
+
+.news-logo--pearc img {
+    max-height: 25px;
+}
+
+.news-logo--aaai {
+    padding: 3px;
+    border-radius: 3px;
+    background: #28123f;
+
+    img {
+        max-width: 42px;
+        max-height: 26px;
+    }
+}
+
+.news-logo--nvidia img {
+    max-width: 38px;
+    max-height: 24px;
+}
+
+.news-entry {
+    display: grid;
+    grid-template-columns: 4.55em minmax(0, 1fr);
+    column-gap: .55em;
+    min-width: 0;
+    line-height: 1.55;
+}
+
+.news-date {
+    color: #555;
+    font-style: italic;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
 .project-box {
     min-width: 0;
     border-bottom: 1px #efefef solid;

@@ -56,10 +56,44 @@ I am an AI-native Solutions Architect and HPC System Engineer at NVIDIA, where I
 </ul>
 
 # 🔥 News
-- *2026.07*: &nbsp;🎉 My paper *MicroEvo: Knowledge-Guided LLM Sampling for Efficient Microarchitecture Design Space Exploration.* has been accepted for presentation at ICCAD 2026.
-- *2026.06*: &nbsp;🎉 My paper [Power-Centric Observability for HPC Systems: Design, Deployment, and Evaluation on REPACSS.](/assets/pdf/pearc2026-power-observability.pdf){: target="_blank" rel="noopener noreferrer" } has been accepted at PEARC 2026.
-- *2026.04*: &nbsp;🎉 My paper [TokenPowerBench: Benchmarking the Power Consumption of LLM Inference.](/assets/pdf/aaai2026-tokenpowerbench.pdf){: target="_blank" rel="noopener noreferrer" } has been published in the Proceedings of AAAI 2026 (acceptance rate: 17.6%).
-- *2026.01*: &nbsp;🎉 I joined NVIDIA in January 2026.
+<ul class="news-list">
+  <li class="news-item">
+    <span class="news-logo news-logo--iccad" aria-hidden="true">
+      <img src="{{ '/images/icons/conferences/iccad-2026.webp' | relative_url }}" alt="">
+    </span>
+    <span class="news-entry">
+      <time class="news-date" datetime="2026-07">2026.07</time>
+      <span>My paper <em>MicroEvo: Knowledge-Guided LLM Sampling for Efficient Microarchitecture Design Space Exploration.</em> has been accepted for presentation at ICCAD 2026.</span>
+    </span>
+  </li>
+  <li class="news-item">
+    <span class="news-logo news-logo--pearc" aria-hidden="true">
+      <img src="{{ '/images/icons/conferences/pearc-2026.jpg' | relative_url }}" alt="">
+    </span>
+    <span class="news-entry">
+      <time class="news-date" datetime="2026-06">2026.06</time>
+      <span>My paper <a href="{{ '/assets/pdf/pearc2026-power-observability.pdf' | relative_url }}" target="_blank" rel="noopener noreferrer">Power-Centric Observability for HPC Systems: Design, Deployment, and Evaluation on REPACSS.</a> has been accepted at PEARC 2026.</span>
+    </span>
+  </li>
+  <li class="news-item">
+    <span class="news-logo news-logo--aaai" aria-hidden="true">
+      <img src="{{ '/images/icons/conferences/aaai-2026.png' | relative_url }}" alt="">
+    </span>
+    <span class="news-entry">
+      <time class="news-date" datetime="2026-04">2026.04</time>
+      <span>My paper <a href="{{ '/assets/pdf/aaai2026-tokenpowerbench.pdf' | relative_url }}" target="_blank" rel="noopener noreferrer">TokenPowerBench: Benchmarking the Power Consumption of LLM Inference.</a> has been published in the Proceedings of AAAI 2026 (acceptance rate: 17.6%).</span>
+    </span>
+  </li>
+  <li class="news-item">
+    <span class="news-logo news-logo--nvidia" aria-hidden="true">
+      <img src="{{ '/images/icons/nvidia.svg' | relative_url }}" alt="">
+    </span>
+    <span class="news-entry">
+      <time class="news-date" datetime="2026-01">2026.01</time>
+      <span>I joined NVIDIA in January 2026.</span>
+    </span>
+  </li>
+</ul>
 
 # 📝 Publications
 
