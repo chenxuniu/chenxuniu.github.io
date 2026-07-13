@@ -1,0 +1,30 @@
+{% for project in include.projects %}
+<div class="project-box">
+  {% assign project_primary_link = project.links | first %}
+  {% assign project_title_url = project_primary_link.url %}
+  {% unless project_title_url contains '://' %}
+    {% assign project_title_url = project_title_url | relative_url %}
+  {% endunless %}
+  <p class="project-title"><a href="{{ project_title_url }}" target="_blank" rel="noopener noreferrer">{{ project.name }}</a></p>
+  <p class="project-type">{{ project.type }}</p>
+  <p class="project-description">{{ project.description }}</p>
+  {% if project.tags %}
+    <p class="project-tags">
+      {% for tag in project.tags %}
+        <span>{{ tag }}</span>
+      {% endfor %}
+    </p>
+  {% endif %}
+  {% if project.links %}
+    <p class="project-links">
+      {% for link in project.links %}
+        {% assign link_url = link.url %}
+        {% unless link_url contains '://' %}
+          {% assign link_url = link_url | relative_url %}
+        {% endunless %}
+        <a href="{{ link_url }}" target="_blank" rel="noopener noreferrer">{{ link.label }}</a>{% unless forloop.last %}<span class="paper-link-separator">|</span>{% endunless %}
+      {% endfor %}
+    </p>
+  {% endif %}
+</div>
+{% endfor %}

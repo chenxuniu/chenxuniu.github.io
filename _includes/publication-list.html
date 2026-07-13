@@ -1,0 +1,37 @@
+{% for paper in include.papers %}
+<div class="paper-box">
+  <div class="paper-box-image">
+    <div>
+      <div class="badge">{{ paper.venue }}</div>
+      <img src="{{ paper.image | relative_url }}" alt="Preview figure for {{ paper.title }}" width="800" height="350" loading="{% if forloop.first %}eager{% else %}lazy{% endif %}" decoding="async">
+    </div>
+  </div>
+  <div class="paper-box-text">
+    {% assign primary_link = paper.links | where: "label", "DOI" | first %}
+    {% unless primary_link %}
+      {% assign primary_link = paper.links | where: "label", "PDF" | first %}
+    {% endunless %}
+    {% if primary_link %}
+      {% assign title_url = primary_link.url %}
+      {% unless title_url contains '://' %}
+        {% assign title_url = title_url | relative_url %}
+      {% endunless %}
+      <p class="paper-title"><a href="{{ title_url }}" target="_blank" rel="noopener noreferrer">{{ paper.title }}</a></p>
+    {% else %}
+      <p class="paper-title">{{ paper.title }}</p>
+    {% endif %}
+    <p class="paper-authors">{{ paper.authors | markdownify | remove: '<p>' | remove: '</p>' }}</p>
+    {% if paper.links %}
+      <p class="paper-links">
+        {% for link in paper.links %}
+          {% assign link_url = link.url %}
+          {% unless link_url contains '://' %}
+            {% assign link_url = link_url | relative_url %}
+          {% endunless %}
+          <a href="{{ link_url }}" target="_blank" rel="noopener noreferrer">{{ link.label }}</a>{% unless forloop.last %}<span class="paper-link-separator">|</span>{% endunless %}
+        {% endfor %}
+      </p>
+    {% endif %}
+  </div>
+</div>
+{% endfor %}

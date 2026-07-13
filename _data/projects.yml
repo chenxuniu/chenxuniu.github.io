@@ -1,5 +1,6 @@
 - name: "TokenPowerBench"
   type: "Open-source benchmark suite"
+  selected: true
   description: "Measures LLM inference power consumption across single-node and multi-node GPU settings, with phase-aware metrics for prefill and decode."
   links:
     - label: "Code"
@@ -15,6 +16,7 @@
 
 - name: "LLM Inference Engine Benchmark"
   type: "Open-source benchmarking tool"
+  selected: true
   description: "Benchmarks energy consumption and efficiency trade-offs across LLM inference engines including vLLM, DeepSpeed, TensorRT-LLM, and Transformers."
   links:
     - label: "Code"

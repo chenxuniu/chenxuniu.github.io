@@ -95,87 +95,27 @@ I am an AI-native Solutions Architect and HPC System Engineer at NVIDIA, where I
   </li>
 </ul>
 
-# 📝 Publications
+<span class='anchor' id='-publications'></span>
 
-{% for paper in site.data.publications %}
-<div class='paper-box'>
-  <div class='paper-box-image'>
-    <div>
-      <div class="badge">{{ paper.venue }}</div>
-      <img src='{{ paper.image | relative_url }}' alt="Preview figure for {{ paper.title }}" width="800" height="350" loading="{% if forloop.first %}eager{% else %}lazy{% endif %}" decoding="async">
-    </div>
-  </div>
-  <div class='paper-box-text'>
-    {% assign primary_link = paper.links | where: "label", "DOI" | first %}
-    {% unless primary_link %}
-      {% assign primary_link = paper.links | where: "label", "PDF" | first %}
-    {% endunless %}
-    {% if primary_link %}
-      {% assign title_url = primary_link.url %}
-      {% unless title_url contains '://' %}
-        {% assign title_url = title_url | relative_url %}
-      {% endunless %}
-      <p class="paper-title"><a href="{{ title_url }}" target="_blank" rel="noopener noreferrer">{{ paper.title }}</a></p>
-    {% else %}
-      <p class="paper-title">{{ paper.title }}</p>
-    {% endif %}
-    <p class="paper-authors">{{ paper.authors | markdownify | remove: '<p>' | remove: '</p>' }}</p>
-    {% if paper.links %}
-      <p class="paper-links">
-        {% for link in paper.links %}
-          {% assign link_url = link.url %}
-          {% unless link_url contains '://' %}
-            {% assign link_url = link_url | relative_url %}
-          {% endunless %}
-          <a href="{{ link_url }}" target="_blank" rel="noopener noreferrer">{{ link.label }}</a>{% unless forloop.last %}<span class="paper-link-separator">|</span>{% endunless %}
-        {% endfor %}
-      </p>
-    {% endif %}
-  </div>
+<div class="section-heading">
+  <h1>📝 Selected Publications</h1>
+  <a class="section-heading__link" href="{{ '/publications/' | relative_url }}">View all publications <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
 </div>
-{% endfor %}
+
+{% assign selected_publications = site.data.publications | where: "selected", true %}
+{% include publication-list.html papers=selected_publications %}
 
 <span class='anchor' id='projects-software'></span>
 
-# 🧰 Projects / Software
-
-{% for project in site.data.projects %}
-<div class="project-box">
-  {% assign project_primary_link = project.links | first %}
-  {% assign project_title_url = project_primary_link.url %}
-  {% unless project_title_url contains '://' %}
-    {% assign project_title_url = project_title_url | relative_url %}
-  {% endunless %}
-  <p class="project-title"><a href="{{ project_title_url }}" target="_blank" rel="noopener noreferrer">{{ project.name }}</a></p>
-  <p class="project-type">{{ project.type }}</p>
-  <p class="project-description">{{ project.description }}</p>
-  {% if project.tags %}
-    <p class="project-tags">
-      {% for tag in project.tags %}
-        <span>{{ tag }}</span>
-      {% endfor %}
-    </p>
-  {% endif %}
-  {% if project.links %}
-    <p class="project-links">
-      {% for link in project.links %}
-        {% assign link_url = link.url %}
-        {% unless link_url contains '://' %}
-          {% assign link_url = link_url | relative_url %}
-        {% endunless %}
-        <a href="{{ link_url }}" target="_blank" rel="noopener noreferrer">{{ link.label }}</a>{% unless forloop.last %}<span class="paper-link-separator">|</span>{% endunless %}
-      {% endfor %}
-    </p>
-  {% endif %}
+<div class="section-heading">
+  <h1>🧰 Selected Projects</h1>
+  <a class="section-heading__link" href="{{ '/projects/' | relative_url }}">View all projects <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
 </div>
-{% endfor %}
 
-<span class='anchor' id='awards-service'></span>
+{% assign selected_projects = site.data.projects | where: "selected", true %}
+{% include project-list.html projects=selected_projects %}
 
-# 🎖 Honors and Awards
-- *2015* Third Prize, Mathematical and Cryptographic Algorithm Contest, China.
-- *2014* Third Prize, China Undergraduate Mathematical Contest in Modeling.
-- *2012-2015* First-Class Undergraduate Scholarship, University of Science and Technology of China (top 10%).
+<span class='anchor' id='professional-service'></span>
 
 # 💬 Professional Service
 - *Program Committee Member*: AAAI ’26, PEARC ’26

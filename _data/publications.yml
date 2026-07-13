@@ -1,6 +1,7 @@
 - title: "TokenPowerBench: Benchmarking the Power Consumption of LLM Inference."
   venue: "AAAI 2026"
   image: "/images/AAAI.png"
+  selected: true
   authors: "**Chenxu Niu**, Wei Zhang, Jie Li, Yongjian Zhao, Tongyang Wang, Xi Wang, and Yong Chen."
   links:
     - label: "PDF"
@@ -15,6 +16,7 @@
 - title: "FIXME: Towards End-to-End Benchmarking of LLM-Aided Design Verification."
   venue: "AAAI 2026"
   image: "/images/Fixme.png"
+  selected: true
   authors: "Gwok-Waa Wan, SamZaak Wong, Shengchu Su, **Chenxu Niu**, Ning Wang, Xinlai Wan, Qixiang Chen, Mengnv Xing, Jingyi Zhang, Jianmin Ye, Yubo Wang, Rongchang Song, Tao Ni, Qiang Xu, Nan Guan, Zhe Jiang, Xi Wang, Yong Chen, and Jun Yang."
   links:
     - label: "PDF"
@@ -27,6 +29,7 @@
 - title: "Energy Efficient or Exhaustive? Benchmarking Power Consumption of LLM Inference Engines."
   venue: "HotCarbon 2025"
   image: "/images/hotcarbon.png"
+  selected: true
   authors: "**Chenxu Niu**, Wei Zhang, Yongjian Zhao, and Yong Chen."
   links:
     - label: "PDF"

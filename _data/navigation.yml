@@ -10,16 +10,13 @@ main:
     url: "/#-news"
 
   - title: "Publications"
-    url: "/#-publications"
+    url: "/publications/"
 
   - title: "Projects"
-    url: "/#projects-software"
+    url: "/projects/"
 
-  - title: "Tax Planner"
-    url: "/tax-planner/"
-
-  - title: "Awards & Service"
-    url: "/#awards-service"
+  - title: "Service"
+    url: "/#professional-service"
 
 # - title: "Internships"
 #   url: "/#-internships"
