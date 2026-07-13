@@ -21,6 +21,11 @@ I am an AI-native Solutions Architect and HPC System Engineer at NVIDIA, where I
 
 <!-- I have published several papers at the top international AI conferences with total <a href='https://scholar.google.com/citations?user=DhtAFkwAAAAJ'>google scholar citations <strong><span id='total_cit'>260000+</span></strong></a> (You can also use google scholar badge <a href='https://scholar.google.com/citations?user=DhtAFkwAAAAJ'><img src="https://img.shields.io/endpoint?url={{ url | url_encode }}&logo=Google%20Scholar&labelColor=f6f6f6&color=9cf&style=flat&label=citations"></a>). -->
 
+<span class='anchor' id='experience'></span>
+
+# 💼 Experience
+- *2026.01 - Present*, AI-native Solutions Architect and HPC System Engineer, NVIDIA
+
 # 📖 Education
 - *2019.06 - 2025.12*, PhD, Computer Science, Texas Tech University, Lubbock, Texas
 - *2015.09 - 2018.06*, Master, Information Science and Technology, University of Science and Technology of China, China
@@ -117,7 +122,7 @@ I am an AI-native Solutions Architect and HPC System Engineer at NVIDIA, where I
 # 💬 Professional Service
 - *Program Committee Member*: AAAI ’26, PEARC ’26
 - *Reproducibility Committee Member*: SC ’25
-- *Paper Reviewer*: AAAI ’27, AAAI ’26, BigData ’25, CCGrid ’24, SSDBM ’24
+- *Paper Reviewer*: AAAI ’27, AAAI ’26, ACM TiiS ’26, BigData ’25, CCGrid ’24, SSDBM ’24
 - *Conference Volunteer*: SC ’21, SC ’24
 
 # 🌍 Visitor Map
