@@ -43,13 +43,13 @@ I am an AI-native Solutions Architect and HPC System Engineer at NVIDIA, where I
   </li>
   <li class="credential-item">
     <span class="credential-logo credential-logo--ustc" aria-hidden="true">
-      <img src="https://en.ustc.edu.cn/images/school-icon.png" alt="">
+      <img src="{{ '/images/icons/ustc.png' | relative_url }}" alt="">
     </span>
     <span><em>2015.09 - 2018.06</em>, Master, Information Science and Technology, University of Science and Technology of China, China</span>
   </li>
   <li class="credential-item">
     <span class="credential-logo credential-logo--ustc" aria-hidden="true">
-      <img src="https://en.ustc.edu.cn/images/school-icon.png" alt="">
+      <img src="{{ '/images/icons/ustc.png' | relative_url }}" alt="">
     </span>
     <span><em>2011.09 - 2015.06</em>, Bachelor, Mathematics, University of Science and Technology of China, China</span>
   </li>
