@@ -338,6 +338,21 @@
     color: #9a9a9a;
 }
 
+.site-footer {
+    clear: both;
+    max-width: $x-large;
+    margin: 3em auto 0;
+    padding: 1.25em 1em 2em;
+    border-top: 1px solid $border-color;
+    color: #777;
+    font-size: $type-size-7;
+    text-align: center;
+
+    p {
+        margin: 0;
+    }
+}
+
 @include breakpoint(max-width $small) {
     .paper-box {
         padding-top: 1.5em;
