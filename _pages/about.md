@@ -37,7 +37,7 @@ I am an AI-native Solutions Architect and HPC System Engineer at NVIDIA, where I
 <ul class="credential-list">
   <li class="credential-item">
     <span class="credential-logo credential-logo--ttu" aria-hidden="true">
-      <img src="https://www.ttu.edu/brand/images/visual-identity/double-t.svg" alt="">
+      <img src="{{ '/images/icons/ttu.svg' | relative_url }}" alt="">
     </span>
     <span><em>2019.06 - 2025.12</em>, PhD, Computer Science, Texas Tech University, Lubbock, Texas</span>
   </li>
@@ -71,8 +71,8 @@ I am an AI-native Solutions Architect and HPC System Engineer at NVIDIA, where I
       <img src="{{ '/images/icons/conferences/pearc-2026.jpg' | relative_url }}" alt="">
     </span>
     <span class="news-entry">
-      <time class="news-date" datetime="2026-06">2026.06</time>
-      <span>My paper <a href="{{ '/assets/pdf/pearc2026-power-observability.pdf' | relative_url }}" target="_blank" rel="noopener noreferrer">Power-Centric Observability for HPC Systems: Design, Deployment, and Evaluation on REPACSS.</a> has been accepted at PEARC 2026.</span>
+      <time class="news-date" datetime="2026-07">2026.07</time>
+      <span>My paper <a href="https://doi.org/10.1145/3785462.3815795" target="_blank" rel="noopener noreferrer">Power-Centric Observability for HPC Systems: Design, Deployment, and Evaluation on REPACSS.</a> is now available in the ACM Digital Library.</span>
     </span>
   </li>
   <li class="news-item">

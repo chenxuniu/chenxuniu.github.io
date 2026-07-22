@@ -50,6 +50,8 @@
   links:
     - label: "PDF"
       url: "/assets/pdf/pearc2026-power-observability.pdf"
+    - label: "DOI"
+      url: "https://doi.org/10.1145/3785462.3815795"
     - label: "BibTeX"
       url: "/assets/bib/pearc2026-power-observability.bib"
 
