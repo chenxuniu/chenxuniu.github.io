@@ -46,6 +46,7 @@
 - title: "Power-Centric Observability for HPC Systems: Design, Deployment, and Evaluation on REPACSS."
   venue: "PEARC 2026"
   image: "/images/pearc2026-figure7.png"
+  selected: true
   authors: "Yongjian Zhao, Jie Li, **Chenxu Niu**, Alan Sill, and Yong Chen."
   links:
     - label: "PDF"
