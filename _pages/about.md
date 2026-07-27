@@ -85,12 +85,12 @@ I am an AI-native Solutions Architect and HPC System Engineer at NVIDIA, where I
     </span>
   </li>
   <li class="news-item">
-    <span class="news-logo news-logo--nvidia" aria-hidden="true">
-      <img src="{{ '/images/icons/nvidia.svg' | relative_url }}" alt="">
+    <span class="news-logo news-logo--aaai" aria-hidden="true">
+      <img src="{{ '/images/icons/conferences/aaai-2026.png' | relative_url }}" alt="">
     </span>
     <span class="news-entry">
-      <time class="news-date" datetime="2026-01">2026.01</time>
-      <span>I joined NVIDIA in January 2026.</span>
+      <time class="news-date" datetime="2026-04">2026.04</time>
+      <span>My paper <a href="{{ '/assets/pdf/aaai2026-fixme.pdf' | relative_url }}" target="_blank" rel="noopener noreferrer">FIXME: Towards End-to-End Benchmarking of LLM-Aided Design Verification.</a> has been published in the Proceedings of AAAI 2026 (acceptance rate: 17.6%).</span>
     </span>
   </li>
 </ul>
