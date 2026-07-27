@@ -72,7 +72,7 @@ I am an AI-native Solutions Architect and HPC System Engineer at NVIDIA, where I
     </span>
     <span class="news-entry">
       <time class="news-date" datetime="2026-07">2026.07</time>
-      <span>My paper <a href="https://doi.org/10.1145/3785462.3815795" target="_blank" rel="noopener noreferrer">Power-Centric Observability for HPC Systems: Design, Deployment, and Evaluation on REPACSS.</a> is now available in the ACM Digital Library.</span>
+      <span>My paper <a href="https://doi.org/10.1145/3785462.3815795" target="_blank" rel="noopener noreferrer">Power-Centric Observability for HPC Systems: Design, Deployment, and Evaluation on REPACSS.</a> has been published in the Proceedings of PEARC 2026.</span>
     </span>
   </li>
   <li class="news-item">
