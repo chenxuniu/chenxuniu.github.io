@@ -1,6 +1,6 @@
 - title: "MicroEvo: Knowledge-Guided LLM Sampling for Efficient Microarchitecture Design Space Exploration."
   venue: "ICCAD 2026"
-  image: "/images/microevo-arxiv.png"
+  image: "/images/microevo-figure5.png"
   selected: true
   note: "arXiv preprint (v1); proceedings version forthcoming."
   authors: "Jia Xiong, Runkai Li, **Chenxu Niu**, Guangyuan Gao, Changwen Xing, Yifan Zhang, Xinlai Wan, Jieran Cui, Chen Bai, Yusheng Hua, Ying Wang, Ming Ling, Xi Wang, and Tao Xie."
