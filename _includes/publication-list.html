@@ -9,6 +9,9 @@
   <div class="paper-box-text">
     {% assign primary_link = paper.links | where: "label", "DOI" | first %}
     {% unless primary_link %}
+      {% assign primary_link = paper.links | where: "label", "arXiv" | first %}
+    {% endunless %}
+    {% unless primary_link %}
       {% assign primary_link = paper.links | where: "label", "PDF" | first %}
     {% endunless %}
     {% if primary_link %}
@@ -21,6 +24,9 @@
       <p class="paper-title">{{ paper.title }}</p>
     {% endif %}
     <p class="paper-authors">{{ paper.authors | markdownify | remove: '<p>' | remove: '</p>' }}</p>
+    {% if paper.note %}
+      <p class="paper-note">{{ paper.note }}</p>
+    {% endif %}
     {% if paper.links %}
       <p class="paper-links">
         {% for link in paper.links %}

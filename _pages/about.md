@@ -62,8 +62,8 @@ I am an AI-native Solutions Architect and HPC System Engineer at NVIDIA, where I
       <img src="{{ '/images/icons/conferences/iccad-2026.webp' | relative_url }}" alt="">
     </span>
     <span class="news-entry">
-      <time class="news-date" datetime="2026-07">2026.07</time>
-      <span>My paper <em>MicroEvo: Knowledge-Guided LLM Sampling for Efficient Microarchitecture Design Space Exploration.</em> has been accepted for presentation at ICCAD 2026.</span>
+      <time class="news-date" datetime="2026-08">2026.08</time>
+      <span>An arXiv preprint of my paper <a href="https://arxiv.org/abs/2608.06183" target="_blank" rel="noopener noreferrer">MicroEvo: Knowledge-Guided LLM Sampling for Efficient Microarchitecture Design Space Exploration.</a> is now available. The paper has been accepted for presentation at ICCAD 2026; the proceedings version is forthcoming.</span>
     </span>
   </li>
   <li class="news-item">
