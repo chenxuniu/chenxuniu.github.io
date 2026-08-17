@@ -14,6 +14,19 @@
     - label: "BibTeX"
       url: "/assets/bib/iccad2026-microevo-arxiv.bib"
 
+- title: "Power-Centric Observability for HPC Systems: Design, Deployment, and Evaluation on REPACSS."
+  venue: "PEARC 2026"
+  image: "/images/pearc2026-figure7.png"
+  selected: true
+  authors: "Yongjian Zhao, Jie Li, **Chenxu Niu**, Alan Sill, and Yong Chen."
+  links:
+    - label: "PDF"
+      url: "/assets/pdf/pearc2026-power-observability.pdf"
+    - label: "DOI"
+      url: "https://doi.org/10.1145/3785462.3815795"
+    - label: "BibTeX"
+      url: "/assets/bib/pearc2026-power-observability.bib"
+
 - title: "TokenPowerBench: Benchmarking the Power Consumption of LLM Inference."
   venue: "AAAI 2026"
   image: "/images/AAAI.png"
@@ -58,19 +71,6 @@
       url: "https://doi.org/10.1145/3757892.3757900"
     - label: "BibTeX"
       url: "/assets/bib/hotcarbon2025-llm-inference-engines.bib"
-
-- title: "Power-Centric Observability for HPC Systems: Design, Deployment, and Evaluation on REPACSS."
-  venue: "PEARC 2026"
-  image: "/images/pearc2026-figure7.png"
-  selected: true
-  authors: "Yongjian Zhao, Jie Li, **Chenxu Niu**, Alan Sill, and Yong Chen."
-  links:
-    - label: "PDF"
-      url: "/assets/pdf/pearc2026-power-observability.pdf"
-    - label: "DOI"
-      url: "https://doi.org/10.1145/3785462.3815795"
-    - label: "BibTeX"
-      url: "/assets/bib/pearc2026-power-observability.bib"
 
 - title: "ICEAGE: Intelligent Contextual Exploration and Answer Generation Engine for Scientific Data Discovery."
   venue: "SSDBM 2025"
