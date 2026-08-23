@@ -120,5 +120,5 @@ I am an AI-native Solutions Architect and HPC System Engineer at NVIDIA, where I
 # 💬 Professional Service
 - *Program Committee Member*: AAAI ’27, AAAI ’26, PEARC ’26
 - *Reproducibility Committee Member*: SC ’25
-- *Paper Reviewer*: AAAI ’27, AAAI ’26, AI4MetaScience Workshop at NeurIPS ’26, ACM TiiS ’26, BigData ’25, CCGrid ’24, SSDBM ’24
+- *Paper Reviewer*: AAAI ’27, AAAI ’26, NeurIPS ’26, ACM TiiS ’26, BigData ’25, CCGrid ’24, SSDBM ’24
 - *Conference Volunteer*: SC ’21, SC ’24
