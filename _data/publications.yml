@@ -1,3 +1,18 @@
+- title: "TokenPowerSandbox: Evidence-Gated CPU-First Screening for Energy-Aware LLM Serving."
+  venue: "arXiv 2026"
+  image: "/images/tokenpowersandbox-figure1.png"
+  note: "arXiv preprint (v1)."
+  authors: "**Chenxu Niu**."
+  links:
+    - label: "PDF (arXiv v1)"
+      url: "/assets/pdf/arxiv2026-tokenpowersandbox-v1.pdf"
+    - label: "arXiv"
+      url: "https://arxiv.org/abs/2608.18149"
+    - label: "DOI"
+      url: "https://doi.org/10.48550/arXiv.2608.18149"
+    - label: "BibTeX"
+      url: "/assets/bib/arxiv2026-tokenpowersandbox.bib"
+
 - title: "MicroEvo: Knowledge-Guided LLM Sampling for Efficient Microarchitecture Design Space Exploration."
   venue: "ICCAD 2026"
   image: "/images/microevo-figure5.png"
