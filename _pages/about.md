@@ -58,6 +58,13 @@ I am an AI-native Solutions Architect and HPC System Engineer at NVIDIA, where I
 # 🔥 News
 <ul class="news-list">
   <li class="news-item">
+    <span class="news-logo news-logo--neurips" aria-hidden="true">NeurIPS</span>
+    <span class="news-entry">
+      <time class="news-date" datetime="2026-09">2026.09</time>
+      <span>My paper <em>The 1/W Law: Context Length is the Dominant Energy Lever in LLM Inference Fleets.</em> has been accepted at NeurIPS 2026.</span>
+    </span>
+  </li>
+  <li class="news-item">
     <span class="news-logo news-logo--iccad" aria-hidden="true">
       <img src="{{ '/images/icons/conferences/iccad-2026.webp' | relative_url }}" alt="">
     </span>
