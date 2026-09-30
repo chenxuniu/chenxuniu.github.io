@@ -345,6 +345,54 @@
     color: #9a9a9a;
 }
 
+.paper-citation-row {
+    margin: .65em 0 0;
+    font-size: .78em;
+    line-height: 1.4;
+}
+
+.paper-citation-row .paper-citations {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 2px;
+    background: #254b7e;
+    color: #fff;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    overflow: hidden;
+
+    &:visited {
+        color: #fff;
+    }
+
+    &:hover {
+        background: #17375c;
+        color: #fff;
+        text-decoration: none;
+    }
+
+    &:focus-visible {
+        outline: 2px solid #254b7e;
+        outline-offset: 3px;
+    }
+
+    .paper-citations__label {
+        padding: .15em .5em;
+    }
+
+    .ai {
+        margin-right: .2em;
+    }
+
+    strong {
+        padding: .15em .5em;
+        border-left: 1px solid rgba(255, 255, 255, .25);
+        background: #17375c;
+        color: #fff;
+    }
+}
+
 .site-footer {
     clear: both;
     max-width: $x-large;

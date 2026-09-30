@@ -1,5 +1,9 @@
 - title: "TokenPowerSandbox: Evidence-Gated CPU-First Screening for Energy-Aware LLM Serving."
   venue: "arXiv 2026"
+  scholar_id: "3fE2CSJIrl8C"
+  year: 2026
+  cv_authors: "**C. Niu**."
+  cv_venue: "arXiv preprint 2608.18149 (v1)"
   image: "/images/tokenpowersandbox-figure1.png"
   note: "arXiv preprint (v1)."
   authors: "**Chenxu Niu**."
@@ -15,8 +19,13 @@
 
 - title: "MicroEvo: Knowledge-Guided LLM Sampling for Efficient Microarchitecture Design Space Exploration."
   venue: "ICCAD 2026"
+  scholar_id: "MXK_kJrjxJIC"
+  year: 2026
+  cv_authors: "J. Xiong, R. Li, **C. Niu**, G. Gao, C. Xing, Y. Zhang, X. Wan, J. Cui, C. Bai, Y. Hua, Y. Wang, M. Ling, X. Wang, and T. Xie."
+  cv_venue: "IEEE/ACM International Conference on Computer-Aided Design (ICCAD '26)"
+  cv_note: "Accepted; arXiv v1, proceedings version forthcoming."
   image: "/images/microevo-figure5.png"
-  selected: true
+  selected: false
   note: "arXiv preprint (v1); proceedings version forthcoming."
   authors: "Jia Xiong, Runkai Li, **Chenxu Niu**, Guangyuan Gao, Changwen Xing, Yifan Zhang, Xinlai Wan, Jieran Cui, Chen Bai, Yusheng Hua, Ying Wang, Ming Ling, Xi Wang, and Tao Xie."
   links:
@@ -31,6 +40,11 @@
 
 - title: "Power-Centric Observability for HPC Systems: Design, Deployment, and Evaluation on REPACSS."
   venue: "PEARC 2026"
+  scholar_id: "hqOjcs7Dif8C"
+  year: 2026
+  cv_authors: "Y. Zhao, J. Li, **C. Niu**, A. Sill, and Y. Chen."
+  cv_venue: "Proceedings of the Practice and Experience in Advanced Research Computing 2026 (PEARC '26)"
+  pages: "1-8"
   image: "/images/pearc2026-figure7.png"
   selected: true
   authors: "Yongjian Zhao, Jie Li, **Chenxu Niu**, Alan Sill, and Yong Chen."
@@ -44,6 +58,12 @@
 
 - title: "TokenPowerBench: Benchmarking the Power Consumption of LLM Inference."
   venue: "AAAI 2026"
+  scholar_id: "ufrVoPGSRksC"
+  year: 2026
+  cv_authors: "**C. Niu**, W. Zhang, J. Li, Y. Zhao, T. Wang, X. Wang, and Y. Chen."
+  cv_venue: "Proceedings of the AAAI Conference on Artificial Intelligence (AAAI '26), 40(38)"
+  cv_note: "Acceptance rate: 17.6%."
+  pages: "32582-32590"
   image: "/images/AAAI.png"
   selected: true
   authors: "**Chenxu Niu**, Wei Zhang, Jie Li, Yongjian Zhao, Tongyang Wang, Xi Wang, and Yong Chen."
@@ -61,6 +81,12 @@
 
 - title: "FIXME: Towards End-to-End Benchmarking of LLM-Aided Design Verification."
   venue: "AAAI 2026"
+  scholar_id: "Se3iqnhoufwC"
+  year: 2026
+  cv_authors: "G.-W. Wan, S. Wong, S. Su, **C. Niu**, N. Wang, X. Wan, Q. Chen, M. Xing, J. Zhang, J. Ye, Y. Wang, R. Song, T. Ni, Q. Xu, N. Guan, Z. Jiang, X. Wang, Y. Chen, and J. Yang."
+  cv_venue: "Proceedings of the AAAI Conference on Artificial Intelligence (AAAI '26), 40(2)"
+  cv_note: "Acceptance rate: 17.6%."
+  pages: "1087-1095"
   image: "/images/Fixme.png"
   selected: true
   authors: "Gwok-Waa Wan, SamZaak Wong, Shengchu Su, **Chenxu Niu**, Ning Wang, Xinlai Wan, Qixiang Chen, Mengnv Xing, Jingyi Zhang, Jianmin Ye, Yubo Wang, Rongchang Song, Tao Ni, Qiang Xu, Nan Guan, Zhe Jiang, Xi Wang, Yong Chen, and Jun Yang."
@@ -74,6 +100,11 @@
 
 - title: "Energy Efficient or Exhaustive? Benchmarking Power Consumption of LLM Inference Engines."
   venue: "HotCarbon 2025"
+  scholar_id: "W7OEmFMy1HYC"
+  year: 2025
+  cv_authors: "**C. Niu**, W. Zhang, Y. Zhao, and Y. Chen."
+  cv_venue: "ACM SIGEnergy Energy Informatics Review, 5(2)"
+  pages: "56-62"
   image: "/images/hotcarbon.png"
   selected: true
   authors: "**Chenxu Niu**, Wei Zhang, Yongjian Zhao, and Yong Chen."
@@ -89,6 +120,11 @@
 
 - title: "ICEAGE: Intelligent Contextual Exploration and Answer Generation Engine for Scientific Data Discovery."
   venue: "SSDBM 2025"
+  scholar_id: "Y0pCki6q_DkC"
+  year: 2025
+  cv_authors: "**C. Niu**, W. Zhang, M. Side, and Y. Chen."
+  cv_venue: "Proceedings of the 37th International Conference on Scalable Scientific Data Management (SSDBM '25)"
+  pages: "1-10"
   image: "/images/ICEAGE.png"
   authors: "**Chenxu Niu**, Wei Zhang, Mert Side, and Yong Chen."
   links:
@@ -101,6 +137,11 @@
 
 - title: "PSQS: Parallel Semantic Querying Service for Self-Describing File Formats."
   venue: "Big Data 2023"
+  scholar_id: "zYLM7Y9cAGgC"
+  year: 2023
+  cv_authors: "**C. Niu**, W. Zhang, S. Byna, and Y. Chen."
+  cv_venue: "IEEE International Conference on Big Data (BigData '23)"
+  pages: "536-541"
   image: "/images/PSQS.png"
   authors: "**Chenxu Niu**, Wei Zhang, Suren Byna, and Yong Chen."
   links:
@@ -113,6 +154,11 @@
 
 - title: "Kv2vec: A Distributed Representation Method for Key-Value Pairs from Metadata Attributes."
   venue: "HPEC 2022"
+  scholar_id: "qjMakFHDy7sC"
+  year: 2022
+  cv_authors: "**C. Niu**, W. Zhang, S. Byna, and Y. Chen."
+  cv_venue: "IEEE High Performance Extreme Computing Conference (HPEC '22)"
+  pages: "1-7"
   image: "/images/kv2vec.png"
   authors: "**Chenxu Niu**, Wei Zhang, Suren Byna, and Yong Chen."
   links:
@@ -125,6 +171,11 @@
 
 - title: "Exploring Metadata Search Essentials for Scientific Data Management."
   venue: "HiPC 2019"
+  scholar_id: "UeHWp8X0CEIC"
+  year: 2019
+  cv_authors: "W. Zhang, S. Byna, **C. Niu**, and Y. Chen."
+  cv_venue: "IEEE International Conference on High Performance Computing, Data, and Analytics (HiPC '19)"
+  pages: "83-92"
   image: "/images/explore.png"
   authors: "Wei Zhang, Suren Byna, **Chenxu Niu**, and Yong Chen."
   links:

@@ -1,0 +1,10 @@
+{
+  "private": true,
+  "scripts": {
+    "cv:pdf": "node scripts/export-cv-pdf.cjs",
+    "cv:build": "bundle exec jekyll build && node scripts/export-cv-pdf.cjs"
+  },
+  "devDependencies": {
+    "playwright": "1.63.0"
+  }
+}

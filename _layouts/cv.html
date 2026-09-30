@@ -3,23 +3,129 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>CV | Chenxu Niu</title>
+    <meta name="description" content="Academic curriculum vitae of Chenxu Niu">
+    <title>Curriculum Vitae | Chenxu Niu</title>
     <style>
-      html,
-      body {
-        height: 100%;
-        margin: 0;
+      :root {
+        color-scheme: light;
+        --ink: #222;
+        --muted: #555;
+        --accent: #315d7a;
+        --rule: #aab5bc;
       }
 
-      object {
-        display: block;
-        width: 100%;
-        height: 100vh;
-        border: 0;
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        background: #fff;
+        color: var(--ink);
+        font-family: "Times New Roman", Times, serif;
+        font-size: 16px;
+        line-height: 1.34;
+      }
+
+      a { color: var(--accent); }
+      a:hover { text-decoration-thickness: 2px; }
+
+      .cv-toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: .75rem max(1rem, calc((100vw - 840px) / 2));
+        border-bottom: 1px solid #ddd;
+        font: 14px/1.4 Arial, Helvetica, sans-serif;
+      }
+
+      .cv-toolbar nav { display: flex; flex-wrap: wrap; gap: .9rem; }
+      .cv-toolbar a { white-space: nowrap; }
+      .cv-toolbar .download { font-weight: 700; }
+
+      .cv-document {
+        max-width: 840px;
+        margin: 0 auto;
+        padding: 1.5rem 1.5rem 3rem;
+      }
+
+      .cv-heading { text-align: center; }
+      .cv-heading h1 { margin: 0; font-size: 1.85em; line-height: 1.2; }
+      .cv-heading p { margin: .15rem 0; }
+      .cv-contact { font-size: .92em; }
+
+      .cv-section { margin-top: 1.1rem; }
+      .cv-section h2 {
+        margin: 0 0 .3rem;
+        padding-bottom: .1rem;
+        border-bottom: 1px solid var(--rule);
+        color: var(--accent);
+        font-size: 1.12em;
+        line-height: 1.25;
+      }
+
+      .cv-section p { margin: .25rem 0; }
+      .cv-entry { margin: 0 0 .55rem; }
+      .cv-entry-heading {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+      .cv-entry-heading h3 { margin: 0; font-size: 1em; line-height: 1.3; }
+      .cv-date { flex-shrink: 0; color: var(--muted); font-size: .93em; }
+      .cv-subline { color: var(--muted); font-style: italic; }
+      .cv-entry ul, .cv-section ul { margin: .15rem 0 0; padding-left: 1.25rem; }
+      .cv-entry li, .cv-section li { margin: .08rem 0; }
+
+      .cv-pub-year { margin: .45rem 0 .12rem; font-size: 1em; }
+      .cv-publications { margin: 0; padding-left: 1.25rem; }
+      ol.cv-publications { padding-left: 2rem; }
+      ol.cv-publications li::marker { content: "[" counter(list-item) "] "; }
+      .cv-publications li { margin: 0 0 .32rem; }
+      .cv-pub-title { font-weight: 700; }
+      .cv-publications cite { font-style: italic; }
+      .cv-pub-links { font-size: .9em; }
+      .cv-pub-links a { white-space: nowrap; }
+
+      @media (max-width: 620px) {
+        body { font-size: 16px; }
+        .cv-toolbar { align-items: flex-start; flex-direction: column; gap: .4rem; }
+        .cv-document { padding: 1.4rem 1rem 3rem; }
+        .cv-entry-heading { display: block; }
+        .cv-date { display: block; }
+        .cv-contact { overflow-wrap: anywhere; }
+      }
+
+      @page { size: letter; margin: .52in .66in .5in; }
+
+      @media print {
+        body { font-size: 10pt; line-height: 1.24; }
+        .cv-toolbar { display: none !important; }
+        .cv-document { max-width: none; margin: 0; padding: 0; }
+        .cv-heading h1 { font-size: 18pt; }
+        .cv-contact { font-size: 9pt; }
+        .cv-section { margin-top: .75rem; }
+        .cv-section h2 { margin-bottom: .25rem; font-size: 11pt; }
+        .cv-entry { margin-bottom: .42rem; }
+        .cv-pub-year { margin: .35rem 0 .08rem; }
+        .cv-publications li { margin-bottom: .22rem; }
+        section[aria-labelledby="cv-publications"] ol.cv-publications:not(:first-of-type) { break-inside: avoid; }
+        .cv-section h2, .cv-pub-year, .cv-entry-heading { break-after: avoid; }
+        .cv-entry, .cv-publications li { break-inside: avoid; }
+        a { color: inherit; text-decoration: none; }
       }
     </style>
   </head>
   <body>
-    {{ content }}
+    <header class="cv-toolbar">
+      <a href="{{ '/' | relative_url }}">Home</a>
+      <nav aria-label="CV downloads">
+        <a class="download" href="{{ '/assets/pdf/Chenxu_Niu_Academic_CV.pdf' | relative_url }}" download>Download CV</a>
+        <a href="{{ '/assets/pdf/Resume_ChenxuNiu_2026.pdf' | relative_url }}" download>Download Resume</a>
+      </nav>
+    </header>
+    <main id="main-content">
+      {{ content }}
+    </main>
   </body>
 </html>

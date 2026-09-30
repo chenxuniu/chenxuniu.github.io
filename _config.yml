@@ -12,7 +12,6 @@ description              : "Research topics: HPC Systems, AI Inference, Energy-E
 seo_description          : "Chenxu Niu is an HPC System Engineer at NVIDIA whose research focuses on HPC systems, AI inference, energy-efficient computing, and scientific data management."
 social_image             : "/images/profile-640.jpg"
 repository               : "chenxuniu/chenxuniu.github.io"
-google_scholar_stats_use_cdn : true
 
 # Analytics
 google_analytics_id      :  # e.g., G-XXXXXXXXXX
@@ -72,6 +71,8 @@ include:
 exclude:
   - docs
   - google_scholar_crawler
+  - output
+  - video_projects
   - "*.sublime-project"
   - "*.sublime-workspace"
   - .asset-cache
@@ -94,6 +95,8 @@ exclude:
   - log
   - node_modules
   - package.json
+  - package-lock.json
+  - scripts
   - tmp
   - vendor
 keep_files:

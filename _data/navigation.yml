@@ -3,9 +3,6 @@ main:
   - title: "About Me"
     url: "/#about-me"
 
-  - title: "CV"
-    url: "/assets/pdf/Resume_ChenxuNiu_2026.pdf"
-
   - title: "News"
     url: "/#-news"
 
@@ -17,6 +14,9 @@ main:
 
   - title: "Service"
     url: "/#professional-service"
+
+  - title: "CV"
+    url: "/cv/"
 
 # - title: "Internships"
 #   url: "/#-internships"

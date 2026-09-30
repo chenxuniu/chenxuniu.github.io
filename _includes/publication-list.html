@@ -38,6 +38,13 @@
         {% endfor %}
       </p>
     {% endif %}
+    {% assign scholar = site.data.google_scholar_citations %}
+    {% assign citations = scholar.counts[paper.scholar_id] %}
+    {% if paper.scholar_id and citations != nil %}
+      <p class="paper-citation-row">
+        <a class="paper-citations" href="https://scholar.google.com/citations?view_op=view_citation&amp;hl=en&amp;user={{ scholar.profile_id }}&amp;citation_for_view={{ scholar.profile_id }}:{{ paper.scholar_id }}" target="_blank" rel="noopener noreferrer" title="Google Scholar citations, checked {{ scholar.checked_on }}" aria-label="Google Scholar: {{ citations }} citations for {{ paper.title | escape }} (checked {{ scholar.checked_on }})"><span class="paper-citations__label"><i class="ai ai-google-scholar" aria-hidden="true"></i> Scholar</span><strong>{{ citations }}</strong></a>
+      </p>
+    {% endif %}
   </div>
 </div>
 {% endfor %}
