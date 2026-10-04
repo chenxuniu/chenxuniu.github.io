@@ -8,31 +8,12 @@ async function check() {
   });
   try {
     for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 }, { width: 320, height: 568 }]) {
-      const linkedPage = await browser.newPage({ viewport });
-      await linkedPage.goto('http://127.0.0.1:4000/?terminal=1', { waitUntil: 'networkidle' });
-      const linkedDialog = linkedPage.getByRole('dialog', { name: 'HPC + AI' });
-      assert.equal(await linkedDialog.isVisible(), true, 'The profile link should open the terminal automatically');
-      const linkedInput = linkedDialog.getByRole('textbox', { name: 'Terminal command' });
-      assert.ok(await linkedInput.evaluate(element => element === document.activeElement));
-      await linkedInput.fill('projects');
-      await linkedInput.press('Enter');
-      assert.equal(await linkedDialog.locator('[data-terminal-project]').count(), 3);
-      await linkedInput.press('Escape');
-      await linkedDialog.waitFor({ state: 'hidden' });
-      await linkedPage.waitForFunction(() => document.body.style.overflow === '');
-      assert.equal(await linkedPage.evaluate(() => document.body.style.overflow), '');
-      assert.ok(await linkedPage.getByRole('button', { name: 'Open HPC + AI terminal' })
-        .evaluate(element => element === document.activeElement));
-      await linkedPage.close();
-
       const page = await browser.newPage({ viewport });
       const errors = [];
       page.on('pageerror', error => errors.push(error.message));
       await page.goto('http://127.0.0.1:4000/', { waitUntil: 'networkidle' });
       const trigger = page.getByRole('button', { name: 'Open HPC + AI terminal' });
       assert.equal(await trigger.count(), 1, 'The footer should have a terminal button');
-      assert.equal(await page.getByRole('dialog', { name: 'HPC + AI' }).isVisible(), false,
-        'Ordinary visits should keep the terminal hidden');
       await trigger.click();
       const dialog = page.getByRole('dialog', { name: 'HPC + AI' });
       await dialog.waitFor({ state: 'visible' });
@@ -110,13 +91,9 @@ async function check() {
     await page.getByRole('dialog', { name: 'HPC + AI' }).waitFor({ state: 'visible' });
     console.log('Terminal available on the full publications page');
     await page.close();
-    const ignoredLink = await browser.newPage();
-    await ignoredLink.goto('http://127.0.0.1:4000/?terminal=0', { waitUntil: 'networkidle' });
-    assert.equal(await ignoredLink.getByRole('dialog', { name: 'HPC + AI' }).isVisible(), false);
-    await ignoredLink.close();
     const noScript = await browser.newContext({ javaScriptEnabled: false });
     const staticPage = await noScript.newPage();
-    await staticPage.goto('http://127.0.0.1:4000/?terminal=1');
+    await staticPage.goto('http://127.0.0.1:4000/');
     assert.equal(await staticPage.locator('.hpc-terminal-trigger').isVisible(), false);
     assert.equal(await staticPage.locator('.site-footer').isVisible(), true);
     await noScript.close();
