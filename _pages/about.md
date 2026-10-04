@@ -54,7 +54,7 @@ I am an AI-native Solutions Architect and HPC System Engineer at NVIDIA, where I
     </span>
     <span class="news-entry">
       <time class="news-date" datetime="2026-09">2026.09</time>
-      <span>My paper <em>The 1/W Law: Context Length is the Dominant Energy Lever in LLM Inference Fleets.</em> has been accepted at <strong>NeurIPS 2026</strong>.</span>
+      <span>Our paper <em>The 1/W Law: Context Length is the Dominant Energy Lever in LLM Inference Fleets.</em> has been accepted at <strong>NeurIPS 2026</strong>.</span>
     </span>
   </li>
   <li class="news-item">
@@ -63,7 +63,7 @@ I am an AI-native Solutions Architect and HPC System Engineer at NVIDIA, where I
     </span>
     <span class="news-entry">
       <time class="news-date" datetime="2026-08">2026.08</time>
-      <span>An arXiv preprint of my paper <a href="https://arxiv.org/abs/2608.06183" target="_blank" rel="noopener noreferrer">MicroEvo: Knowledge-Guided LLM Sampling for Efficient Microarchitecture Design Space Exploration.</a> is now available. The paper has been accepted for presentation at <strong>ICCAD 2026</strong>; the proceedings version is forthcoming.</span>
+      <span>An arXiv preprint of our paper <a href="https://arxiv.org/abs/2608.06183" target="_blank" rel="noopener noreferrer">MicroEvo: Knowledge-Guided LLM Sampling for Efficient Microarchitecture Design Space Exploration.</a> is now available. The paper has been accepted for presentation at <strong>ICCAD 2026</strong>; the proceedings version is forthcoming.</span>
     </span>
   </li>
   <li class="news-item">
@@ -72,7 +72,7 @@ I am an AI-native Solutions Architect and HPC System Engineer at NVIDIA, where I
     </span>
     <span class="news-entry">
       <time class="news-date" datetime="2026-07">2026.07</time>
-      <span>My paper <a href="https://doi.org/10.1145/3785462.3815795" target="_blank" rel="noopener noreferrer">Power-Centric Observability for HPC Systems: Design, Deployment, and Evaluation on REPACSS.</a> has been published in the Proceedings of <strong>PEARC 2026</strong>.</span>
+      <span>Our paper <a href="https://doi.org/10.1145/3785462.3815795" target="_blank" rel="noopener noreferrer">Power-Centric Observability for HPC Systems: Design, Deployment, and Evaluation on REPACSS.</a> has been published in the Proceedings of <strong>PEARC 2026</strong>.</span>
     </span>
   </li>
   <li class="news-item">
@@ -81,7 +81,7 @@ I am an AI-native Solutions Architect and HPC System Engineer at NVIDIA, where I
     </span>
     <span class="news-entry">
       <time class="news-date" datetime="2026-04">2026.04</time>
-      <span>My paper <a href="{{ '/assets/pdf/aaai2026-tokenpowerbench.pdf' | relative_url }}" target="_blank" rel="noopener noreferrer">TokenPowerBench: Benchmarking the Power Consumption of LLM Inference.</a> has been published in the Proceedings of <strong>AAAI 2026</strong> (acceptance rate: 17.6%).</span>
+      <span>Our paper <a href="{{ '/assets/pdf/aaai2026-tokenpowerbench.pdf' | relative_url }}" target="_blank" rel="noopener noreferrer">TokenPowerBench: Benchmarking the Power Consumption of LLM Inference.</a> has been published in the Proceedings of <strong>AAAI 2026</strong> (acceptance rate: 17.6%).</span>
     </span>
   </li>
   <li class="news-item">
@@ -90,7 +90,7 @@ I am an AI-native Solutions Architect and HPC System Engineer at NVIDIA, where I
     </span>
     <span class="news-entry">
       <time class="news-date" datetime="2026-04">2026.04</time>
-      <span>My paper <a href="{{ '/assets/pdf/aaai2026-fixme.pdf' | relative_url }}" target="_blank" rel="noopener noreferrer">FIXME: Towards End-to-End Benchmarking of LLM-Aided Design Verification.</a> has been published in the Proceedings of <strong>AAAI 2026</strong> (acceptance rate: 17.6%).</span>
+      <span>Our paper <a href="{{ '/assets/pdf/aaai2026-fixme.pdf' | relative_url }}" target="_blank" rel="noopener noreferrer">FIXME: Towards End-to-End Benchmarking of LLM-Aided Design Verification.</a> has been published in the Proceedings of <strong>AAAI 2026</strong> (acceptance rate: 17.6%).</span>
     </span>
   </li>
 </ul>
