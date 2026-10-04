@@ -34,9 +34,11 @@ Some examples:
 
 1. Fork this REPO and rename to `USERNAME.github.io`, where `USERNAME` is your github USERNAME.
 1. Configure the google scholar citation crawler:
-    1. Find your google scholar ID in the url of your google scholar page (e.g., https://scholar.google.com/citations?user=SCHOLAR_ID), where `SCHOLAR_ID` is your google scholar ID.
-    1. Set GOOGLE_SCHOLAR_ID variable to your google scholar ID in `Settings -> Secrets -> Actions -> New repository secret` of the REPO website with `name=GOOGLE_SCHOLAR_ID` and `value=SCHOLAR_ID`.
-    1. Click the `Action` of the REPO website and enable the workflows by clicking *"I understand my workflows, go ahead and enable them"*. This github action will generate google scholar citation stats data `gs_data.json` in `google-scholar-stats` branch of your REPO. When you update your main branch, this action will be triggered. This action will also be trigger 08:00 UTC everyday.
+    1. The Scholar profile is configured as `profile_id` in `_data/google_scholar_citations.yml`. No Scholar secret or paid API is required.
+    1. `Update Scholar Citations` runs on the **1st and 15th of every month at 15:17 UTC** (morning in California). GitHub can delay scheduled runs. You can also use **Actions -> Update Scholar Citations -> Run workflow** for a manual refresh.
+    1. The updater matches the `scholar_id` in `_data/publications.yml`, validates every tracked paper, and commits the shared snapshot used by both publication lists. Missing papers, CAPTCHA pages, HTTP errors, or invalid counts fail the job and preserve the last good snapshot. A real zero-citation paper is allowed; counts can legitimately decrease.
+    1. The workflow explicitly requests a Pages rebuild after saving the snapshot. It needs `contents: write` and `pages: write`; branch rules that require PRs or restrict bot pushes would need a different publishing flow.
+    1. If GitHub disables the schedule after 60 days of repository inactivity, re-enable this workflow in Actions. To test locally: `python -m pip install -r google_scholar_crawler/requirements.txt`, then `python google_scholar_crawler/update.py --dry-run` or `python -m unittest discover -s google_scholar_crawler -p 'test_*.py' -v`.
 1. Generate favicon using [favicon-generator](https://redketchup.io/favicon-generator) and download all generated files to `REPO/images`.
 1. Modify the configuration of your homepage `_config.yml`:
     1. `title`: the title of your homepage
@@ -48,12 +50,7 @@ Some examples:
     1. More configuration details are described in the comments.
 1. Add your homepage content in `_pages/about.md`.
     1. You can use html+markdown syntax just same as jekyll.
-    1. You can use a `<span>` tag with class `show_paper_citations` and attribute `data` to display the citations of your paper. Set the data to the google scholar paper ID. For
-        ```html
-        <span class='show_paper_citations' data='DhtAFkwAAAAJ:ALROH1vI_8AC'></span>
-        ``` 
-        > Q: How to get the google scholar paper ID?   
-        > A: Enter your google scholar homepage and click the paper name. Then you can see the paper ID from `citation_for_view=XXXX`, where `XXXX` is the required paper ID.
+    1. Publication citation badges are rendered by `_includes/publication-list.html`. To add a paper, set its `scholar_id` in `_data/publications.yml` to the suffix after the colon in its Scholar `citation_for_view=PROFILE_ID:PAPER_ID` URL. The next successful refresh adds its count to the snapshot.
 1. Your page will be published at `https://USERNAME.github.io`.
 
 ## Debug Locally
