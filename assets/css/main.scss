@@ -408,6 +408,8 @@
     }
 }
 
+@import "hpc-terminal";
+
 @include breakpoint(max-width $small) {
     .paper-box {
         padding-top: 1.5em;

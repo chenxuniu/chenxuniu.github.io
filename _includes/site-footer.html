@@ -1,3 +1,9 @@
 <footer class="site-footer" role="contentinfo">
-  <p>© {{ 'now' | date: '%Y' }} Chenxu Niu. All rights reserved.</p>
+  <p>
+    <span>© {{ 'now' | date: '%Y' }} Chenxu Niu. All rights reserved.</span>
+    <button type="button" class="hpc-terminal-trigger" aria-label="Open HPC + AI terminal" aria-haspopup="dialog" aria-controls="hpc-terminal" title="Open HPC + AI terminal" hidden>
+      <span aria-hidden="true">&gt;_</span> HPC+AI
+    </button>
+  </p>
 </footer>
+{% include hpc-terminal.html %}

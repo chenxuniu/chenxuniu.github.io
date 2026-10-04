@@ -1,0 +1,183 @@
+.site-footer p {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: .5em 1.4em;
+}
+
+.hpc-terminal-trigger {
+  padding: .25em 0;
+  border: 0;
+  background: transparent;
+  color: #496147;
+  font-family: $monospace;
+  font-size: inherit;
+  cursor: pointer;
+
+  &:hover { color: #263e24; }
+  &:focus-visible { outline: 2px solid #496147; outline-offset: 5px; }
+  [aria-hidden] { margin-right: .4em; }
+}
+
+.hpc-terminal {
+  display: none;
+  width: min(760px, calc(100% - 24px));
+  height: min(540px, calc(100vh - 32px));
+  height: min(540px, calc(100dvh - 32px));
+  max-width: none;
+  max-height: none;
+  padding: 0;
+  border: 1px solid #474d49;
+  border-radius: 6px;
+  background: #191d1b;
+  color: #e6ebe7;
+  box-shadow: 0 16px 64px rgba(0, 0, 0, .28);
+  font-family: $monospace;
+  font-size: 14px;
+  line-height: 1.65;
+  letter-spacing: 0;
+  text-align: left;
+  overflow: hidden;
+
+  &[open] { display: grid; grid-template-rows: 54px minmax(0, 1fr) auto; }
+  &::backdrop { background: rgba(0, 0, 0, .35); }
+
+  button {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #c4d0c6;
+    font: inherit;
+    cursor: pointer;
+
+    &:hover { background: #343b36; color: #fff; }
+  }
+
+  button:focus-visible, a:focus-visible {
+    outline: 2px solid #a4d68d;
+    outline-offset: -2px;
+  }
+
+  a {
+    color: #8dd4e8;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    &:visited { color: #8dd4e8; }
+    &:hover { color: #c0edf8; }
+  }
+
+  p { margin: 0; }
+}
+
+.hpc-terminal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 8px 0 20px;
+  border-bottom: 1px solid #3b433d;
+  background: #252b27;
+  font-weight: bold;
+
+  [aria-hidden] { color: #a4d68d; }
+}
+
+.hpc-terminal__tools { display: flex; }
+
+.hpc-terminal__output {
+  min-width: 0;
+  padding: 20px;
+  overflow-y: auto;
+  overflow-wrap: anywhere;
+  scrollbar-color: #59685c #191d1b;
+
+  &:focus-visible { outline: 2px solid #a4d68d; outline-offset: -2px; }
+}
+
+.hpc-terminal__entry { margin-bottom: 20px; }
+.hpc-terminal__greeting { font-weight: bold; color: #fff; }
+.hpc-terminal__muted { color: #a8b4aa; }
+.hpc-terminal__echo { color: #a4d68d; }
+.hpc-terminal__error { color: #f0ba86; margin-bottom: 20px !important; }
+
+.hpc-terminal__commands {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 20px;
+  margin-top: 16px;
+
+  button {
+    width: auto;
+    height: 44px;
+    color: #8dd4e8;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+}
+
+.hpc-terminal__list {
+  margin: 0 0 12px;
+  padding-left: 24px;
+  li { margin: 0; padding: 0 0 6px; }
+}
+
+.hpc-terminal__papers, .hpc-terminal__projects {
+  li { padding-bottom: 16px; }
+  .hpc-terminal__muted { display: block; font-size: 12px; }
+}
+
+.hpc-terminal__reference {
+  display: grid;
+  grid-template-columns: 90px minmax(0, 1fr);
+  gap: 4px 16px;
+  margin: 0;
+  dt { margin: 0; color: #a4d68d; }
+  dd { margin: 0; }
+}
+
+.hpc-terminal__input-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) 44px;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 4px 8px 4px 20px;
+  border-top: 1px solid #3b433d;
+  background: #202622;
+
+  &:focus-within { border-top-color: #a4d68d; }
+
+  input {
+    min-width: 0;
+    width: 100%;
+    margin: 0;
+    padding: 8px 0;
+    border: 0;
+    border-radius: 0;
+    outline: none;
+    background: transparent;
+    box-shadow: none;
+    color: #fff;
+    caret-color: #a4d68d;
+    font: inherit;
+  }
+}
+
+.hpc-terminal__prompt { margin: 0; color: #a4d68d; font: inherit; }
+
+@include breakpoint(max-width $small) {
+  .hpc-terminal__header { padding-left: 14px; }
+  .hpc-terminal__output { padding: 16px 14px; }
+  .hpc-terminal__input-row { padding-left: 14px; gap: 6px; }
+  .hpc-terminal__prompt { font-size: 12px; }
+  // Keep the mobile input at 16px so iOS does not zoom the page on focus.
+  .hpc-terminal__input-row input { font-size: 16px; }
+}
+
+@media print {
+  .hpc-terminal-trigger, .hpc-terminal { display: none !important; }
+}

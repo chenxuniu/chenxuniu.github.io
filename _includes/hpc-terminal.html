@@ -1,0 +1,89 @@
+<dialog id="hpc-terminal" class="hpc-terminal" aria-labelledby="hpc-terminal-title">
+  <header class="hpc-terminal__header">
+    <span id="hpc-terminal-title"><span aria-hidden="true">&gt;_</span> HPC + AI</span>
+    <div class="hpc-terminal__tools">
+      <button type="button" data-terminal-run="help" aria-label="Command reference" title="Command reference"><i class="fas fa-question" aria-hidden="true"></i></button>
+      <button type="button" data-terminal-run="clear" aria-label="Clear terminal" title="Clear terminal"><i class="fas fa-eraser" aria-hidden="true"></i></button>
+      <button type="button" data-terminal-close aria-label="Close terminal" title="Close terminal"><i class="fas fa-times" aria-hidden="true"></i></button>
+    </div>
+  </header>
+  <div class="hpc-terminal__output" role="log" aria-label="Terminal output" aria-live="polite" aria-relevant="additions" tabindex="0"></div>
+  <form class="hpc-terminal__input-row">
+    <label for="hpc-terminal-input" class="hpc-terminal__prompt" aria-hidden="true">chenxu@hpc-ai:~$</label>
+    <input id="hpc-terminal-input" type="text" aria-label="Terminal command" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="256" autofocus>
+    <button type="submit" aria-label="Run command" title="Run command"><i class="fas fa-arrow-right" aria-hidden="true"></i></button>
+  </form>
+</dialog>
+
+<template data-terminal-command="welcome">
+  <p class="hpc-terminal__greeting">{{ site.author.name | escape }}</p>
+  <p>{{ site.author.bio | escape }}</p>
+  <p class="hpc-terminal__muted">HPC systems. AI inference. Energy-efficient computing.</p>
+  <div class="hpc-terminal__commands">
+    <button type="button" data-terminal-run="whoami">whoami</button>
+    <button type="button" data-terminal-run="research">research</button>
+    <button type="button" data-terminal-run="papers">papers</button>
+    <button type="button" data-terminal-run="projects">projects</button>
+    <button type="button" data-terminal-run="help">help</button>
+  </div>
+</template>
+
+<template data-terminal-command="whoami">
+  <p>{{ site.author.name | escape }}</p>
+  <p>AI-native Solutions Architect and HPC System Engineer @ {{ site.author.employer | escape }}</p>
+  <p class="hpc-terminal__muted">January 2026 - Present / {{ site.author.location | escape }}</p>
+  <p>Ph.D., Computer Science, Texas Tech University</p>
+  <p><a href="{{ '/cv/' | relative_url }}">CV</a> / <a href="mailto:{{ site.author.email | escape }}">Email</a> / <a href="{{ site.author.googlescholar | escape }}" target="_blank" rel="noopener noreferrer">Google Scholar</a></p>
+</template>
+
+<template data-terminal-command="research">
+  <ul class="hpc-terminal__list">
+    <li>High-performance computing (HPC)</li>
+    <li>AI inference on HPC systems</li>
+    <li>Energy-efficient computing frameworks</li>
+    <li>Scientific data management</li>
+  </ul>
+</template>
+
+<template data-terminal-command="papers">
+  <ol class="hpc-terminal__list hpc-terminal__papers" reversed>
+    {% for paper in site.data.publications %}
+      {% assign paper_url = '/publications/' %}
+      {% for link in paper.links %}
+        {% if link.label contains 'PDF' %}{% assign paper_url = link.url %}{% break %}{% endif %}
+      {% endfor %}
+      <li>
+        <a href="{{ paper_url | relative_url }}" data-terminal-paper target="_blank" rel="noopener noreferrer">{{ paper.title | escape }}</a>
+        <span class="hpc-terminal__muted">{{ paper.venue | escape }}{% if paper.note %} / {{ paper.note | escape }}{% endif %}</span>
+      </li>
+    {% endfor %}
+  </ol>
+  <p><a href="{{ '/publications/' | relative_url }}">All publications</a></p>
+</template>
+
+<template data-terminal-command="projects">
+  <ul class="hpc-terminal__list hpc-terminal__projects">
+    {% for project in site.data.projects %}
+      {% assign project_url = '/projects/' %}
+      {% for link in project.links %}
+        {% if link.label == 'Code' %}{% assign project_url = link.url %}{% break %}{% endif %}
+      {% endfor %}
+      <li>
+        <a href="{{ project_url | relative_url }}" data-terminal-project target="_blank" rel="noopener noreferrer">{{ project.name | escape }}</a>
+        <span class="hpc-terminal__muted">{{ project.description | escape }}</span>
+      </li>
+    {% endfor %}
+  </ul>
+</template>
+
+<template data-terminal-command="help">
+  <dl class="hpc-terminal__reference">
+    <dt>whoami</dt><dd>Biography and contact</dd>
+    <dt>research</dt><dd>Research interests</dd>
+    <dt>papers</dt><dd>Publications and PDFs</dd>
+    <dt>projects</dt><dd>Open-source projects</dd>
+    <dt>help</dt><dd>Command reference</dd>
+    <dt>clear</dt><dd>Clear the terminal</dd>
+    <dt>exit</dt><dd>Close the terminal</dd>
+  </dl>
+</template>
