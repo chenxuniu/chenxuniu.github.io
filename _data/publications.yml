@@ -46,7 +46,7 @@
   cv_venue: "Proceedings of the Practice and Experience in Advanced Research Computing 2026 (PEARC '26)"
   pages: "1-8"
   image: "/images/pearc2026-figure7.png"
-  selected: true
+  selected: false
   authors: "Yongjian Zhao, Jie Li, **Chenxu Niu**, Alan Sill, and Yong Chen."
   links:
     - label: "PDF"
