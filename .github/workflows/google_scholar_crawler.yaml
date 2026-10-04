@@ -1,9 +1,8 @@
 name: Update Scholar Citations
 
 on:
-  schedule:
-    # 15:17 UTC on the 1st and 15th; morning in California.
-    - cron: '17 15 1,15 * *'
+  # Archived: citations are now verified manually from Google Scholar PDFs.
+  # Keep only an explicit trigger for possible future troubleshooting.
   workflow_dispatch:
 
 permissions:

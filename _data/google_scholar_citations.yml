@@ -1,10 +1,11 @@
+# Manually verified against the Google Scholar PDF printed on 2026-10-04.
 profile_id: "i1H5XQ8AAAAJ"
-checked_on: "2026-09-30"
+checked_on: "2026-10-04"
 counts:
   "3fE2CSJIrl8C": 0   # TokenPowerSandbox
   "MXK_kJrjxJIC": 0   # MicroEvo
   "hqOjcs7Dif8C": 1   # Power-Centric Observability
-  "ufrVoPGSRksC": 46  # TokenPowerBench
+  "ufrVoPGSRksC": 49  # TokenPowerBench
   "Se3iqnhoufwC": 11  # FIXME
   "W7OEmFMy1HYC": 36  # Energy Efficient or Exhaustive?
   "Y0pCki6q_DkC": 2   # ICEAGE

@@ -33,12 +33,11 @@ Some examples:
 ## Quick Start
 
 1. Fork this REPO and rename to `USERNAME.github.io`, where `USERNAME` is your github USERNAME.
-1. Configure the google scholar citation crawler:
-    1. The Scholar profile is configured as `profile_id` in `_data/google_scholar_citations.yml`. No Scholar secret or paid API is required.
-    1. `Update Scholar Citations` runs on the **1st and 15th of every month at 15:17 UTC** (morning in California). GitHub can delay scheduled runs. You can also use **Actions -> Update Scholar Citations -> Run workflow** for a manual refresh.
-    1. The updater matches the `scholar_id` in `_data/publications.yml`, validates every tracked paper, and commits the shared snapshot used by both publication lists. Missing papers, CAPTCHA pages, HTTP errors, or invalid counts fail the job and preserve the last good snapshot. A real zero-citation paper is allowed; counts can legitimately decrease.
-    1. The workflow explicitly requests a Pages rebuild after saving the snapshot. It needs `contents: write` and `pages: write`; branch rules that require PRs or restrict bot pushes would need a different publishing flow.
-    1. If GitHub disables the schedule after 60 days of repository inactivity, re-enable this workflow in Actions. To test locally: `python -m pip install -r google_scholar_crawler/requirements.txt`, then `python google_scholar_crawler/update.py --dry-run` or `python -m unittest discover -s google_scholar_crawler -p 'test_*.py' -v`.
+1. Maintain Google Scholar citations manually:
+    1. Expand the complete publication list on the Scholar profile, then print it to PDF with the date visible. No API account or key is needed.
+    1. Match each paper by its title and `scholar_id` in `_data/publications.yml`. Update its count in `_data/google_scholar_citations.yml`, and set `checked_on` to the PDF's date. Only interpret a blank citation cell as zero when the paper's full row is present; keep previous data for any missing or unclear rows.
+    1. The shared snapshot updates citation badges on both the homepage and the full publications page. Verify the rendered badges, then commit and push the snapshot to publish it.
+    1. Automatic crawling was retired after Scholar returned HTTP 403/429. The old workflow is disabled in Actions and has no scheduled trigger. Its script is retained for future troubleshooting, not used for regular updates.
 1. Generate favicon using [favicon-generator](https://redketchup.io/favicon-generator) and download all generated files to `REPO/images`.
 1. Modify the configuration of your homepage `_config.yml`:
     1. `title`: the title of your homepage
@@ -50,7 +49,7 @@ Some examples:
     1. More configuration details are described in the comments.
 1. Add your homepage content in `_pages/about.md`.
     1. You can use html+markdown syntax just same as jekyll.
-    1. Publication citation badges are rendered by `_includes/publication-list.html`. To add a paper, set its `scholar_id` in `_data/publications.yml` to the suffix after the colon in its Scholar `citation_for_view=PROFILE_ID:PAPER_ID` URL. The next successful refresh adds its count to the snapshot.
+    1. Publication citation badges are rendered by `_includes/publication-list.html`. To add a paper, set its `scholar_id` in `_data/publications.yml` to the suffix after the colon in its Scholar `citation_for_view=PROFILE_ID:PAPER_ID` URL, then add the verified count under the same ID in `_data/google_scholar_citations.yml`.
 1. Your page will be published at `https://USERNAME.github.io`.
 
 ## Debug Locally
