@@ -133,4 +133,9 @@
       open();
     }
   });
+
+  if (new URLSearchParams(window.location.search).get('terminal') === '1') {
+    trigger.focus({ preventScroll: true });
+    open();
+  }
 })();
