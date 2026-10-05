@@ -1,13 +1,14 @@
 """Refresh the citation snapshot only after every tracked paper is validated."""
 
 import argparse
-from datetime import datetime, timezone
+from datetime import date, datetime
 import os
 from pathlib import Path
 import re
 import tempfile
 import time
 from urllib.parse import parse_qs, urlparse
+from zoneinfo import ZoneInfo
 
 from bs4 import BeautifulSoup
 import requests
@@ -15,6 +16,11 @@ import yaml
 
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def chicago_date(now=None):
+    return (now or datetime.now(ZoneInfo("America/Chicago"))).astimezone(
+        ZoneInfo("America/Chicago")).date().isoformat()
 
 
 def parse_profile_page(html, profile_id):
@@ -64,22 +70,70 @@ def fetch_counts(profile_id, tracked_ids, session):
     raise ValueError("Tracked papers missing from Scholar: " + ", ".join(sorted(tracked_ids - found.keys())))
 
 
-def update_snapshot(snapshot_path, publications_path, *, session=None, checked_on=None, dry_run=False):
+def fetch_scholarly_counts(profile_id, tracked_ids, *, client=None):
+    if client is None:
+        from scholarly import scholarly
+        client = scholarly
+    try:
+        client.set_timeout(15)
+        client.set_retries(3)
+        author = client.search_author_id(profile_id)
+        # Avoid requesting coauthors, public-access mandates, or each paper separately.
+        author = client.fill(author, sections=["publications"])
+    except Exception as error:
+        raise ValueError(f"scholarly could not fetch the author profile: {error}") from error
+    if (not isinstance(author, dict) or author.get("scholar_id") != profile_id
+            or "publications" not in author.get("filled", [])
+            or not isinstance(author.get("publications"), list)):
+        raise ValueError("scholarly returned an unexpected or incomplete author profile.")
+    counts = {}
+    for paper in author["publications"]:
+        if not isinstance(paper, dict):
+            raise ValueError("scholarly returned an invalid publication.")
+        identifier = paper.get("author_pub_id", "")
+        if not isinstance(identifier, str) or not identifier.startswith(profile_id + ":"):
+            raise ValueError("scholarly returned a paper from an unexpected author.")
+        paper_id = identifier.split(":", 1)[1]
+        count = paper.get("num_citations")
+        if (not re.fullmatch(r"[A-Za-z0-9_-]+", paper_id) or paper_id in counts
+                or type(count) is not int or count < 0):
+            raise ValueError("Duplicate paper ID or missing/invalid scholarly citation count.")
+        counts[paper_id] = count
+    missing = tracked_ids - counts.keys()
+    if missing:
+        raise ValueError("Tracked papers missing from Scholar: " + ", ".join(sorted(missing)))
+    return {key: counts[key] for key in sorted(tracked_ids)}
+
+
+def update_snapshot(snapshot_path, publications_path, *, session=None, checked_on=None,
+                    dry_run=False, provider="scholarly"):
     snapshot_path = Path(snapshot_path)
-    snapshot = yaml.safe_load(snapshot_path.read_text(encoding="utf-8"))
+    original = snapshot_path.read_text(encoding="utf-8")
+    snapshot = yaml.safe_load(original)
     publications = yaml.safe_load(Path(publications_path).read_text(encoding="utf-8"))
     profile_id = snapshot["profile_id"]
     tracked_ids = set(snapshot["counts"]) | {paper["scholar_id"] for paper in publications if paper.get("scholar_id")}
     if not tracked_ids or not re.fullmatch(r"[A-Za-z0-9_-]+", profile_id):
         raise ValueError("A valid Scholar profile and at least one tracked paper are required.")
-    if session is None:
+    checked_on = checked_on or chicago_date()
+    if date.fromisoformat(checked_on) < date.fromisoformat(str(snapshot["checked_on"])):
+        raise ValueError("This update is older than the saved snapshot.")
+    if session is not None:
+        counts = fetch_counts(profile_id, tracked_ids, session)
+    elif provider == "requests":
         with requests.Session() as client:
             counts = fetch_counts(profile_id, tracked_ids, client)
     else:
-        counts = fetch_counts(profile_id, tracked_ids, session)
+        counts = fetch_scholarly_counts(profile_id, tracked_ids)
+        # scholarly also defaults a missing HTML citation cell to zero. Require
+        # manual verification before clearing an existing nonzero count.
+        if any(counts[key] == 0 and old > 0 for key, old in snapshot["counts"].items()):
+            raise ValueError("A previously positive count became zero; manual verification required.")
+    if snapshot_path.read_text(encoding="utf-8") != original:
+        raise ValueError("The snapshot changed during fetching; keeping the newer edit.")
     updated = dict(snapshot)
     updated["counts"] = counts
-    updated["checked_on"] = checked_on or datetime.now(timezone.utc).date().isoformat()
+    updated["checked_on"] = checked_on
     print(f"Validated {len(counts)} papers; checked {updated['checked_on']}.")
     if dry_run:
         print(yaml.safe_dump(updated, sort_keys=False), end="")
@@ -105,9 +159,11 @@ def main():
     parser.add_argument("--snapshot", type=Path, default=ROOT / "_data/google_scholar_citations.yml")
     parser.add_argument("--publications", type=Path, default=ROOT / "_data/publications.yml")
     parser.add_argument("--dry-run", action="store_true", help="Validate live counts without saving them.")
+    parser.add_argument("--provider", choices=["scholarly", "requests"], default="scholarly",
+                        help="Use scholarly by default; requests is retained for troubleshooting.")
     args = parser.parse_args()
     try:
-        update_snapshot(args.snapshot, args.publications, dry_run=args.dry_run)
+        update_snapshot(args.snapshot, args.publications, dry_run=args.dry_run, provider=args.provider)
     except (requests.RequestException, ValueError, KeyError, TypeError, OSError, yaml.YAMLError) as error:
         parser.exit(1, f"Citation update failed; previous snapshot kept: {error}\n")
 

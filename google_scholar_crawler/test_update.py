@@ -1,4 +1,5 @@
 import importlib
+from datetime import datetime
 from pathlib import Path
 import tempfile
 import unittest
@@ -130,6 +131,100 @@ class CitationUpdateTests(unittest.TestCase):
         self.assertEqual(self.snapshot.read_text(), self.original)
         self.assertEqual(sorted(p.name for p in self.snapshot.parent.iterdir()),
                          ["citations.yml", "publications.yml"])
+
+    def author(self, counts):
+        return {"scholar_id": PROFILE, "filled": ["publications"], "publications": [
+            {"author_pub_id": f"{PROFILE}:{key}", "num_citations": count}
+            for key, count in counts
+        ]}
+
+    def scholarly_client(self, author):
+        client = Mock()
+        client.fill.return_value = author
+        return client
+
+    def test_scholarly_matches_ids_and_keeps_only_tracked_papers(self):
+        client = self.scholarly_client(self.author([("second", 0), ("extra", 99), ("first", 49)]))
+        self.assertEqual(self.updater.fetch_scholarly_counts(PROFILE, {"first", "second"}, client=client),
+                         {"first": 49, "second": 0})
+
+    def test_scholarly_rejects_invalid_or_incomplete_results(self):
+        complete = self.author([("first", 8), ("second", 3)])
+        cases = [None, {}, {**complete, "scholar_id": "someoneElse"},
+                 {**complete, "filled": []}, self.author([("first", 8)]),
+                 self.author([("first", 8), ("first", 9), ("second", 3)])]
+        for count in [None, "8", -1, True, 1.5]:
+            cases.append(self.author([("first", count), ("second", 3)]))
+        missing_count = self.author([("first", 8), ("second", 3)])
+        del missing_count["publications"][0]["num_citations"]
+        cases.append(missing_count)
+        wrong_id = self.author([("first", 8), ("second", 3)])
+        wrong_id["publications"][0]["author_pub_id"] = "someoneElse:first"
+        cases.append(wrong_id)
+        for author in cases:
+            with self.subTest(author=author), self.assertRaises(ValueError):
+                self.updater.fetch_scholarly_counts(PROFILE, {"first", "second"},
+                                                  client=self.scholarly_client(author))
+
+    def test_scholarly_failure_keeps_manual_snapshot(self):
+        with patch.object(self.updater, "fetch_scholarly_counts", create=True,
+                          side_effect=ValueError("Scholar blocked this request")):
+            with self.assertRaises(ValueError):
+                self.updater.update_snapshot(self.snapshot, self.publications)
+        self.assertEqual(self.snapshot.read_text(), self.original)
+
+    def test_default_provider_updates_shared_snapshot_with_scholarly(self):
+        with patch.object(self.updater, "fetch_scholarly_counts", create=True,
+                          return_value={"first": 49, "second": 3}):
+            self.updater.update_snapshot(self.snapshot, self.publications, checked_on="2026-10-05")
+        data = yaml.safe_load(self.snapshot.read_text())
+        self.assertEqual(data["counts"], {"first": 49, "second": 3})
+        self.assertEqual(data["checked_on"], "2026-10-05")
+
+    def test_scholarly_cannot_clear_a_previously_positive_manual_count(self):
+        with patch.object(self.updater, "fetch_scholarly_counts", create=True,
+                          return_value={"first": 0, "second": 3}):
+            with self.assertRaisesRegex(ValueError, "zero"):
+                self.updater.update_snapshot(self.snapshot, self.publications)
+        self.assertEqual(self.snapshot.read_text(), self.original)
+
+    def test_normal_citation_correction_can_decrease_a_count(self):
+        with patch.object(self.updater, "fetch_scholarly_counts", create=True,
+                          return_value={"first": 4, "second": 2}):
+            self.updater.update_snapshot(self.snapshot, self.publications)
+        self.assertEqual(yaml.safe_load(self.snapshot.read_text())["counts"]["first"], 4)
+
+    def test_older_update_cannot_overwrite_newer_manual_date(self):
+        with self.assertRaisesRegex(ValueError, "older"):
+            self.updater.update_snapshot(self.snapshot, self.publications,
+                                        session=self.session(page([("first", "8"), ("second", "3")])),
+                                        checked_on="2026-09-29")
+        self.assertEqual(self.snapshot.read_text(), self.original)
+
+    def test_manual_edit_during_fetch_is_not_overwritten(self):
+        manual = self.original.replace('"2026-09-30"', '"2026-10-05"').replace("first: 5", "first: 49")
+        def fetch(*args):
+            self.snapshot.write_text(manual)
+            return {"first": 8, "second": 3}
+        with patch.object(self.updater, "fetch_counts", side_effect=fetch):
+            with self.assertRaisesRegex(ValueError, "changed"):
+                self.update(self.session())
+        self.assertEqual(self.snapshot.read_text(), manual)
+
+    def test_date_is_chicago_local_date_in_summer_and_winter(self):
+        for utc, expected in [("2026-10-05T04:30:00+00:00", "2026-10-04"),
+                              ("2026-10-05T05:00:00+00:00", "2026-10-05"),
+                              ("2026-12-07T05:30:00+00:00", "2026-12-06"),
+                              ("2026-12-07T06:00:00+00:00", "2026-12-07")]:
+            with self.subTest(utc=utc):
+                self.assertEqual(self.updater.chicago_date(datetime.fromisoformat(utc)), expected)
+
+    def test_workflow_schedules_monday_midnight_chicago_and_keeps_manual_trigger(self):
+        path = Path(__file__).resolve().parents[1] / ".github/workflows/google_scholar_crawler.yaml"
+        workflow = yaml.load(path.read_text(), Loader=yaml.BaseLoader)
+        self.assertEqual(workflow["on"]["schedule"],
+                         [{"cron": "0 0 * * 1", "timezone": "America/Chicago"}])
+        self.assertIn("workflow_dispatch", workflow["on"])
 
 
 if __name__ == "__main__":

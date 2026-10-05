@@ -33,11 +33,14 @@ Some examples:
 ## Quick Start
 
 1. Fork this REPO and rename to `USERNAME.github.io`, where `USERNAME` is your github USERNAME.
-1. Maintain Google Scholar citations manually:
-    1. Expand the complete publication list on the Scholar profile, then print it to PDF with the date visible. No API account or key is needed.
+1. Maintain Google Scholar citations with automatic and manual updates:
+    1. `Update Scholar Citations` runs every Monday at 12:00 AM in `America/Chicago`, following daylight saving time automatically. GitHub may delay scheduled runs. The workflow uses `scholarly` without an API key and can also be started from Actions using **Run workflow**.
+    1. Every tracked paper must be present with a valid count before the shared snapshot is replaced. Blocked requests, timeouts, missing papers, and invalid results fail the run and keep the previous snapshot. Updates older than `checked_on` are rejected. A previously positive count becoming zero needs manual verification, because scholarly may interpret a missing HTML cell as zero. Ordinary nonzero count decreases are allowed.
+    1. Manual fallback remains available: expand the complete publication list on the Scholar profile, then print it to PDF with the date visible, or provide dated screenshots. No API account or key is needed.
     1. Match each paper by its title and `scholar_id` in `_data/publications.yml`. Update its count in `_data/google_scholar_citations.yml`, and set `checked_on` to the PDF's date. Only interpret a blank citation cell as zero when the paper's full row is present; keep previous data for any missing or unclear rows.
     1. The shared snapshot updates citation badges on both the homepage and the full publications page. Verify the rendered badges, then commit and push the snapshot to publish it.
-    1. Automatic crawling was retired after Scholar returned HTTP 403/429. The old workflow is disabled in Actions and has no scheduled trigger. Its script is retained for future troubleshooting, not used for regular updates.
+    1. Google Scholar can still block automated requests with HTTP 403/429 or CAPTCHAs; automatic success is not guaranteed. A failed run never resets the displayed counts. If the repository changes during fetching, the workflow stops instead of rebasing over newer manual edits; rerun it against the latest version.
+    1. For local troubleshooting, install `google_scholar_crawler/requirements.txt` and run `python google_scholar_crawler/update.py --dry-run`. The old direct HTML provider remains available with `--provider requests`, but is not used by the weekly workflow.
 1. Generate favicon using [favicon-generator](https://redketchup.io/favicon-generator) and download all generated files to `REPO/images`.
 1. Modify the configuration of your homepage `_config.yml`:
     1. `title`: the title of your homepage
