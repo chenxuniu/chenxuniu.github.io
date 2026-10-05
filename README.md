@@ -41,6 +41,7 @@ Some examples:
     1. The shared snapshot updates citation badges on both the homepage and the full publications page. Verify the rendered badges, then commit and push the snapshot to publish it.
     1. Google Scholar can still block automated requests with HTTP 403/429 or CAPTCHAs; automatic success is not guaranteed. A failed run never resets the displayed counts. If the repository changes during fetching, the workflow stops instead of rebasing over newer manual edits; rerun it against the latest version.
     1. For local troubleshooting, install `google_scholar_crawler/requirements.txt` and run `python google_scholar_crawler/update.py --dry-run`. The old direct HTML provider remains available with `--provider requests`, but is not used by the weekly workflow.
+    1. To diagnose a failed Actions run, enable **diagnostic** in **Run workflow**. This logs HTTP response codes and scholarly retry progress without saving a snapshot or rebuilding Pages. The 180-second deadline bounds the entire operation; scholarly's per-request timeout does not bound its internal retry sleeps.
 1. Generate favicon using [favicon-generator](https://redketchup.io/favicon-generator) and download all generated files to `REPO/images`.
 1. Modify the configuration of your homepage `_config.yml`:
     1. `title`: the title of your homepage

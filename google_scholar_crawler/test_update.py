@@ -148,6 +148,24 @@ class CitationUpdateTests(unittest.TestCase):
         self.assertEqual(self.updater.fetch_scholarly_counts(PROFILE, {"first", "second"}, client=client),
                          {"first": 49, "second": 0})
 
+    def test_scholarly_logs_the_stage_that_failed(self):
+        client = Mock()
+        client.search_author_id.side_effect = RuntimeError("Access denied")
+        with self.assertLogs(self.updater.__name__, level="INFO") as logs:
+            with self.assertRaisesRegex(ValueError, "Access denied"):
+                self.updater.fetch_scholarly_counts(PROFILE, {"first"}, client=client)
+        self.assertTrue(any("Loading Scholar author profile" in line for line in logs.output))
+
+    def test_diagnostic_workflow_does_not_save_or_rebuild(self):
+        path = Path(__file__).resolve().parents[1] / ".github/workflows/google_scholar_crawler.yaml"
+        workflow = yaml.load(path.read_text(), Loader=yaml.BaseLoader)
+        self.assertEqual(workflow["on"]["workflow_dispatch"]["inputs"]["diagnostic"]["default"], "false")
+        steps = {step.get("name"): step for step in workflow["jobs"]["update"]["steps"]}
+        for name in ["Save validated snapshot", "Rebuild GitHub Pages"]:
+            self.assertEqual(steps[name]["if"], "${{ inputs.diagnostic != true }}")
+        self.assertIn("--dry-run", steps["Refresh citations"]["run"])
+        self.assertIn("python -u", steps["Refresh citations"]["run"])
+
     def test_scholarly_rejects_invalid_or_incomplete_results(self):
         complete = self.author([("first", 8), ("second", 3)])
         cases = [None, {}, {**complete, "scholar_id": "someoneElse"},

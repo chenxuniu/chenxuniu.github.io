@@ -2,6 +2,7 @@
 
 import argparse
 from datetime import date, datetime
+import logging
 import os
 from pathlib import Path
 import re
@@ -77,8 +78,10 @@ def fetch_scholarly_counts(profile_id, tracked_ids, *, client=None):
     try:
         client.set_timeout(15)
         client.set_retries(3)
+        logging.getLogger(__name__).info("Loading Scholar author profile %s", profile_id)
         author = client.search_author_id(profile_id)
         # Avoid requesting coauthors, public-access mandates, or each paper separately.
+        logging.getLogger(__name__).info("Loading Scholar publication list %s", profile_id)
         author = client.fill(author, sections=["publications"])
     except Exception as error:
         raise ValueError(f"scholarly could not fetch the author profile: {error}") from error
@@ -161,7 +164,11 @@ def main():
     parser.add_argument("--dry-run", action="store_true", help="Validate live counts without saving them.")
     parser.add_argument("--provider", choices=["scholarly", "requests"], default="scholarly",
                         help="Use scholarly by default; requests is retained for troubleshooting.")
+    parser.add_argument("--verbose", action="store_true",
+                        help="Log Scholar HTTP statuses and retry progress without logging headers.")
     args = parser.parse_args()
+    if args.verbose:
+        logging.basicConfig(level=logging.INFO, format="%(asctime)s %(name)s: %(message)s")
     try:
         update_snapshot(args.snapshot, args.publications, dry_run=args.dry_run, provider=args.provider)
     except (requests.RequestException, ValueError, KeyError, TypeError, OSError, yaml.YAMLError) as error:
