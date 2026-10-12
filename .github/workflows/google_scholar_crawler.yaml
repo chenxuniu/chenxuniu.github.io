@@ -39,11 +39,11 @@ jobs:
       - name: Test snapshot safety
         run: python -m unittest discover -s google_scholar_crawler -p 'test_*.py' -v
       - name: Refresh citations
-        # Read only the publication table; stop on access restrictions.
+        # Keep scholarly retries bounded; fall back only on profile parsing errors.
         env:
           SCHOLAR_DIAGNOSTIC: ${{ inputs.diagnostic }}
         run: |
-          args=(--provider requests --verbose)
+          args=(--provider auto --verbose)
           if [ "$SCHOLAR_DIAGNOSTIC" = 'true' ]; then
             args+=(--dry-run)
           fi

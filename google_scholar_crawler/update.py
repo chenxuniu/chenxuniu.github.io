@@ -121,7 +121,7 @@ def fetch_scholarly_counts(profile_id, tracked_ids, *, client=None):
 
 
 def update_snapshot(snapshot_path, publications_path, *, session=None, checked_on=None,
-                    dry_run=False, provider="requests"):
+                    dry_run=False, provider="auto"):
     snapshot_path = Path(snapshot_path)
     original = snapshot_path.read_text(encoding="utf-8")
     snapshot = yaml.safe_load(original)
@@ -139,7 +139,17 @@ def update_snapshot(snapshot_path, publications_path, *, session=None, checked_o
         with requests.Session() as client:
             counts = fetch_counts(profile_id, tracked_ids, client)
     else:
-        counts = fetch_scholarly_counts(profile_id, tracked_ids)
+        try:
+            counts = fetch_scholarly_counts(profile_id, tracked_ids)
+        except ValueError as error:
+            # Only a profile-parser failure gets one alternate parsing attempt.
+            # Access restrictions, timeouts and invalid data must remain failures.
+            if provider != "auto" or not isinstance(error.__cause__, AttributeError):
+                raise
+            logging.getLogger(__name__).warning(
+                "scholarly profile parsing failed; trying the direct publication parser once: %s", error)
+            with requests.Session() as client:
+                counts = fetch_counts(profile_id, tracked_ids, client)
     # Both providers can see empty citation cells; never clear a positive count
     # without manual verification.
     if any(counts[key] == 0 and old > 0 for key, old in snapshot["counts"].items()):
@@ -174,8 +184,8 @@ def main():
     parser.add_argument("--snapshot", type=Path, default=ROOT / "_data/google_scholar_citations.yml")
     parser.add_argument("--publications", type=Path, default=ROOT / "_data/publications.yml")
     parser.add_argument("--dry-run", action="store_true", help="Validate live counts without saving them.")
-    parser.add_argument("--provider", choices=["scholarly", "requests"], default="requests",
-                        help="Parse the publication table directly by default; scholarly is optional.")
+    parser.add_argument("--provider", choices=["auto", "scholarly", "requests"], default="auto",
+                        help="Use scholarly with a direct-parser fallback for profile parsing errors.")
     parser.add_argument("--verbose", action="store_true",
                         help="Log Scholar HTTP statuses and page structure without headers or HTML.")
     args = parser.parse_args()

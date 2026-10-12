@@ -59,14 +59,15 @@ class CitationUpdateTests(unittest.TestCase):
         self.update(self.session(page([("first", "5"), ("second", "")])))
         self.assertEqual(yaml.safe_load(self.snapshot.read_text())["counts"]["second"], 0)
 
-    def test_default_provider_accepts_papers_without_canonical_or_author_details(self):
+    def test_direct_provider_accepts_papers_without_canonical_or_author_details(self):
         html = page([("first", "53"), ("second", "3")])
         session = self.session(html)
         with patch.object(self.updater.requests, "Session") as factory, \
                 patch.object(self.updater, "fetch_scholarly_counts",
                              side_effect=AssertionError("Default still uses the brittle metadata parser")) as scholarly:
             factory.return_value.__enter__.return_value = session
-            self.assertTrue(self.updater.update_snapshot(self.snapshot, self.publications))
+            self.assertTrue(self.updater.update_snapshot(self.snapshot, self.publications,
+                                                        provider="requests"))
         scholarly.assert_not_called()
         self.assertEqual(session.get.call_count, 1)
         self.assertEqual(yaml.safe_load(self.snapshot.read_text())["counts"],
@@ -114,16 +115,66 @@ class CitationUpdateTests(unittest.TestCase):
             self.update(session)
         self.assertEqual(self.snapshot.read_text(), self.original)
 
-    def test_cli_and_workflow_use_the_same_direct_parser(self):
+    def test_cli_and_workflow_use_the_same_auto_provider(self):
         with patch("sys.argv", ["update.py", "--dry-run"]), \
                 patch.object(self.updater, "update_snapshot") as update:
             self.updater.main()
-        self.assertEqual(update.call_args.kwargs["provider"], "requests")
+        self.assertEqual(update.call_args.kwargs["provider"], "auto")
         path = Path(__file__).resolve().parents[1] / ".github/workflows/google_scholar_crawler.yaml"
         workflow = yaml.load(path.read_text(), Loader=yaml.BaseLoader)
         refresh = next(step for step in workflow["jobs"]["update"]["steps"]
                        if step.get("name") == "Refresh citations")
-        self.assertIn("--provider requests --verbose", refresh["run"])
+        self.assertIn("--provider auto --verbose", refresh["run"])
+
+    def test_default_auto_provider_uses_scholarly_without_extra_requests(self):
+        with patch.object(self.updater, "fetch_scholarly_counts",
+                          return_value={"first": 53, "second": 3}) as scholarly, \
+                patch.object(self.updater.requests, "Session",
+                             side_effect=AssertionError("Primary provider is not scholarly")) as direct:
+            self.updater.update_snapshot(self.snapshot, self.publications)
+        scholarly.assert_called_once()
+        direct.assert_not_called()
+        self.assertEqual(yaml.safe_load(self.snapshot.read_text())["counts"],
+                         {"first": 53, "second": 3})
+
+    def test_auto_provider_falls_back_only_for_scholarly_parse_errors(self):
+        error = ValueError("scholarly could not fetch the author profile")
+        error.__cause__ = AttributeError("'NoneType' object has no attribute 'get'")
+        session = self.session(page([("first", "53"), ("second", "3")]))
+        with patch.object(self.updater, "fetch_scholarly_counts", side_effect=error), \
+                patch.object(self.updater.requests, "Session") as factory:
+            factory.return_value.__enter__.return_value = session
+            with self.assertLogs(self.updater.__name__, level="INFO") as logs:
+                self.updater.update_snapshot(self.snapshot, self.publications)
+        self.assertTrue(any("direct publication parser" in line for line in logs.output))
+        self.assertEqual(session.get.call_count, 1)
+        self.assertEqual(yaml.safe_load(self.snapshot.read_text())["counts"]["first"], 53)
+
+    def test_auto_provider_does_not_repeat_blocked_or_invalid_requests(self):
+        for cause in [requests.Timeout("Timed out"), RuntimeError("Access denied"), None]:
+            with self.subTest(cause=cause):
+                error = ValueError("Scholar could not return validated papers")
+                error.__cause__ = cause
+                with patch.object(self.updater, "fetch_scholarly_counts", side_effect=error), \
+                        patch.object(self.updater.requests, "Session") as direct:
+                    with self.assertRaises(ValueError):
+                        self.updater.update_snapshot(self.snapshot, self.publications)
+                direct.assert_not_called()
+                self.assertEqual(self.snapshot.read_text(), self.original)
+
+    def test_auto_fallback_restriction_keeps_manual_snapshot(self):
+        error = ValueError("scholarly could not parse the author profile")
+        error.__cause__ = AttributeError("Missing canonical link")
+        session = Mock()
+        session.get.return_value = Mock(text="Blocked", status_code=429)
+        with patch.object(self.updater, "fetch_scholarly_counts", side_effect=error), \
+                patch.object(self.updater.requests, "Session") as factory:
+            factory.return_value.__enter__.return_value = session
+            with self.assertLogs(self.updater.__name__, level="WARNING"):
+                with self.assertRaisesRegex(ValueError, "HTTP 429"):
+                    self.updater.update_snapshot(self.snapshot, self.publications)
+        self.assertEqual(session.get.call_count, 1)
+        self.assertEqual(self.snapshot.read_text(), self.original)
 
     def test_identical_snapshot_is_not_rewritten(self):
         self.update(self.session(page([("first", "5"), ("second", "2")])))
