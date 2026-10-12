@@ -40,7 +40,7 @@ class CitationUpdateTests(unittest.TestCase):
 
     def session(self, *html):
         session = Mock()
-        session.get.side_effect = [Mock(text=value) for value in html]
+        session.get.side_effect = [Mock(text=value, status_code=200) for value in html]
         return session
 
     def test_reads_integer_comma_and_true_zero_counts(self):
@@ -55,8 +55,75 @@ class CitationUpdateTests(unittest.TestCase):
         self.assertEqual(data["checked_on"], "2026-10-03")
 
     def test_zero_is_valid_for_a_real_paper_row(self):
+        self.snapshot.write_text(self.original.replace("second: 2", "second: 0"))
         self.update(self.session(page([("first", "5"), ("second", "")])))
         self.assertEqual(yaml.safe_load(self.snapshot.read_text())["counts"]["second"], 0)
+
+    def test_default_provider_accepts_papers_without_canonical_or_author_details(self):
+        html = page([("first", "53"), ("second", "3")])
+        session = self.session(html)
+        with patch.object(self.updater.requests, "Session") as factory, \
+                patch.object(self.updater, "fetch_scholarly_counts",
+                             side_effect=AssertionError("Default still uses the brittle metadata parser")) as scholarly:
+            factory.return_value.__enter__.return_value = session
+            self.assertTrue(self.updater.update_snapshot(self.snapshot, self.publications))
+        scholarly.assert_not_called()
+        self.assertEqual(session.get.call_count, 1)
+        self.assertEqual(yaml.safe_load(self.snapshot.read_text())["counts"],
+                         {"first": 53, "second": 3})
+
+    def test_http_200_unexpected_page_has_structural_diagnostics_and_keeps_snapshot(self):
+        html = "<html><title>Unexpected response</title><body></body></html>"
+        with self.assertLogs(self.updater.__name__, level="INFO") as logs:
+            with self.assertRaisesRegex(ValueError, "publication list"):
+                self.update(self.session(html))
+        output = "\n".join(logs.output)
+        self.assertIn("HTTP 200", output)
+        self.assertIn("canonical=False", output)
+        self.assertIn("rows=0", output)
+        self.assertNotIn(html, output)
+        self.assertEqual(self.snapshot.read_text(), self.original)
+
+    def test_access_restrictions_are_reported_without_retry_or_snapshot_write(self):
+        for status in [403, 429]:
+            with self.subTest(status=status):
+                session = Mock()
+                session.get.return_value = Mock(text="<html>Blocked</html>", status_code=status)
+                with self.assertRaisesRegex(ValueError, f"HTTP {status}.*access restricted"):
+                    self.update(session)
+                self.assertEqual(session.get.call_count, 1)
+                self.assertEqual(self.snapshot.read_text(), self.original)
+
+    def test_requests_cannot_clear_a_previously_positive_manual_count(self):
+        with self.assertRaisesRegex(ValueError, "zero"):
+            self.update(self.session(page([("first", ""), ("second", "3")])))
+        self.assertEqual(self.snapshot.read_text(), self.original)
+
+    def test_captcha_with_publication_rows_is_rejected(self):
+        html = page([("first", "8"), ("second", "3")]) + '<form action="/sorry/index"></form>'
+        with self.assertRaises(ValueError):
+            self.update(self.session(html))
+        self.assertEqual(self.snapshot.read_text(), self.original)
+
+    def test_other_http_errors_keep_original_snapshot(self):
+        session = Mock()
+        response = Mock(text="Server error", status_code=503)
+        response.raise_for_status.side_effect = requests.HTTPError("503 Server Error")
+        session.get.return_value = response
+        with self.assertRaises(requests.HTTPError):
+            self.update(session)
+        self.assertEqual(self.snapshot.read_text(), self.original)
+
+    def test_cli_and_workflow_use_the_same_direct_parser(self):
+        with patch("sys.argv", ["update.py", "--dry-run"]), \
+                patch.object(self.updater, "update_snapshot") as update:
+            self.updater.main()
+        self.assertEqual(update.call_args.kwargs["provider"], "requests")
+        path = Path(__file__).resolve().parents[1] / ".github/workflows/google_scholar_crawler.yaml"
+        workflow = yaml.load(path.read_text(), Loader=yaml.BaseLoader)
+        refresh = next(step for step in workflow["jobs"]["update"]["steps"]
+                       if step.get("name") == "Refresh citations")
+        self.assertIn("--provider requests --verbose", refresh["run"])
 
     def test_identical_snapshot_is_not_rewritten(self):
         self.update(self.session(page([("first", "5"), ("second", "2")])))
@@ -188,13 +255,14 @@ class CitationUpdateTests(unittest.TestCase):
         with patch.object(self.updater, "fetch_scholarly_counts", create=True,
                           side_effect=ValueError("Scholar blocked this request")):
             with self.assertRaises(ValueError):
-                self.updater.update_snapshot(self.snapshot, self.publications)
+                self.updater.update_snapshot(self.snapshot, self.publications, provider="scholarly")
         self.assertEqual(self.snapshot.read_text(), self.original)
 
-    def test_default_provider_updates_shared_snapshot_with_scholarly(self):
+    def test_optional_scholarly_provider_updates_shared_snapshot(self):
         with patch.object(self.updater, "fetch_scholarly_counts", create=True,
                           return_value={"first": 49, "second": 3}):
-            self.updater.update_snapshot(self.snapshot, self.publications, checked_on="2026-10-05")
+            self.updater.update_snapshot(self.snapshot, self.publications,
+                                         checked_on="2026-10-05", provider="scholarly")
         data = yaml.safe_load(self.snapshot.read_text())
         self.assertEqual(data["counts"], {"first": 49, "second": 3})
         self.assertEqual(data["checked_on"], "2026-10-05")
@@ -203,13 +271,11 @@ class CitationUpdateTests(unittest.TestCase):
         with patch.object(self.updater, "fetch_scholarly_counts", create=True,
                           return_value={"first": 0, "second": 3}):
             with self.assertRaisesRegex(ValueError, "zero"):
-                self.updater.update_snapshot(self.snapshot, self.publications)
+                self.updater.update_snapshot(self.snapshot, self.publications, provider="scholarly")
         self.assertEqual(self.snapshot.read_text(), self.original)
 
     def test_normal_citation_correction_can_decrease_a_count(self):
-        with patch.object(self.updater, "fetch_scholarly_counts", create=True,
-                          return_value={"first": 4, "second": 2}):
-            self.updater.update_snapshot(self.snapshot, self.publications)
+        self.update(self.session(page([("first", "4"), ("second", "2")])))
         self.assertEqual(yaml.safe_load(self.snapshot.read_text())["counts"]["first"], 4)
 
     def test_older_update_cannot_overwrite_newer_manual_date(self):
@@ -237,12 +303,37 @@ class CitationUpdateTests(unittest.TestCase):
             with self.subTest(utc=utc):
                 self.assertEqual(self.updater.chicago_date(datetime.fromisoformat(utc)), expected)
 
-    def test_workflow_schedules_monday_midnight_chicago_and_keeps_manual_trigger(self):
+    def test_workflow_schedules_wednesday_afternoon_and_sunday_night_chicago(self):
         path = Path(__file__).resolve().parents[1] / ".github/workflows/google_scholar_crawler.yaml"
         workflow = yaml.load(path.read_text(), Loader=yaml.BaseLoader)
         self.assertEqual(workflow["on"]["schedule"],
-                         [{"cron": "0 0 * * 1", "timezone": "America/Chicago"}])
+                         [{"cron": "0 13 * * 3", "timezone": "America/Chicago"},
+                          {"cron": "0 23 * * 0", "timezone": "America/Chicago"}])
         self.assertIn("workflow_dispatch", workflow["on"])
+
+    def test_new_schedule_local_times_follow_chicago_daylight_saving(self):
+        cases = [
+            ("2026-10-14T18:00:00+00:00", "2026-10-14", 2, 13),
+            ("2026-12-16T19:00:00+00:00", "2026-12-16", 2, 13),
+            ("2026-10-19T04:00:00+00:00", "2026-10-18", 6, 23),
+            ("2026-12-21T05:00:00+00:00", "2026-12-20", 6, 23),
+        ]
+        for utc, expected_date, weekday, hour in cases:
+            with self.subTest(utc=utc):
+                now = datetime.fromisoformat(utc)
+                local = now.astimezone(self.updater.ZoneInfo("America/Chicago"))
+                self.assertEqual((local.weekday(), local.hour, local.minute), (weekday, hour, 0))
+                self.assertEqual(self.updater.chicago_date(now), expected_date)
+
+    def test_workflow_does_not_hide_citation_fetch_failures(self):
+        path = Path(__file__).resolve().parents[1] / ".github/workflows/google_scholar_crawler.yaml"
+        workflow = yaml.load(path.read_text(), Loader=yaml.BaseLoader)
+        steps = {step.get("name"): step for step in workflow["jobs"]["update"]["steps"]}
+        refresh = steps["Refresh citations"]
+        self.assertNotIn("continue-on-error", refresh)
+        self.assertNotIn("set +e", refresh["run"])
+        self.assertNotIn("|| true", refresh["run"])
+        self.assertIn("timeout 180s", refresh["run"])
 
 
 if __name__ == "__main__":

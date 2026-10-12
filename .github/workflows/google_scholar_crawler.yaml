@@ -2,7 +2,9 @@ name: Update Scholar Citations
 
 on:
   schedule:
-    - cron: '0 0 * * 1'
+    - cron: '0 13 * * 3'
+      timezone: America/Chicago
+    - cron: '0 23 * * 0'
       timezone: America/Chicago
   workflow_dispatch:
     inputs:
@@ -37,11 +39,11 @@ jobs:
       - name: Test snapshot safety
         run: python -m unittest discover -s google_scholar_crawler -p 'test_*.py' -v
       - name: Refresh citations
-        # scholarly retries can wait a long time when Scholar blocks a runner.
+        # Read only the publication table; stop on access restrictions.
         env:
           SCHOLAR_DIAGNOSTIC: ${{ inputs.diagnostic }}
         run: |
-          args=(--provider scholarly --verbose)
+          args=(--provider requests --verbose)
           if [ "$SCHOLAR_DIAGNOSTIC" = 'true' ]; then
             args+=(--dry-run)
           fi

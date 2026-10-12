@@ -27,8 +27,16 @@ def chicago_date(now=None):
 def parse_profile_page(html, profile_id):
     soup = BeautifulSoup(html, "html.parser")
     rows = soup.select("#gsc_a_t .gsc_a_tr")
-    if not rows or soup.select_one('form[action*="/sorry/"]'):
-        raise ValueError("Scholar did not return a publication list (possibly a CAPTCHA).")
+    next_button = soup.select_one("#gsc_bpf_more")
+    captcha = soup.select_one('form[action*="/sorry/"]') is not None
+    # Log structure only; canonical links and author details are not required.
+    logging.getLogger(__name__).info(
+        "Scholar page structure: canonical=%s profile=%s rows=%d pagination=%s captcha=%s",
+        soup.find("link", rel="canonical") is not None,
+        soup.select_one("#gsc_prf_in") is not None, len(rows), next_button is not None, captcha)
+    if not rows or captcha:
+        raise ValueError("Scholar did not return a usable publication list "
+                         "(possible access restriction or changed HTML).")
     counts = {}
     for row in rows:
         title = row.select_one("a.gsc_a_at")
@@ -44,7 +52,6 @@ def parse_profile_page(html, profile_id):
             raise ValueError("Duplicate paper ID or invalid citation count.")
         # Scholar represents a genuine zero-citation paper with an empty cell.
         counts[paper_id] = int(text.replace(",", "")) if text else 0
-    next_button = soup.select_one("#gsc_bpf_more")
     if next_button is None:
         raise ValueError("Scholar pagination control is missing.")
     return counts, not next_button.has_attr("disabled")
@@ -53,11 +60,16 @@ def parse_profile_page(html, profile_id):
 def fetch_counts(profile_id, tracked_ids, session):
     found = {}
     for start in range(0, 2000, 100):
+        logging.getLogger(__name__).info("Loading Scholar publication page (cstart=%d)", start)
         response = session.get(
             "https://scholar.google.com/citations",
             params={"user": profile_id, "hl": "en", "pagesize": 100, "cstart": start},
             timeout=30,
         )
+        logging.getLogger(__name__).info("Scholar HTTP %s (cstart=%d)", response.status_code, start)
+        if response.status_code in (403, 429):
+            raise ValueError(f"Scholar HTTP {response.status_code}: access restricted; "
+                             "no retry attempted.")
         response.raise_for_status()
         counts, more = parse_profile_page(response.text, profile_id)
         if found.keys() & counts.keys():
@@ -109,7 +121,7 @@ def fetch_scholarly_counts(profile_id, tracked_ids, *, client=None):
 
 
 def update_snapshot(snapshot_path, publications_path, *, session=None, checked_on=None,
-                    dry_run=False, provider="scholarly"):
+                    dry_run=False, provider="requests"):
     snapshot_path = Path(snapshot_path)
     original = snapshot_path.read_text(encoding="utf-8")
     snapshot = yaml.safe_load(original)
@@ -128,10 +140,10 @@ def update_snapshot(snapshot_path, publications_path, *, session=None, checked_o
             counts = fetch_counts(profile_id, tracked_ids, client)
     else:
         counts = fetch_scholarly_counts(profile_id, tracked_ids)
-        # scholarly also defaults a missing HTML citation cell to zero. Require
-        # manual verification before clearing an existing nonzero count.
-        if any(counts[key] == 0 and old > 0 for key, old in snapshot["counts"].items()):
-            raise ValueError("A previously positive count became zero; manual verification required.")
+    # Both providers can see empty citation cells; never clear a positive count
+    # without manual verification.
+    if any(counts[key] == 0 and old > 0 for key, old in snapshot["counts"].items()):
+        raise ValueError("A previously positive count became zero; manual verification required.")
     if snapshot_path.read_text(encoding="utf-8") != original:
         raise ValueError("The snapshot changed during fetching; keeping the newer edit.")
     updated = dict(snapshot)
@@ -162,10 +174,10 @@ def main():
     parser.add_argument("--snapshot", type=Path, default=ROOT / "_data/google_scholar_citations.yml")
     parser.add_argument("--publications", type=Path, default=ROOT / "_data/publications.yml")
     parser.add_argument("--dry-run", action="store_true", help="Validate live counts without saving them.")
-    parser.add_argument("--provider", choices=["scholarly", "requests"], default="scholarly",
-                        help="Use scholarly by default; requests is retained for troubleshooting.")
+    parser.add_argument("--provider", choices=["scholarly", "requests"], default="requests",
+                        help="Parse the publication table directly by default; scholarly is optional.")
     parser.add_argument("--verbose", action="store_true",
-                        help="Log Scholar HTTP statuses and retry progress without logging headers.")
+                        help="Log Scholar HTTP statuses and page structure without headers or HTML.")
     args = parser.parse_args()
     if args.verbose:
         logging.basicConfig(level=logging.INFO, format="%(asctime)s %(name)s: %(message)s")
