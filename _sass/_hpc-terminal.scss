@@ -130,6 +130,52 @@
   .hpc-terminal__muted { display: block; font-size: 12px; }
 }
 
+.hpc-terminal__news li { margin-bottom: 6px; }
+
+// Data tables for citations and the GPU/Slurm easter eggs. Overrides the
+// site's light global table styles; wide tables scroll inside the terminal.
+.hpc-terminal__table-wrap {
+  max-width: 100%;
+  margin-bottom: 10px;
+  overflow-x: auto;
+  scrollbar-color: #59685c #191d1b;
+
+  &:focus-visible { outline: 2px solid #a4d68d; outline-offset: 2px; }
+}
+
+.hpc-terminal__table {
+  width: auto;
+  min-width: 100%;
+  margin: 0;
+  border-collapse: collapse;
+  font-family: $monospace;
+  font-size: 13px;
+
+  caption {
+    padding: 4px 0;
+    color: #a4d68d;
+    text-align: left;
+  }
+
+  thead { background: transparent; }
+
+  th, td {
+    padding: 3px 12px 3px 0;
+    border: 0;
+    border-bottom: 1px solid #2f3631;
+    color: inherit;
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  th { color: #a4d68d; font-weight: normal; }
+  tfoot th, tfoot td { border-bottom: 0; color: #fff; }
+  .hpc-terminal__number { text-align: right; }
+  .hpc-terminal__wrap { min-width: 14em; white-space: normal; overflow-wrap: break-word; }
+}
+
+.hpc-terminal__smi-banner { color: #a4d68d; }
+
 .hpc-terminal__reference {
   display: grid;
   grid-template-columns: 90px minmax(0, 1fr);

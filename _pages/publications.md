@@ -10,4 +10,5 @@ author_profile: true
 </div>
 
 {% assign all_publications = site.data.publications %}
+{% include publication-filters.html papers=all_publications %}
 {% include publication-list.html papers=all_publications %}

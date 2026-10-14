@@ -1,0 +1,19 @@
+# Research themes shared by the /research/ page, the publication filters and
+# the footer terminal. Papers and projects reference a theme by its id.
+- id: "energy-ai-hpc"
+  name: "Energy-Efficient AI & HPC Systems"
+  summary: "How much energy does serving a large language model really take, and where can it be saved? This line of work measures the power cost of LLM inference across GPUs, nodes, and serving engines, screens energy-aware serving configurations before they reach expensive accelerators, and builds power-centric observability for production HPC clusters."
+  image: "/images/AAAI.png"
+  image_alt: "Overview figure from TokenPowerBench, a benchmark for the power consumption of LLM inference"
+
+- id: "llm-hardware-design"
+  name: "LLMs for Hardware Design"
+  summary: "Large language models are starting to help design the chips they run on. This work benchmarks LLM-aided design verification end to end and uses knowledge-guided LLM sampling to explore microarchitecture design spaces more efficiently than conventional search."
+  image: "/images/Fixme.png"
+  image_alt: "Overview figure from FIXME, an end-to-end benchmark for LLM-aided design verification"
+
+- id: "scientific-data"
+  name: "Scientific Data Management"
+  summary: "Scientific datasets are only useful if researchers can find what is inside them. This work makes self-describing scientific files searchable: learned representations of metadata attributes, parallel semantic querying, and LLM-powered exploration and answer generation for scientific data discovery."
+  image: "/images/ICEAGE.png"
+  image_alt: "Overview figure from ICEAGE, an LLM-powered engine for scientific data discovery"

@@ -1,6 +1,8 @@
 - title: "TokenPowerSandbox: Evidence-Gated CPU-First Screening for Energy-Aware LLM Serving."
   venue: "arXiv 2026"
   scholar_id: "3fE2CSJIrl8C"
+  short_title: "TokenPowerSandbox"
+  themes: ["energy-ai-hpc"]
   year: 2026
   cv_authors: "**C. Niu**."
   cv_venue: "arXiv preprint 2608.18149 (v1)"
@@ -20,6 +22,8 @@
 - title: "MicroEvo: Knowledge-Guided LLM Sampling for Efficient Microarchitecture Design Space Exploration."
   venue: "ICCAD 2026"
   scholar_id: "MXK_kJrjxJIC"
+  short_title: "MicroEvo"
+  themes: ["llm-hardware-design"]
   year: 2026
   cv_authors: "J. Xiong, R. Li, **C. Niu**, G. Gao, C. Xing, Y. Zhang, X. Wan, J. Cui, C. Bai, Y. Hua, Y. Wang, M. Ling, X. Wang, and T. Xie."
   cv_venue: "IEEE/ACM International Conference on Computer-Aided Design (ICCAD '26)"
@@ -41,6 +45,8 @@
 - title: "Power-Centric Observability for HPC Systems: Design, Deployment, and Evaluation on REPACSS."
   venue: "PEARC 2026"
   scholar_id: "hqOjcs7Dif8C"
+  short_title: "Power-Centric Observability"
+  themes: ["energy-ai-hpc"]
   year: 2026
   cv_authors: "Y. Zhao, J. Li, **C. Niu**, A. Sill, and Y. Chen."
   cv_venue: "Proceedings of the Practice and Experience in Advanced Research Computing 2026 (PEARC '26)"
@@ -59,6 +65,8 @@
 - title: "TokenPowerBench: Benchmarking the Power Consumption of LLM Inference."
   venue: "AAAI 2026"
   scholar_id: "ufrVoPGSRksC"
+  short_title: "TokenPowerBench"
+  themes: ["energy-ai-hpc"]
   year: 2026
   cv_authors: "**C. Niu**, W. Zhang, J. Li, Y. Zhao, T. Wang, X. Wang, and Y. Chen."
   cv_venue: "Proceedings of the AAAI Conference on Artificial Intelligence (AAAI '26), 40(38)"
@@ -82,6 +90,8 @@
 - title: "FIXME: Towards End-to-End Benchmarking of LLM-Aided Design Verification."
   venue: "AAAI 2026"
   scholar_id: "Se3iqnhoufwC"
+  short_title: "FIXME"
+  themes: ["llm-hardware-design"]
   year: 2026
   cv_authors: "G.-W. Wan, S. Wong, S. Su, **C. Niu**, N. Wang, X. Wan, Q. Chen, M. Xing, J. Zhang, J. Ye, Y. Wang, R. Song, T. Ni, Q. Xu, N. Guan, Z. Jiang, X. Wang, Y. Chen, and J. Yang."
   cv_venue: "Proceedings of the AAAI Conference on Artificial Intelligence (AAAI '26), 40(2)"
@@ -101,6 +111,8 @@
 - title: "Energy Efficient or Exhaustive? Benchmarking Power Consumption of LLM Inference Engines."
   venue: "HotCarbon 2025"
   scholar_id: "W7OEmFMy1HYC"
+  short_title: "Energy Efficient or Exhaustive?"
+  themes: ["energy-ai-hpc"]
   year: 2025
   cv_authors: "**C. Niu**, W. Zhang, Y. Zhao, and Y. Chen."
   cv_venue: "ACM SIGEnergy Energy Informatics Review, 5(2)"
@@ -121,6 +133,8 @@
 - title: "ICEAGE: Intelligent Contextual Exploration and Answer Generation Engine for Scientific Data Discovery."
   venue: "SSDBM 2025"
   scholar_id: "Y0pCki6q_DkC"
+  short_title: "ICEAGE"
+  themes: ["scientific-data"]
   year: 2025
   cv_authors: "**C. Niu**, W. Zhang, M. Side, and Y. Chen."
   cv_venue: "Proceedings of the 37th International Conference on Scalable Scientific Data Management (SSDBM '25)"
@@ -138,6 +152,8 @@
 - title: "PSQS: Parallel Semantic Querying Service for Self-Describing File Formats."
   venue: "Big Data 2023"
   scholar_id: "zYLM7Y9cAGgC"
+  short_title: "PSQS"
+  themes: ["scientific-data"]
   year: 2023
   cv_authors: "**C. Niu**, W. Zhang, S. Byna, and Y. Chen."
   cv_venue: "IEEE International Conference on Big Data (BigData '23)"
@@ -155,6 +171,8 @@
 - title: "Kv2vec: A Distributed Representation Method for Key-Value Pairs from Metadata Attributes."
   venue: "HPEC 2022"
   scholar_id: "qjMakFHDy7sC"
+  short_title: "Kv2vec"
+  themes: ["scientific-data"]
   year: 2022
   cv_authors: "**C. Niu**, W. Zhang, S. Byna, and Y. Chen."
   cv_venue: "IEEE High Performance Extreme Computing Conference (HPEC '22)"
@@ -172,6 +190,8 @@
 - title: "Exploring Metadata Search Essentials for Scientific Data Management."
   venue: "HiPC 2019"
   scholar_id: "UeHWp8X0CEIC"
+  short_title: "Metadata Search Essentials"
+  themes: ["scientific-data"]
   year: 2019
   cv_authors: "W. Zhang, S. Byna, **C. Niu**, and Y. Chen."
   cv_venue: "IEEE International Conference on High Performance Computing, Data, and Analytics (HiPC '19)"

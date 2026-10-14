@@ -409,6 +409,8 @@
 }
 
 @import "hpc-terminal";
+@import "publications";
+@import "research";
 
 @include breakpoint(max-width $small) {
     .paper-box {

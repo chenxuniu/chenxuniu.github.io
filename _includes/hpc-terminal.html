@@ -24,6 +24,8 @@
     <button type="button" data-terminal-run="research">research</button>
     <button type="button" data-terminal-run="papers">papers</button>
     <button type="button" data-terminal-run="projects">projects</button>
+    <button type="button" data-terminal-run="news">news</button>
+    <button type="button" data-terminal-run="citations">citations</button>
     <button type="button" data-terminal-run="help">help</button>
   </div>
 </template>
@@ -38,11 +40,104 @@
 
 <template data-terminal-command="research">
   <ul class="hpc-terminal__list">
-    <li>High-performance computing (HPC)</li>
-    <li>AI inference on HPC systems</li>
-    <li>Energy-efficient computing frameworks</li>
-    <li>Scientific data management</li>
+    {% for theme in site.data.research_themes %}
+      {% assign theme_papers = site.data.publications | where_exp: "paper", "paper.themes contains theme.id" %}
+      <li><a href="{{ '/research/' | relative_url }}#{{ theme.id }}" data-terminal-theme>{{ theme.name | escape }}</a> <span class="hpc-terminal__muted">{{ theme_papers | size }} {% if theme_papers.size == 1 %}paper{% else %}papers{% endif %}</span></li>
+    {% endfor %}
   </ul>
+  <p><a href="{{ '/research/' | relative_url }}">Research overview</a></p>
+</template>
+
+<template data-terminal-command="news">
+  <ul class="hpc-terminal__list hpc-terminal__news">
+    {% for item in site.data.news limit: 5 %}
+      <li data-terminal-news><span class="hpc-terminal__muted">{{ item.date | replace: '-', '.' }}</span> {% include news-text.html item=item %}</li>
+    {% endfor %}
+  </ul>
+</template>
+
+{% assign scholar = site.data.google_scholar_citations %}
+<template data-terminal-command="citations">
+  {% assign citation_total = 0 %}
+  <div class="hpc-terminal__table-wrap" role="region" aria-label="Google Scholar citations" tabindex="0">
+    <table class="hpc-terminal__table" aria-label="Google Scholar citations">
+      <thead><tr><th scope="col">Paper</th><th scope="col">Venue</th><th scope="col" class="hpc-terminal__number">Citations</th></tr></thead>
+      <tbody>
+        {% for paper in site.data.publications %}
+          {% assign citation_count = scholar.counts[paper.scholar_id] %}
+          {% if paper.scholar_id and citation_count != nil %}
+            {% assign citation_total = citation_total | plus: citation_count %}
+            <tr data-terminal-citation="{{ paper.scholar_id }}"><td>{{ paper.short_title | default: paper.title | escape }}</td><td>{{ paper.venue | escape }}</td><td class="hpc-terminal__number">{{ citation_count }}</td></tr>
+          {% endif %}
+        {% endfor %}
+      </tbody>
+      <tfoot><tr data-terminal-citation-total><th scope="row" colspan="2">Total</th><td class="hpc-terminal__number">{{ citation_total }}</td></tr></tfoot>
+    </table>
+  </div>
+  <p class="hpc-terminal__muted">Google Scholar, checked {{ scholar.checked_on }}</p>
+</template>
+
+{% comment %} Easter eggs: real site data in the shape of familiar GPU and Slurm tools. {% endcomment %}
+{% comment %} Liquid conditions cannot apply filters, so compute the threshold first. {% endcomment %}
+{% assign active_since_year = site.time | date: "%Y" | plus: 0 | minus: 1 %}
+<template data-terminal-command="nvidia-smi">
+  <p class="hpc-terminal__smi-banner">NVIDIA-SMI chenxu@hpc-ai &middot; {{ site.data.research_themes | size }} research GPUs &middot; {{ site.data.publications | size }} papers</p>
+  <div class="hpc-terminal__table-wrap" role="region" aria-label="Research GPUs" tabindex="0">
+    <table class="hpc-terminal__table" aria-label="Research GPUs">
+      <thead><tr><th scope="col">GPU</th><th scope="col">Name</th><th scope="col" class="hpc-terminal__number">Papers</th><th scope="col" class="hpc-terminal__number">Citations</th></tr></thead>
+      <tbody>
+        {% for theme in site.data.research_themes %}
+          {% assign theme_papers = site.data.publications | where_exp: "paper", "paper.themes contains theme.id" %}
+          {% assign theme_citations = 0 %}
+          {% for paper in theme_papers %}{% assign theme_citations = theme_citations | plus: scholar.counts[paper.scholar_id] %}{% endfor %}
+          <tr data-terminal-gpu><td>{{ forloop.index0 }}</td><td>{{ theme.name | escape }}</td><td class="hpc-terminal__number">{{ theme_papers | size }}</td><td class="hpc-terminal__number">{{ theme_citations }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="hpc-terminal__table-wrap" role="region" aria-label="Paper processes" tabindex="0">
+    <table class="hpc-terminal__table" aria-label="Paper processes">
+      <caption>Processes</caption>
+      <thead><tr><th scope="col">GPU</th><th scope="col">PID</th><th scope="col">Process name</th><th scope="col" class="hpc-terminal__number">Citations</th></tr></thead>
+      <tbody>
+        {% for paper in site.data.publications %}
+          {% assign paper_theme = paper.themes | first %}
+          {% assign paper_gpu = "-" %}
+          {% for theme in site.data.research_themes %}{% if theme.id == paper_theme %}{% assign paper_gpu = forloop.index0 %}{% endif %}{% endfor %}
+          <tr data-terminal-process><td>{{ paper_gpu }}</td><td>{{ paper.year }}</td><td>{{ paper.short_title | default: paper.title | escape }}</td><td class="hpc-terminal__number">{{ scholar.counts[paper.scholar_id] | default: 0 }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</template>
+
+<template data-terminal-command="sinfo">
+  <div class="hpc-terminal__table-wrap" role="region" aria-label="Research partitions" tabindex="0">
+    <table class="hpc-terminal__table" aria-label="Research partitions">
+      <thead><tr><th scope="col">PARTITION</th><th scope="col">AVAIL</th><th scope="col" class="hpc-terminal__number">NODES</th><th scope="col">STATE</th><th scope="col">NODELIST</th></tr></thead>
+      <tbody>
+        {% for theme in site.data.research_themes %}
+          {% assign theme_papers = site.data.publications | where_exp: "paper", "paper.themes contains theme.id" %}
+          {% assign latest_year = theme_papers | map: "year" | sort | last %}
+          <tr data-terminal-partition><td>{{ theme.id }}{% if forloop.first %}*{% endif %}</td><td>up</td><td class="hpc-terminal__number">{{ theme_papers | size }}</td><td>{% if latest_year >= active_since_year %}alloc{% else %}idle{% endif %}</td><td class="hpc-terminal__wrap">{% for paper in theme_papers %}{{ paper.short_title | default: paper.title | slugify }}{% unless forloop.last %},{% endunless %}{% endfor %}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</template>
+
+<template data-terminal-command="squeue">
+  <div class="hpc-terminal__table-wrap" role="region" aria-label="Paper jobs" tabindex="0">
+    <table class="hpc-terminal__table" aria-label="Paper jobs">
+      <thead><tr><th scope="col">JOBID</th><th scope="col">PARTITION</th><th scope="col">NAME</th><th scope="col">ST</th><th scope="col">VENUE</th></tr></thead>
+      <tbody>
+        {% for paper in site.data.publications %}
+          <tr data-terminal-job="{{ paper.scholar_id | default: forloop.index }}"><td>{{ 1000 | plus: forloop.index }}</td><td>{{ paper.themes | first }}</td><td>{{ paper.short_title | default: paper.title | slugify }}</td><td>{% if paper.venue contains 'arXiv' or paper.note contains 'forthcoming' %}R{% else %}CD{% endif %}</td><td>{{ paper.venue | escape }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <p class="hpc-terminal__muted">ST: R = preprint or proceedings forthcoming, CD = published</p>
 </template>
 
 <template data-terminal-command="papers">
@@ -82,6 +177,11 @@
     <dt>research</dt><dd>Research interests</dd>
     <dt>papers</dt><dd>Publications and PDFs</dd>
     <dt>projects</dt><dd>Open-source projects</dd>
+    <dt>news</dt><dd>Recent news</dd>
+    <dt>citations</dt><dd>Google Scholar citations</dd>
+    <dt>nvidia-smi</dt><dd>Research themes as GPUs</dd>
+    <dt>sinfo</dt><dd>Research themes as Slurm partitions</dd>
+    <dt>squeue</dt><dd>Papers as Slurm jobs</dd>
     <dt>help</dt><dd>Command reference</dd>
     <dt>clear</dt><dd>Clear the terminal</dd>
     <dt>exit</dt><dd>Close the terminal</dd>
