@@ -1,15 +1,13 @@
-# Manually verified against the Google Scholar PDF printed on 2026-10-04.
-# TokenPowerBench count manually updated from the user's report on 2026-10-12.
-profile_id: "i1H5XQ8AAAAJ"
-checked_on: "2026-10-04"
+profile_id: i1H5XQ8AAAAJ
+checked_on: '2026-10-14'
 counts:
-  "3fE2CSJIrl8C": 0   # TokenPowerSandbox
-  "MXK_kJrjxJIC": 0   # MicroEvo
-  "hqOjcs7Dif8C": 1   # Power-Centric Observability
-  "ufrVoPGSRksC": 53  # TokenPowerBench
-  "Se3iqnhoufwC": 11  # FIXME
-  "W7OEmFMy1HYC": 36  # Energy Efficient or Exhaustive?
-  "Y0pCki6q_DkC": 2   # ICEAGE
-  "zYLM7Y9cAGgC": 5   # PSQS
-  "qjMakFHDy7sC": 5   # Kv2vec
-  "UeHWp8X0CEIC": 19  # Exploring Metadata Search Essentials
+  3fE2CSJIrl8C: 0
+  MXK_kJrjxJIC: 0
+  Se3iqnhoufwC: 11
+  UeHWp8X0CEIC: 19
+  W7OEmFMy1HYC: 36
+  Y0pCki6q_DkC: 2
+  hqOjcs7Dif8C: 1
+  qjMakFHDy7sC: 5
+  ufrVoPGSRksC: 54
+  zYLM7Y9cAGgC: 5
