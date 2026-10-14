@@ -84,6 +84,9 @@ def fetch_serpapi_counts(profile_id, tracked_ids, session, *, api_key=None):
                 raise ValueError("SerpApi returned a paper from an unexpected author.")
             paper_id = identifier.split(":", 1)[1]
             count = cited_by.get("value") if isinstance(cited_by, dict) else None
+            # SerpApi represents an uncited article with an explicit null value.
+            if isinstance(cited_by, dict) and "value" in cited_by and count is None:
+                count = 0
             if not re.fullmatch(r"[A-Za-z0-9_-]+", paper_id) or paper_id in found:
                 raise ValueError("Repeated or invalid SerpApi paper ID.")
             if type(count) is not int or count < 0:

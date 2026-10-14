@@ -421,6 +421,10 @@ class CitationUpdateTests(unittest.TestCase):
                     "hl": "en", "num": 100, "start": 0, "api_key": "test-secret"},
             timeout=30, allow_redirects=False)
 
+    def test_serpapi_explicit_null_value_is_zero_for_a_present_paper(self):
+        session = self.serpapi_session(self.serpapi_data([("first", 53), ("second", None)]))
+        self.assertEqual(self.fetch_serpapi(session), {"first": 53, "second": 0})
+
     def test_serpapi_follows_pagination_without_using_remote_urls(self):
         first = self.serpapi_data([("first", 53)], more=True)
         first["serpapi_pagination"]["next"] = "https://unexpected.example/"
@@ -439,11 +443,12 @@ class CitationUpdateTests(unittest.TestCase):
                  {**valid, "articles": []}, {**valid, "articles": None},
                  self.serpapi_data([("first", 53)]),
                  self.serpapi_data([("first", 53), ("first", 54), ("second", 3)])]
-        for value in [None, "53", -1, True, 1.5]:
+        for value in ["53", -1, True, 1.5]:
             cases.append(self.serpapi_data([("first", value), ("second", 3)]))
         for replacement in [{"citation_id": "other:first", "cited_by": {"value": 53}},
                             {"citation_id": f"{PROFILE}:first"},
                             {"citation_id": f"{PROFILE}:first", "cited_by": None},
+                            {"citation_id": f"{PROFILE}:first", "cited_by": {}},
                             {"citation_id": f"{PROFILE}:", "cited_by": {"value": 53}}, None]:
             data = deepcopy(valid)
             data["articles"][0] = replacement
@@ -459,10 +464,11 @@ class CitationUpdateTests(unittest.TestCase):
 
     def test_serpapi_invalid_count_reports_shape_without_response_contents(self):
         data = self.serpapi_data([("first", None), ("second", 3)])
+        data["articles"][0]["cited_by"] = {}
         with self.assertRaises(ValueError) as raised:
             self.fetch_serpapi(self.serpapi_session(data))
         self.assertIn("count_type=NoneType", str(raised.exception))
-        self.assertIn("value_present=True", str(raised.exception))
+        self.assertIn("value_present=False", str(raised.exception))
         self.assertNotIn("test-secret", str(raised.exception))
 
     def test_serpapi_transient_failure_retries_then_returns_counts(self):
@@ -538,6 +544,7 @@ class CitationUpdateTests(unittest.TestCase):
 
     def test_serpapi_failure_or_zero_does_not_overwrite_or_fall_back(self):
         for data in [self.serpapi_data([("first", 0), ("second", 3)]),
+                     self.serpapi_data([("first", None), ("second", 3)]),
                      self.serpapi_data([("first", 53)]), {"error": "Provider error test-secret"}]:
             with self.subTest(data=data), \
                     patch.dict(self.updater.os.environ, {"SERPAPI_KEY": "test-secret"}), \
