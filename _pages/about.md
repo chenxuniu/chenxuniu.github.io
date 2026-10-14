@@ -54,7 +54,7 @@ I am an AI-native Solutions Architect and HPC System Engineer at NVIDIA, where I
     </span>
     <span class="news-entry">
       <time class="news-date" datetime="2026-09">2026.09</time>
-      <span>Our paper <em>The 1/W Law: Context Length is the Dominant Energy Lever in LLM Inference Fleets.</em> has been accepted at <strong>NeurIPS 2026</strong>.</span>
+      <span>Our paper <a href="{{ '/assets/pdf/neurips2026-one-over-w-law.pdf' | relative_url }}" target="_blank" rel="noopener noreferrer"><em>The 1/W Law: Context Length is the Dominant Energy Lever in LLM Inference Fleets.</em></a> has been accepted at <strong>NeurIPS 2026</strong> (camera-ready PDF).</span>
     </span>
   </li>
   <li class="news-item">
