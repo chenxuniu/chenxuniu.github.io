@@ -1,0 +1,18 @@
+{%- comment -%}Sort by shared citation counts, preserving source order for ties and placing untracked papers last.{%- endcomment -%}
+{%- assign citation_sorted_papers = "" | split: "" -%}
+{%- assign citation_sort_remaining = include.papers -%}
+{%- for citation_sort_step in include.papers -%}
+  {%- if citation_sort_remaining.size == 0 -%}{%- break -%}{%- endif -%}
+  {%- assign citation_sort_next = citation_sort_remaining.first -%}
+  {%- assign citation_sort_max = site.data.google_scholar_citations.counts[citation_sort_next.scholar_id] | default: -1 -%}
+  {%- for citation_sort_candidate in citation_sort_remaining -%}
+    {%- assign citation_sort_count = site.data.google_scholar_citations.counts[citation_sort_candidate.scholar_id] | default: -1 -%}
+    {%- if citation_sort_count > citation_sort_max -%}
+      {%- assign citation_sort_next = citation_sort_candidate -%}
+      {%- assign citation_sort_max = citation_sort_count -%}
+    {%- endif -%}
+  {%- endfor -%}
+  {%- assign citation_sort_pick = citation_sort_remaining | where_exp: "candidate", "candidate == citation_sort_next" -%}
+  {%- assign citation_sorted_papers = citation_sorted_papers | concat: citation_sort_pick -%}
+  {%- assign citation_sort_remaining = citation_sort_remaining | where_exp: "candidate", "candidate != citation_sort_next" -%}
+{%- endfor -%}

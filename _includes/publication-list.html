@@ -1,4 +1,5 @@
-{% for paper in include.papers %}
+{% include sort-publications.html papers=include.papers %}
+{% for paper in citation_sorted_papers %}
 <div class="paper-box"{% if paper.themes %} data-themes="{{ paper.themes | join: ' ' | escape }}"{% endif %}>
   <div class="paper-box-image">
     <div>

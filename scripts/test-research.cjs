@@ -80,11 +80,27 @@ async function checkLayout(browser) {
   console.log('Research layout passed at every viewport');
 }
 
+async function checkCitationOrder(browser) {
+  const publications = await openPage(browser, '/publications/', { javaScriptEnabled: false });
+  const ranked = (await publications.page.locator('.paper-title').allInnerTexts()).map(title => title.trim());
+  const research = await openPage(browser, '/research/', { javaScriptEnabled: false });
+  for (const theme of THEMES) {
+    const listed = (await research.page.locator(`#${theme.id} .research-theme__papers li a`)
+      .allInnerTexts()).map(title => title.trim());
+    assert.deepEqual(listed, ranked.filter(title => listed.includes(title)),
+      `${theme.name} follows the same citation order as Publications without JavaScript`);
+  }
+  await research.context.close();
+  await publications.context.close();
+  console.log('Research publication lists follow citation order without JavaScript');
+}
+
 runCheck(async () => {
   const browser = await launchBrowser();
   try {
     await checkNavigation(browser);
     await checkThemes(browser);
+    await checkCitationOrder(browser);
     await checkLayout(browser);
   } finally {
     await browser.close();
