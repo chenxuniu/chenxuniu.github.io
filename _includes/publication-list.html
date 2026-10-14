@@ -1,5 +1,5 @@
 {% for paper in include.papers %}
-<div class="paper-box">
+<div class="paper-box"{% if paper.themes %} data-themes="{{ paper.themes | join: ' ' | escape }}"{% endif %}>
   <div class="paper-box-image">
     <div>
       <div class="badge">{{ paper.venue }}</div>
@@ -7,19 +7,9 @@
     </div>
   </div>
   <div class="paper-box-text">
-    {% assign primary_link = paper.links | where: "label", "DOI" | first %}
-    {% unless primary_link %}
-      {% assign primary_link = paper.links | where: "label", "arXiv" | first %}
-    {% endunless %}
-    {% unless primary_link %}
-      {% assign primary_link = paper.links | where: "label", "PDF" | first %}
-    {% endunless %}
-    {% if primary_link %}
-      {% assign title_url = primary_link.url %}
-      {% unless title_url contains '://' %}
-        {% assign title_url = title_url | relative_url %}
-      {% endunless %}
-      <p class="paper-title"><a href="{{ title_url }}" target="_blank" rel="noopener noreferrer">{{ paper.title }}</a></p>
+    {% include paper-primary-url.html paper=paper %}
+    {% if paper_primary_url != "" %}
+      <p class="paper-title"><a href="{{ paper_primary_url }}" target="_blank" rel="noopener noreferrer">{{ paper.title }}</a></p>
     {% else %}
       <p class="paper-title">{{ paper.title }}</p>
     {% endif %}
@@ -34,7 +24,7 @@
           {% unless link_url contains '://' %}
             {% assign link_url = link_url | relative_url %}
           {% endunless %}
-          <a href="{{ link_url }}" target="_blank" rel="noopener noreferrer">{{ link.label }}</a>{% unless forloop.last %}<span class="paper-link-separator">|</span>{% endunless %}
+          <a href="{{ link_url }}" target="_blank" rel="noopener noreferrer">{{ link.label }}</a>{% if link.label == "BibTeX" %}{% unless link.url contains '://' %}<button type="button" class="paper-copy-bib" data-bib-url="{{ link_url | escape }}" aria-label="Copy BibTeX: {{ paper.short_title | default: paper.title | escape }}" hidden>Copy</button>{% endunless %}{% endif %}{% unless forloop.last %}<span class="paper-link-separator">|</span>{% endunless %}
         {% endfor %}
       </p>
     {% endif %}

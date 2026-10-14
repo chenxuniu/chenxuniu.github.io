@@ -1,0 +1,80 @@
+/* ==========================================================================
+   Publication theme filters and BibTeX copy buttons
+   ========================================================================== */
+
+$paper-accent: #254b7e;
+$paper-accent-dark: #17375c;
+
+.paper-box[hidden],
+.paper-filters[hidden],
+.paper-filters__status[hidden],
+.paper-copy-bib[hidden] {
+    display: none;
+}
+
+.paper-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5em;
+    margin: 1.25em 0 0;
+}
+
+.paper-filters__button {
+    padding: .3em .75em;
+    border: 1px solid #c9d3e0;
+    border-radius: 2px;
+    background: #fff;
+    color: $paper-accent;
+    font-family: inherit;
+    font-size: .8em;
+    font-weight: 600;
+    line-height: 1.4;
+    cursor: pointer;
+
+    &:hover {
+        border-color: $paper-accent;
+    }
+
+    &:focus-visible {
+        outline: 2px solid $paper-accent;
+        outline-offset: 2px;
+    }
+
+    &[aria-pressed="true"] {
+        border-color: $paper-accent;
+        background: $paper-accent;
+        color: #fff;
+    }
+}
+
+.paper-filters__status.paper-filters__status {
+    margin: .6em 0 0;
+    color: #6b6b6b;
+    font-size: .8em;
+}
+
+.paper-copy-bib {
+    min-width: 24px;
+    min-height: 24px;
+    margin-left: .35em;
+    padding: 0 .45em;
+    border: 1px solid #c9d3e0;
+    border-radius: 2px;
+    background: #fff;
+    color: $paper-accent;
+    font-family: inherit;
+    font-size: .9em;
+    font-weight: 600;
+    line-height: 1.5;
+    cursor: pointer;
+
+    &:hover {
+        border-color: $paper-accent;
+        color: $paper-accent-dark;
+    }
+
+    &:focus-visible {
+        outline: 2px solid $paper-accent;
+        outline-offset: 2px;
+    }
+}

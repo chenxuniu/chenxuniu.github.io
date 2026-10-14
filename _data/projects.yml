@@ -9,6 +9,7 @@
       url: "/assets/pdf/aaai2026-tokenpowerbench.pdf"
     - label: "DOI"
       url: "https://doi.org/10.1609/aaai.v40i38.40535"
+  themes: ["energy-ai-hpc"]
   tags:
     - "LLM Inference"
     - "Power Benchmarking"
@@ -25,6 +26,7 @@
       url: "/assets/pdf/hotcarbon2025-llm-inference-engines.pdf"
     - label: "DOI"
       url: "https://doi.org/10.1145/3757892.3757900"
+  themes: ["energy-ai-hpc"]
   tags:
     - "LLM Systems"
     - "Inference Engines"
@@ -36,6 +38,7 @@
   links:
     - label: "Code"
       url: "https://github.com/chenxuniu/awesome-disaggregated-llm-serving"
+  themes: ["energy-ai-hpc"]
   tags:
     - "LLM Serving"
     - "Disaggregation"

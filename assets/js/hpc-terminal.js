@@ -11,7 +11,8 @@
   document.querySelectorAll('[data-terminal-command]').forEach(function (template) {
     templates.set(template.dataset.terminalCommand, template);
   });
-  var commands = ['whoami', 'research', 'papers', 'projects', 'help', 'clear', 'exit'];
+  var commands = ['whoami', 'research', 'papers', 'projects', 'news', 'citations',
+    'nvidia-smi', 'sinfo', 'squeue', 'help', 'clear', 'exit'];
   var history = [];
   var historyIndex = 0;
   var draft = '';

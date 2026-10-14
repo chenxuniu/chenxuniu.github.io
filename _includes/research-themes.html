@@ -1,0 +1,50 @@
+<p class="research-intro">My work spans three connected themes: measuring and reducing the energy cost of AI on HPC systems, applying LLMs to hardware design, and making scientific data discoverable.</p>
+
+<nav class="research-overview" aria-label="Research themes">
+  {% for theme in site.data.research_themes %}
+    {% assign theme_papers = site.data.publications | where_exp: "paper", "paper.themes contains theme.id" %}
+    {% assign theme_years = theme_papers | map: "year" | sort %}
+    <a class="research-overview__card" href="#{{ theme.id }}">
+      <span class="research-overview__name">{{ theme.name | escape }}</span>
+      <span class="research-overview__meta">{{ theme_papers | size }} {% if theme_papers.size == 1 %}paper{% else %}papers{% endif %}{% if theme_papers.size > 0 %} · {% if theme_years.first == theme_years.last %}{{ theme_years.first }}{% else %}{{ theme_years.first }}–{{ theme_years.last }}{% endif %}{% endif %}</span>
+    </a>
+  {% endfor %}
+</nav>
+
+{% for theme in site.data.research_themes %}
+  {% assign theme_papers = site.data.publications | where_exp: "paper", "paper.themes contains theme.id" %}
+  {% assign theme_projects = site.data.projects | where_exp: "project", "project.themes contains theme.id" %}
+  <section class="research-theme" id="{{ theme.id }}" aria-labelledby="{{ theme.id }}-title">
+    <h2 id="{{ theme.id }}-title">{{ theme.name | escape }}</h2>
+    <div class="research-theme__body">
+      <figure class="research-theme__figure">
+        <img src="{{ theme.image | relative_url }}" alt="{{ theme.image_alt | escape }}" width="800" height="350" loading="lazy" decoding="async">
+      </figure>
+      <div class="research-theme__text">
+        <p class="research-theme__summary">{{ theme.summary | escape }}</p>
+        <h3 class="research-theme__label">Publications</h3>
+        <ul class="research-theme__papers">
+          {% for paper in theme_papers %}
+            {% include paper-primary-url.html paper=paper %}
+            <li>
+              {% if paper_primary_url != "" %}<a href="{{ paper_primary_url }}" target="_blank" rel="noopener noreferrer">{{ paper.title | escape }}</a>{% else %}{{ paper.title | escape }}{% endif %}
+              <span class="research-theme__venue">{{ paper.venue | escape }}</span>
+            </li>
+          {% endfor %}
+        </ul>
+        {% if theme_projects.size > 0 %}
+          <h3 class="research-theme__label">Projects</h3>
+          <ul class="research-theme__projects">
+            {% for project in theme_projects %}
+              {% assign project_link = project.links | where: "label", "Code" | first | default: project.links.first %}
+              {% assign project_url = project_link.url %}
+              {% if project_url %}{% unless project_url contains '://' %}{% assign project_url = project_url | relative_url %}{% endunless %}{% endif %}
+              <li>{% if project_url %}<a href="{{ project_url }}" target="_blank" rel="noopener noreferrer">{{ project.name | escape }}</a>{% else %}{{ project.name | escape }}{% endif %} <span class="research-theme__venue">{{ project.type | escape }}</span></li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+        <a class="research-theme__more" href="{{ '/publications/' | relative_url }}?theme={{ theme.id }}">View all {{ theme_papers | size }} {% if theme_papers.size == 1 %}publication{% else %}publications{% endif %} <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+      </div>
+    </div>
+  </section>
+{% endfor %}

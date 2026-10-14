@@ -1,0 +1,9 @@
+{% comment %} Hidden until assets/js/publications.js enables it, so the full list stays usable without JavaScript. {% endcomment %}
+<div class="paper-filters" role="group" aria-label="Filter publications by research theme" hidden>
+  <button type="button" class="paper-filters__button" data-theme-filter="" aria-pressed="true">All ({{ include.papers | size }})</button>
+  {% for theme in site.data.research_themes %}
+    {% assign theme_papers = include.papers | where_exp: "paper", "paper.themes contains theme.id" %}
+    <button type="button" class="paper-filters__button" data-theme-filter="{{ theme.id | escape }}" aria-pressed="false">{{ theme.name | escape }} ({{ theme_papers | size }})</button>
+  {% endfor %}
+</div>
+<p class="paper-filters__status" role="status" hidden></p>

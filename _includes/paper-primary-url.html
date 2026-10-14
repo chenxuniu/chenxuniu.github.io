@@ -1,0 +1,4 @@
+{% comment %}
+  Sets paper_primary_url to the paper's DOI, else arXiv, else PDF link (site-relative
+  links resolved), or to an empty string when the paper has none of them.
+{% endcomment %}{% assign paper_primary_link = include.paper.links | where: "label", "DOI" | first %}{% unless paper_primary_link %}{% assign paper_primary_link = include.paper.links | where: "label", "arXiv" | first %}{% endunless %}{% unless paper_primary_link %}{% assign paper_primary_link = include.paper.links | where: "label", "PDF" | first %}{% endunless %}{% assign paper_primary_url = "" %}{% if paper_primary_link %}{% assign paper_primary_url = paper_primary_link.url %}{% unless paper_primary_url contains '://' %}{% assign paper_primary_url = paper_primary_url | relative_url %}{% endunless %}{% endif %}

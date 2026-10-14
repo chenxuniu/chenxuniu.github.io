@@ -1,0 +1,13 @@
+<ul class="news-list">
+  {% for item in include.items %}
+  <li class="news-item">
+    <span class="news-logo{% if item.logo_class %} {{ item.logo_class }}{% endif %}" aria-hidden="true">
+      <img src="{{ item.logo | relative_url }}" alt="">
+    </span>
+    <span class="news-entry">
+      <time class="news-date" datetime="{{ item.date }}">{{ item.date | replace: '-', '.' }}</time>
+      <span>{% include news-text.html item=item %}</span>
+    </span>
+  </li>
+  {% endfor %}
+</ul>
