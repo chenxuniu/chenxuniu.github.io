@@ -39,11 +39,12 @@ jobs:
       - name: Test snapshot safety
         run: python -m unittest discover -s google_scholar_crawler -p 'test_*.py' -v
       - name: Refresh citations
-        # Keep scholarly retries bounded; fall back only on profile parsing errors.
+        # Accept the existing SERPAPI secret as well as the documented name.
         env:
           SCHOLAR_DIAGNOSTIC: ${{ inputs.diagnostic }}
+          SERPAPI_KEY: ${{ secrets.SERPAPI_KEY || secrets.SERPAPI }}
         run: |
-          args=(--provider auto --verbose)
+          args=(--provider serpapi --verbose)
           if [ "$SCHOLAR_DIAGNOSTIC" = 'true' ]; then
             args+=(--dry-run)
           fi

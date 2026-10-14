@@ -24,6 +24,79 @@ def chicago_date(now=None):
         ZoneInfo("America/Chicago")).date().isoformat()
 
 
+def _serpapi_page(session, profile_id, start, api_key):
+    logger = logging.getLogger(__name__)
+    for attempt in range(3):
+        try:
+            response = session.get(
+                "https://serpapi.com/search.json",
+                params={"engine": "google_scholar_author", "author_id": profile_id,
+                        "hl": "en", "num": 100, "start": start, "api_key": api_key},
+                timeout=30, allow_redirects=False,
+            )
+        except (requests.Timeout, requests.ConnectionError):
+            message = "SerpApi network timeout or connection failure"
+        except requests.RequestException:
+            # Requests exceptions can contain the complete URL, including the key.
+            raise ValueError("SerpApi request failed; check connectivity and API settings.") from None
+        else:
+            status = response.status_code
+            logger.info("SerpApi HTTP %s (start=%d, attempt=%d)", status, start, attempt + 1)
+            if status == 200:
+                try:
+                    return response.json()
+                except ValueError:
+                    raise ValueError("SerpApi did not return valid JSON.") from None
+            message = f"SerpApi HTTP {status}"
+            if status not in (408, 500, 502, 503, 504):
+                raise ValueError(message + ": check the API key, account quota and settings.")
+        if attempt == 2:
+            raise ValueError(message + "; retry limit reached.") from None
+        delay = 5 * (attempt + 1)
+        logger.warning("%s; retrying in %d seconds.", message, delay)
+        time.sleep(delay)
+
+
+def fetch_serpapi_counts(profile_id, tracked_ids, session, *, api_key=None):
+    api_key = (api_key or os.environ.get("SERPAPI_KEY") or os.environ.get("SERPAPI") or "").strip()
+    if not api_key:
+        raise ValueError("Set SERPAPI_KEY (or SERPAPI) before using the SerpApi provider.")
+    found = {}
+    for start in range(0, 2000, 100):
+        logging.getLogger(__name__).info("Loading SerpApi author publications (start=%d)", start)
+        data = _serpapi_page(session, profile_id, start, api_key)
+        if not isinstance(data, dict) or "error" in data:
+            raise ValueError("SerpApi returned an error or an unexpected response; check the dashboard.")
+        metadata = data.get("search_metadata")
+        parameters = data.get("search_parameters")
+        articles = data.get("articles")
+        if (not isinstance(metadata, dict) or metadata.get("status") != "Success"
+                or not isinstance(parameters, dict) or parameters.get("author_id") != profile_id
+                or parameters.get("engine") != "google_scholar_author"
+                or not isinstance(articles, list) or not articles):
+            raise ValueError("SerpApi returned an unexpected author or incomplete publication list.")
+        for article in articles:
+            if not isinstance(article, dict):
+                raise ValueError("SerpApi returned an invalid publication.")
+            identifier = article.get("citation_id", "")
+            cited_by = article.get("cited_by")
+            if not isinstance(identifier, str) or not identifier.startswith(profile_id + ":"):
+                raise ValueError("SerpApi returned a paper from an unexpected author.")
+            paper_id = identifier.split(":", 1)[1]
+            count = cited_by.get("value") if isinstance(cited_by, dict) else None
+            if (not re.fullmatch(r"[A-Za-z0-9_-]+", paper_id) or paper_id in found
+                    or type(count) is not int or count < 0):
+                raise ValueError("Repeated paper ID or missing/invalid SerpApi citation count.")
+            found[paper_id] = count
+        logging.getLogger(__name__).info("SerpApi returned %d articles (total=%d)", len(articles), len(found))
+        if tracked_ids <= found.keys():
+            return {key: found[key] for key in sorted(tracked_ids)}
+        pagination = data.get("serpapi_pagination")
+        if not isinstance(pagination, dict) or not pagination.get("next"):
+            break
+    raise ValueError("Tracked papers missing from SerpApi: " + ", ".join(sorted(tracked_ids - found.keys())))
+
+
 def parse_profile_page(html, profile_id):
     soup = BeautifulSoup(html, "html.parser")
     rows = soup.select("#gsc_a_t .gsc_a_tr")
@@ -121,7 +194,7 @@ def fetch_scholarly_counts(profile_id, tracked_ids, *, client=None):
 
 
 def update_snapshot(snapshot_path, publications_path, *, session=None, checked_on=None,
-                    dry_run=False, provider="auto"):
+                    dry_run=False, provider="serpapi"):
     snapshot_path = Path(snapshot_path)
     original = snapshot_path.read_text(encoding="utf-8")
     snapshot = yaml.safe_load(original)
@@ -135,6 +208,9 @@ def update_snapshot(snapshot_path, publications_path, *, session=None, checked_o
         raise ValueError("This update is older than the saved snapshot.")
     if session is not None:
         counts = fetch_counts(profile_id, tracked_ids, session)
+    elif provider == "serpapi":
+        with requests.Session() as client:
+            counts = fetch_serpapi_counts(profile_id, tracked_ids, client)
     elif provider == "requests":
         with requests.Session() as client:
             counts = fetch_counts(profile_id, tracked_ids, client)
@@ -150,8 +226,7 @@ def update_snapshot(snapshot_path, publications_path, *, session=None, checked_o
                 "scholarly profile parsing failed; trying the direct publication parser once: %s", error)
             with requests.Session() as client:
                 counts = fetch_counts(profile_id, tracked_ids, client)
-    # Both providers can see empty citation cells; never clear a positive count
-    # without manual verification.
+    # Never clear a positive count without manual verification.
     if any(counts[key] == 0 and old > 0 for key, old in snapshot["counts"].items()):
         raise ValueError("A previously positive count became zero; manual verification required.")
     if snapshot_path.read_text(encoding="utf-8") != original:
@@ -184,8 +259,8 @@ def main():
     parser.add_argument("--snapshot", type=Path, default=ROOT / "_data/google_scholar_citations.yml")
     parser.add_argument("--publications", type=Path, default=ROOT / "_data/publications.yml")
     parser.add_argument("--dry-run", action="store_true", help="Validate live counts without saving them.")
-    parser.add_argument("--provider", choices=["auto", "scholarly", "requests"], default="auto",
-                        help="Use scholarly with a direct-parser fallback for profile parsing errors.")
+    parser.add_argument("--provider", choices=["serpapi", "auto", "scholarly", "requests"], default="serpapi",
+                        help="Use SerpApi by default; direct Scholar providers remain available for diagnostics.")
     parser.add_argument("--verbose", action="store_true",
                         help="Log Scholar HTTP statuses and page structure without headers or HTML.")
     args = parser.parse_args()

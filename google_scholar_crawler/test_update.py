@@ -1,4 +1,5 @@
 import importlib
+from copy import deepcopy
 from datetime import datetime
 from pathlib import Path
 import tempfile
@@ -115,23 +116,25 @@ class CitationUpdateTests(unittest.TestCase):
             self.update(session)
         self.assertEqual(self.snapshot.read_text(), self.original)
 
-    def test_cli_and_workflow_use_the_same_auto_provider(self):
+    def test_cli_and_workflow_use_the_same_serpapi_provider(self):
         with patch("sys.argv", ["update.py", "--dry-run"]), \
                 patch.object(self.updater, "update_snapshot") as update:
             self.updater.main()
-        self.assertEqual(update.call_args.kwargs["provider"], "auto")
+        self.assertEqual(update.call_args.kwargs["provider"], "serpapi")
         path = Path(__file__).resolve().parents[1] / ".github/workflows/google_scholar_crawler.yaml"
         workflow = yaml.load(path.read_text(), Loader=yaml.BaseLoader)
         refresh = next(step for step in workflow["jobs"]["update"]["steps"]
                        if step.get("name") == "Refresh citations")
-        self.assertIn("--provider auto --verbose", refresh["run"])
+        self.assertIn("--provider serpapi --verbose", refresh["run"])
+        self.assertEqual(refresh["env"]["SERPAPI_KEY"],
+                         "${{ secrets.SERPAPI_KEY || secrets.SERPAPI }}")
 
-    def test_default_auto_provider_uses_scholarly_without_extra_requests(self):
+    def test_optional_auto_provider_uses_scholarly_without_extra_requests(self):
         with patch.object(self.updater, "fetch_scholarly_counts",
                           return_value={"first": 53, "second": 3}) as scholarly, \
                 patch.object(self.updater.requests, "Session",
                              side_effect=AssertionError("Primary provider is not scholarly")) as direct:
-            self.updater.update_snapshot(self.snapshot, self.publications)
+            self.updater.update_snapshot(self.snapshot, self.publications, provider="auto")
         scholarly.assert_called_once()
         direct.assert_not_called()
         self.assertEqual(yaml.safe_load(self.snapshot.read_text())["counts"],
@@ -145,7 +148,7 @@ class CitationUpdateTests(unittest.TestCase):
                 patch.object(self.updater.requests, "Session") as factory:
             factory.return_value.__enter__.return_value = session
             with self.assertLogs(self.updater.__name__, level="INFO") as logs:
-                self.updater.update_snapshot(self.snapshot, self.publications)
+                self.updater.update_snapshot(self.snapshot, self.publications, provider="auto")
         self.assertTrue(any("direct publication parser" in line for line in logs.output))
         self.assertEqual(session.get.call_count, 1)
         self.assertEqual(yaml.safe_load(self.snapshot.read_text())["counts"]["first"], 53)
@@ -158,7 +161,7 @@ class CitationUpdateTests(unittest.TestCase):
                 with patch.object(self.updater, "fetch_scholarly_counts", side_effect=error), \
                         patch.object(self.updater.requests, "Session") as direct:
                     with self.assertRaises(ValueError):
-                        self.updater.update_snapshot(self.snapshot, self.publications)
+                        self.updater.update_snapshot(self.snapshot, self.publications, provider="auto")
                 direct.assert_not_called()
                 self.assertEqual(self.snapshot.read_text(), self.original)
 
@@ -172,7 +175,7 @@ class CitationUpdateTests(unittest.TestCase):
             factory.return_value.__enter__.return_value = session
             with self.assertLogs(self.updater.__name__, level="WARNING"):
                 with self.assertRaisesRegex(ValueError, "HTTP 429"):
-                    self.updater.update_snapshot(self.snapshot, self.publications)
+                    self.updater.update_snapshot(self.snapshot, self.publications, provider="auto")
         self.assertEqual(session.get.call_count, 1)
         self.assertEqual(self.snapshot.read_text(), self.original)
 
@@ -385,6 +388,160 @@ class CitationUpdateTests(unittest.TestCase):
         self.assertNotIn("set +e", refresh["run"])
         self.assertNotIn("|| true", refresh["run"])
         self.assertIn("timeout 180s", refresh["run"])
+
+    def serpapi_data(self, rows, more=False):
+        return {
+            "search_metadata": {"status": "Success"},
+            "search_parameters": {"engine": "google_scholar_author", "author_id": PROFILE},
+            "author": {"name": "Example Author"},
+            "articles": [
+                {"title": f"Paper {key}", "citation_id": f"{PROFILE}:{key}",
+                 "cited_by": {"value": count}}
+                for key, count in rows
+            ],
+            "serpapi_pagination": {"next": "https://serpapi.com/search.json?start=100"} if more else {},
+        }
+
+    def serpapi_session(self, *data):
+        session = Mock()
+        session.get.side_effect = [Mock(status_code=200, json=Mock(return_value=value))
+                                   for value in data]
+        return session
+
+    def fetch_serpapi(self, session):
+        return self.updater.fetch_serpapi_counts(PROFILE, {"first", "second"}, session,
+                                                api_key="test-secret")
+
+    def test_serpapi_matches_ids_in_one_request_and_accepts_real_zero(self):
+        session = self.serpapi_session(self.serpapi_data([("second", 0), ("extra", 99), ("first", 53)]))
+        self.assertEqual(self.fetch_serpapi(session), {"first": 53, "second": 0})
+        session.get.assert_called_once_with(
+            "https://serpapi.com/search.json",
+            params={"engine": "google_scholar_author", "author_id": PROFILE,
+                    "hl": "en", "num": 100, "start": 0, "api_key": "test-secret"},
+            timeout=30, allow_redirects=False)
+
+    def test_serpapi_follows_pagination_without_using_remote_urls(self):
+        first = self.serpapi_data([("first", 53)], more=True)
+        first["serpapi_pagination"]["next"] = "https://unexpected.example/"
+        session = self.serpapi_session(first, self.serpapi_data([("second", 3)]))
+        self.assertEqual(self.fetch_serpapi(session), {"first": 53, "second": 3})
+        self.assertEqual(session.get.call_count, 2)
+        self.assertEqual(session.get.call_args.args, ("https://serpapi.com/search.json",))
+        self.assertEqual(session.get.call_args.kwargs["params"]["start"], 100)
+
+    def test_serpapi_rejects_incomplete_or_invalid_results(self):
+        valid = self.serpapi_data([("first", 53), ("second", 3)])
+        cases = [None, [], {}, {**valid, "error": "Provider error"},
+                 {**valid, "search_metadata": {"status": "Processing"}},
+                 {**valid, "search_parameters": {"engine": "google_scholar_author", "author_id": "other"}},
+                 {**valid, "search_parameters": {"engine": "google_scholar", "author_id": PROFILE}},
+                 {**valid, "articles": []}, {**valid, "articles": None},
+                 self.serpapi_data([("first", 53)]),
+                 self.serpapi_data([("first", 53), ("first", 54), ("second", 3)])]
+        for value in [None, "53", -1, True, 1.5]:
+            cases.append(self.serpapi_data([("first", value), ("second", 3)]))
+        for replacement in [{"citation_id": "other:first", "cited_by": {"value": 53}},
+                            {"citation_id": f"{PROFILE}:first"},
+                            {"citation_id": f"{PROFILE}:first", "cited_by": None},
+                            {"citation_id": f"{PROFILE}:", "cited_by": {"value": 53}}, None]:
+            data = deepcopy(valid)
+            data["articles"][0] = replacement
+            cases.append(data)
+        for data in cases:
+            with self.subTest(data=data), self.assertRaises(ValueError):
+                self.fetch_serpapi(self.serpapi_session(data))
+
+    def test_serpapi_repeated_page_is_rejected(self):
+        data = self.serpapi_data([("first", 53)], more=True)
+        with self.assertRaisesRegex(ValueError, "[Rr]epeat"):
+            self.fetch_serpapi(self.serpapi_session(data, data))
+
+    def test_serpapi_transient_failure_retries_then_returns_counts(self):
+        session = self.serpapi_session(self.serpapi_data([("first", 53), ("second", 3)]))
+        success = session.get.side_effect
+        session.get.side_effect = [Mock(status_code=503), *success]
+        with patch.object(self.updater.time, "sleep"):
+            self.assertEqual(self.fetch_serpapi(session), {"first": 53, "second": 3})
+        self.assertEqual(session.get.call_count, 2)
+
+    def test_serpapi_network_retries_are_bounded_and_do_not_leak_key(self):
+        for failure in [requests.Timeout, requests.ConnectionError]:
+            with self.subTest(failure=failure):
+                session = Mock()
+                session.get.side_effect = failure("https://serpapi.com/search.json?api_key=test-secret")
+                with patch.object(self.updater.time, "sleep"), \
+                        self.assertLogs(self.updater.__name__, level="WARNING") as logs:
+                    with self.assertRaises(ValueError) as raised:
+                        self.fetch_serpapi(session)
+                self.assertEqual(session.get.call_count, 3)
+                self.assertNotIn("test-secret", str(raised.exception) + "\n".join(logs.output))
+                self.assertIsNone(raised.exception.__cause__)
+
+    def test_serpapi_server_retries_are_bounded(self):
+        session = Mock()
+        session.get.return_value = Mock(status_code=503)
+        with patch.object(self.updater.time, "sleep"):
+            with self.assertRaisesRegex(ValueError, "503"):
+                self.fetch_serpapi(session)
+        self.assertEqual(session.get.call_count, 3)
+
+    def test_serpapi_auth_quota_and_redirect_errors_are_not_retried(self):
+        for status in [301, 302, 400, 401, 403, 429]:
+            with self.subTest(status=status):
+                session = Mock()
+                session.get.return_value = Mock(status_code=status)
+                with self.assertRaisesRegex(ValueError, str(status)):
+                    self.fetch_serpapi(session)
+                session.get.assert_called_once()
+
+    def test_serpapi_invalid_json_is_rejected_without_leaking_response(self):
+        session = Mock()
+        session.get.return_value = Mock(status_code=200)
+        session.get.return_value.json.side_effect = ValueError("unexpected test-secret")
+        with self.assertRaises(ValueError) as raised:
+            self.fetch_serpapi(session)
+        self.assertNotIn("test-secret", str(raised.exception))
+
+    def test_serpapi_default_updates_snapshot_using_secret_alias(self):
+        session = self.serpapi_session(self.serpapi_data([("first", 53), ("second", 3)]))
+        with patch.dict(self.updater.os.environ, {"SERPAPI": "test-secret"}, clear=True), \
+                patch.object(self.updater.requests, "Session") as factory:
+            factory.return_value.__enter__.return_value = session
+            self.updater.update_snapshot(self.snapshot, self.publications, checked_on="2026-10-14")
+        data = yaml.safe_load(self.snapshot.read_text())
+        self.assertEqual(data["counts"], {"first": 53, "second": 3})
+        self.assertEqual(data["checked_on"], "2026-10-14")
+
+    def test_serpapi_missing_key_fails_before_any_request(self):
+        session = Mock()
+        with patch.dict(self.updater.os.environ, {}, clear=True):
+            with self.assertRaisesRegex(ValueError, "SERPAPI_KEY"):
+                self.updater.fetch_serpapi_counts(PROFILE, {"first", "second"}, session)
+        session.get.assert_not_called()
+
+    def test_serpapi_dry_run_preserves_original_snapshot(self):
+        session = self.serpapi_session(self.serpapi_data([("first", 53), ("second", 3)]))
+        with patch.dict(self.updater.os.environ, {"SERPAPI_KEY": "test-secret"}), \
+                patch.object(self.updater.requests, "Session") as factory:
+            factory.return_value.__enter__.return_value = session
+            self.updater.update_snapshot(self.snapshot, self.publications, dry_run=True)
+        self.assertEqual(self.snapshot.read_text(), self.original)
+
+    def test_serpapi_failure_or_zero_does_not_overwrite_or_fall_back(self):
+        for data in [self.serpapi_data([("first", 0), ("second", 3)]),
+                     self.serpapi_data([("first", 53)]), {"error": "Provider error test-secret"}]:
+            with self.subTest(data=data), \
+                    patch.dict(self.updater.os.environ, {"SERPAPI_KEY": "test-secret"}), \
+                    patch.object(self.updater.requests, "Session") as factory, \
+                    patch.object(self.updater, "fetch_scholarly_counts") as scholarly:
+                session = self.serpapi_session(data)
+                factory.return_value.__enter__.return_value = session
+                with self.assertRaises(ValueError) as raised:
+                    self.updater.update_snapshot(self.snapshot, self.publications)
+                self.assertEqual(self.snapshot.read_text(), self.original)
+                self.assertNotIn("test-secret", str(raised.exception))
+                scholarly.assert_not_called()
 
 
 if __name__ == "__main__":
