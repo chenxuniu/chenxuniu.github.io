@@ -7,6 +7,7 @@ import os
 from pathlib import Path
 import re
 import tempfile
+import threading
 import time
 from urllib.parse import parse_qs, urlparse
 from zoneinfo import ZoneInfo
@@ -17,6 +18,16 @@ import yaml
 
 
 ROOT = Path(__file__).resolve().parents[1]
+# Scholar answers the default python-requests User-Agent with HTTP 429.
+BROWSER_HEADERS = {
+    "User-Agent": ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
+                   "(KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"),
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Accept-Language": "en-US,en;q=0.9",
+}
+# scholarly retries HTTP 403 forever with 60-120 s sleeps; bound it so local
+# auto-mode runs reach the direct-parser fallback instead of hanging.
+SCHOLARLY_DEADLINE_SECONDS = 60
 
 
 def chicago_date(now=None):
@@ -145,6 +156,7 @@ def fetch_counts(profile_id, tracked_ids, session):
         response = session.get(
             "https://scholar.google.com/citations",
             params={"user": profile_id, "hl": "en", "pagesize": 100, "cstart": start},
+            headers=BROWSER_HEADERS,
             timeout=30,
         )
         logging.getLogger(__name__).info("Scholar HTTP %s (cstart=%d)", response.status_code, start)
@@ -164,18 +176,47 @@ def fetch_counts(profile_id, tracked_ids, session):
     raise ValueError("Tracked papers missing from Scholar: " + ", ".join(sorted(tracked_ids - found.keys())))
 
 
-def fetch_scholarly_counts(profile_id, tracked_ids, *, client=None):
-    if client is None:
-        from scholarly import scholarly
-        client = scholarly
+def call_with_deadline(function, seconds):
+    """Run function in a daemon thread so a stuck call cannot outlive the deadline.
+
+    A timed-out worker keeps running until the process exits, so it may still
+    send a request while the auto-mode fallback runs."""
+    outcome = {}
+
+    def target():
+        try:
+            outcome["value"] = function()
+        except BaseException as error:  # Re-raised in the caller's thread below.
+            outcome["error"] = error
+
+    worker = threading.Thread(target=target, daemon=True)
+    worker.start()
+    worker.join(seconds)
+    if worker.is_alive():
+        raise TimeoutError(f"did not finish within {seconds} seconds")
+    if "error" in outcome:
+        raise outcome["error"]
+    return outcome["value"]
+
+
+def load_scholarly_author(client, profile_id):
+    client.set_timeout(15)
+    client.set_retries(3)
+    logging.getLogger(__name__).info("Loading Scholar author profile %s", profile_id)
+    author = client.search_author_id(profile_id)
+    # Avoid requesting coauthors, public-access mandates, or each paper separately.
+    logging.getLogger(__name__).info("Loading Scholar publication list %s", profile_id)
+    return client.fill(author, sections=["publications"])
+
+
+def fetch_scholarly_counts(profile_id, tracked_ids, *, client=None,
+                           deadline=SCHOLARLY_DEADLINE_SECONDS):
     try:
-        client.set_timeout(15)
-        client.set_retries(3)
-        logging.getLogger(__name__).info("Loading Scholar author profile %s", profile_id)
-        author = client.search_author_id(profile_id)
-        # Avoid requesting coauthors, public-access mandates, or each paper separately.
-        logging.getLogger(__name__).info("Loading Scholar publication list %s", profile_id)
-        author = client.fill(author, sections=["publications"])
+        if client is None:
+            from scholarly import scholarly
+            client = scholarly
+        # Usually a timeout here means scholarly is retrying HTTP 403 responses.
+        author = call_with_deadline(lambda: load_scholarly_author(client, profile_id), deadline)
     except Exception as error:
         raise ValueError(f"scholarly could not fetch the author profile: {error}") from error
     if (not isinstance(author, dict) or author.get("scholar_id") != profile_id
@@ -226,12 +267,12 @@ def update_snapshot(snapshot_path, publications_path, *, session=None, checked_o
         try:
             counts = fetch_scholarly_counts(profile_id, tracked_ids)
         except ValueError as error:
-            # Only a profile-parser failure gets one alternate parsing attempt.
-            # Access restrictions, timeouts and invalid data must remain failures.
-            if provider != "auto" or not isinstance(error.__cause__, AttributeError):
+            # Any scholarly failure gets exactly one direct-parser request; that
+            # parser stops on HTTP 403/429 and validates every paper itself.
+            if provider != "auto":
                 raise
             logging.getLogger(__name__).warning(
-                "scholarly profile parsing failed; trying the direct publication parser once: %s", error)
+                "scholarly failed; trying the direct publication parser once: %s", error)
             with requests.Session() as client:
                 counts = fetch_counts(profile_id, tracked_ids, client)
     # Never clear a positive count without manual verification.

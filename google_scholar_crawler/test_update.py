@@ -3,6 +3,8 @@ from copy import deepcopy
 from datetime import datetime
 from pathlib import Path
 import tempfile
+import threading
+import time
 import unittest
 from unittest.mock import Mock, patch
 
@@ -140,7 +142,7 @@ class CitationUpdateTests(unittest.TestCase):
         self.assertEqual(yaml.safe_load(self.snapshot.read_text())["counts"],
                          {"first": 53, "second": 3})
 
-    def test_auto_provider_falls_back_only_for_scholarly_parse_errors(self):
+    def test_auto_provider_falls_back_for_scholarly_parse_errors(self):
         error = ValueError("scholarly could not fetch the author profile")
         error.__cause__ = AttributeError("'NoneType' object has no attribute 'get'")
         session = self.session(page([("first", "53"), ("second", "3")]))
@@ -153,17 +155,55 @@ class CitationUpdateTests(unittest.TestCase):
         self.assertEqual(session.get.call_count, 1)
         self.assertEqual(yaml.safe_load(self.snapshot.read_text())["counts"]["first"], 53)
 
-    def test_auto_provider_does_not_repeat_blocked_or_invalid_requests(self):
+    def test_auto_provider_falls_back_once_after_any_scholarly_failure(self):
+        # A 403 retry loop, a timeout or invalid data from scholarly all get
+        # exactly one direct-parser request instead of failing outright.
         for cause in [requests.Timeout("Timed out"), RuntimeError("Access denied"), None]:
             with self.subTest(cause=cause):
-                error = ValueError("Scholar could not return validated papers")
+                self.snapshot.write_text(self.original)
+                error = ValueError("scholarly could not fetch the author profile")
                 error.__cause__ = cause
+                session = self.session(page([("first", "53"), ("second", "3")]))
                 with patch.object(self.updater, "fetch_scholarly_counts", side_effect=error), \
-                        patch.object(self.updater.requests, "Session") as direct:
-                    with self.assertRaises(ValueError):
+                        patch.object(self.updater.requests, "Session") as factory:
+                    factory.return_value.__enter__.return_value = session
+                    with self.assertLogs(self.updater.__name__, level="WARNING"):
                         self.updater.update_snapshot(self.snapshot, self.publications, provider="auto")
-                direct.assert_not_called()
-                self.assertEqual(self.snapshot.read_text(), self.original)
+                self.assertEqual(session.get.call_count, 1)
+                self.assertEqual(yaml.safe_load(self.snapshot.read_text())["counts"]["first"], 53)
+
+    def test_direct_parser_sends_a_browser_user_agent(self):
+        # Scholar answers the default python-requests User-Agent with HTTP 429.
+        session = self.session(page([("first", "8"), ("second", "3")]))
+        self.update(session)
+        user_agent = session.get.call_args.kwargs["headers"]["User-Agent"]
+        self.assertTrue(user_agent.startswith("Mozilla/5.0"))
+        self.assertNotIn("python-requests", user_agent)
+
+    def test_scholarly_403_retry_loop_is_bounded_by_a_deadline(self):
+        # scholarly retries HTTP 403 forever, sleeping 60-120 s between attempts.
+        client = Mock()
+        client.search_author_id.side_effect = lambda *_: time.sleep(5)
+        started = time.monotonic()
+        with self.assertRaisesRegex(ValueError, "did not finish within"):
+            self.updater.fetch_scholarly_counts(PROFILE, {"first"}, client=client, deadline=0.2)
+        self.assertLess(time.monotonic() - started, 2)
+        # A non-daemon worker would keep the process alive until the workflow kills it.
+        leftovers = [thread for thread in threading.enumerate()
+                     if thread is not threading.current_thread() and thread.is_alive()]
+        self.assertTrue(leftovers)
+        self.assertTrue(all(thread.daemon for thread in leftovers))
+
+    def test_deadline_wrapper_passes_through_base_exceptions(self):
+        def stop():
+            raise SystemExit(3)
+        with self.assertRaises(SystemExit):
+            self.updater.call_with_deadline(stop, 1)
+
+    def test_missing_scholarly_package_is_a_fallback_eligible_error(self):
+        with patch.dict("sys.modules", {"scholarly": None}):
+            with self.assertRaisesRegex(ValueError, "scholarly"):
+                self.updater.fetch_scholarly_counts(PROFILE, {"first"})
 
     def test_auto_fallback_restriction_keeps_manual_snapshot(self):
         error = ValueError("scholarly could not parse the author profile")
@@ -305,9 +345,12 @@ class CitationUpdateTests(unittest.TestCase):
                 self.updater.fetch_scholarly_counts(PROFILE, {"first", "second"},
                                                   client=self.scholarly_client(author))
 
-    def test_scholarly_failure_keeps_manual_snapshot(self):
-        with patch.object(self.updater, "fetch_scholarly_counts", create=True,
-                          side_effect=ValueError("Scholar blocked this request")):
+    def test_scholarly_failure_keeps_manual_snapshot_without_fallback(self):
+        # Only auto mode falls back; --provider scholarly tests scholarly alone.
+        with patch.object(self.updater, "fetch_scholarly_counts",
+                          side_effect=ValueError("Scholar blocked this request")), \
+                patch.object(self.updater.requests, "Session",
+                             side_effect=AssertionError("explicit scholarly provider fell back")):
             with self.assertRaises(ValueError):
                 self.updater.update_snapshot(self.snapshot, self.publications, provider="scholarly")
         self.assertEqual(self.snapshot.read_text(), self.original)
