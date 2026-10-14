@@ -457,6 +457,14 @@ class CitationUpdateTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "[Rr]epeat"):
             self.fetch_serpapi(self.serpapi_session(data, data))
 
+    def test_serpapi_invalid_count_reports_shape_without_response_contents(self):
+        data = self.serpapi_data([("first", None), ("second", 3)])
+        with self.assertRaises(ValueError) as raised:
+            self.fetch_serpapi(self.serpapi_session(data))
+        self.assertIn("count_type=NoneType", str(raised.exception))
+        self.assertIn("value_present=True", str(raised.exception))
+        self.assertNotIn("test-secret", str(raised.exception))
+
     def test_serpapi_transient_failure_retries_then_returns_counts(self):
         session = self.serpapi_session(self.serpapi_data([("first", 53), ("second", 3)]))
         success = session.get.side_effect
