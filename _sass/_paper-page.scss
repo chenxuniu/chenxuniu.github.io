@@ -111,8 +111,10 @@ $paper-page-accent: #254b7e;
     }
 }
 
+// Wrapping keeps the heading whole when large text leaves no room beside the Copy button.
 .paper-page__section-heading {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
     gap: 1em;
