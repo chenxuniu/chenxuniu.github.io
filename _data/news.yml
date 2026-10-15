@@ -9,16 +9,16 @@
     text: "The 1/W Law: Context Length is the Dominant Energy Lever in LLM Inference Fleets."
     paper: "one-over-w-law"
     emphasis: true
-  after: "has been accepted at <strong>NeurIPS 2026</strong> (camera-ready PDF)."
+  after: "has been accepted at <strong>NeurIPS 2026</strong>; the camera-ready PDF is on the paper page."
 
 - date: "2026-08"
   logo: "/images/icons/conferences/iccad-2026.webp"
   logo_class: "news-logo--iccad"
-  before: "An arXiv preprint of our paper"
+  before: "Our paper"
   link:
     text: "MicroEvo: Knowledge-Guided LLM Sampling for Efficient Microarchitecture Design Space Exploration."
     paper: "microevo"
-  after: "is now available. The paper has been accepted for presentation at <strong>ICCAD 2026</strong>; the proceedings version is forthcoming."
+  after: "has been accepted for presentation at <strong>ICCAD 2026</strong>. An arXiv preprint is available now; the proceedings version is forthcoming."
 
 - date: "2026-07"
   logo: "/images/icons/conferences/pearc-2026.jpg"

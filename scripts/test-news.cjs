@@ -1,17 +1,17 @@
 const assert = require('node:assert/strict');
 const { launchBrowser, openPage, runCheck } = require('./e2e-browser.cjs');
 
-// The homepage News list as it rendered before it moved to _data/news.yml.
+// The homepage News list as rendered from _data/news.yml.
 const EXPECTED_NEWS = [
   {
     logo: '/images/icons/conferences/neurips-2026.png', logoClass: 'news-logo', datetime: '2026-09',
     href: '/publications/one-over-w-law/', emphasized: true,
-    text: '2026.09 Our paper The 1/W Law: Context Length is the Dominant Energy Lever in LLM Inference Fleets. has been accepted at NeurIPS 2026 (camera-ready PDF).',
+    text: '2026.09 Our paper The 1/W Law: Context Length is the Dominant Energy Lever in LLM Inference Fleets. has been accepted at NeurIPS 2026; the camera-ready PDF is on the paper page.',
   },
   {
     logo: '/images/icons/conferences/iccad-2026.webp', logoClass: 'news-logo news-logo--iccad', datetime: '2026-08',
     href: '/publications/microevo/', emphasized: false,
-    text: '2026.08 An arXiv preprint of our paper MicroEvo: Knowledge-Guided LLM Sampling for Efficient Microarchitecture Design Space Exploration. is now available. The paper has been accepted for presentation at ICCAD 2026; the proceedings version is forthcoming.',
+    text: '2026.08 Our paper MicroEvo: Knowledge-Guided LLM Sampling for Efficient Microarchitecture Design Space Exploration. has been accepted for presentation at ICCAD 2026. An arXiv preprint is available now; the proceedings version is forthcoming.',
   },
   {
     logo: '/images/icons/conferences/pearc-2026.jpg', logoClass: 'news-logo news-logo--pearc', datetime: '2026-07',
