@@ -5,12 +5,48 @@ const { BASE_URL, VIEWPORTS, launchBrowser, openPage, settle, assertNoHorizontal
 // One entry per _papers/<slug>.md; titles, venues and links mirror _data/publications.yml.
 const PAPERS = [
   {
+    slug: 'one-over-w-law',
+    title: 'The 1/W Law: Context Length is the Dominant Energy Lever in LLM Inference Fleets',
+    shortTitle: '1/W Law',
+    venue: 'NeurIPS 2026',
+    bib: '/assets/bib/neurips2026-one-over-w-law.bib',
+    links: ['PDF', 'BibTeX'],
+    figures: 3,
+  },
+  {
     slug: 'tokenpowerbench',
     title: 'TokenPowerBench: Benchmarking the Power Consumption of LLM Inference',
     shortTitle: 'TokenPowerBench',
     venue: 'AAAI 2026',
     bib: '/assets/bib/aaai2026-tokenpowerbench.bib',
     links: ['PDF', 'Code', 'DOI', 'BibTeX', 'Poster'],
+    figures: 3,
+  },
+  {
+    slug: 'fixme',
+    title: 'FIXME: Towards End-to-End Benchmarking of LLM-Aided Design Verification',
+    shortTitle: 'FIXME',
+    venue: 'AAAI 2026',
+    bib: '/assets/bib/aaai2026-fixme.bib',
+    links: ['PDF', 'DOI', 'BibTeX'],
+    figures: 3,
+  },
+  {
+    slug: 'microevo',
+    title: 'MicroEvo: Knowledge-Guided LLM Sampling for Efficient Microarchitecture Design Space Exploration',
+    shortTitle: 'MicroEvo',
+    venue: 'ICCAD 2026',
+    bib: '/assets/bib/iccad2026-microevo-arxiv.bib',
+    links: ['PDF (arXiv v1)', 'arXiv', 'Code', 'BibTeX'],
+    figures: 3,
+  },
+  {
+    slug: 'llm-inference-engines',
+    title: 'Energy Efficient or Exhaustive? Benchmarking Power Consumption of LLM Inference Engines',
+    shortTitle: 'Energy Efficient or Exhaustive?',
+    venue: 'HotCarbon 2025',
+    bib: '/assets/bib/hotcarbon2025-llm-inference-engines.bib',
+    links: ['PDF', 'Code', 'DOI', 'BibTeX'],
     figures: 3,
   },
 ];
