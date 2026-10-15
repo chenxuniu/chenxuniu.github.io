@@ -38,8 +38,9 @@ layout: default
       <h2 id="paper-figures">Figures</h2>
       {% for figure in page.figures %}
         {% assign figure_src = figure.src | relative_url %}
+        {% comment %} --figure-max-width keeps a figure at most 36em tall (see _paper-page.scss). {% endcomment %}
         <figure class="paper-page__figure">
-          <a href="{{ figure_src }}" target="_blank" rel="noopener noreferrer"><img src="{{ figure_src }}" alt="{{ figure.alt | escape }}" width="{{ figure.width }}" height="{{ figure.height }}" loading="lazy" decoding="async"></a>
+          <a href="{{ figure_src }}" target="_blank" rel="noopener noreferrer"><img src="{{ figure_src }}" alt="{{ figure.alt | escape }}" width="{{ figure.width }}" height="{{ figure.height }}" style="--figure-max-width: {{ figure.width | times: 36.0 | divided_by: figure.height | round: 2 }}em" loading="lazy" decoding="async"></a>
           <figcaption>{{ figure.caption | escape }}</figcaption>
         </figure>
       {% endfor %}

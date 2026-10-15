@@ -265,6 +265,31 @@ async function checkBackToFilteredList(browser) {
   console.log('Back from a paper page returns to the filtered list');
 }
 
+// The width and height attributes must reserve each figure's final size, so the
+// page does not jump while images load.
+async function checkFiguresReserveSpace(browser) {
+  for (const paper of PAPERS) {
+    for (const viewport of [VIEWPORTS[0], VIEWPORTS[1]]) {
+      const context = await browser.newContext({ viewport });
+      const page = await context.newPage();
+      const held = [];
+      let holding = true;
+      await page.route('**/images/papers/**', route => (holding ? held.push(route) : route.continue()));
+      await page.goto(BASE_URL + pagePath(paper), { waitUntil: 'domcontentloaded' });
+      const boxes = () => page.locator('.paper-page__figure img').evaluateAll(images =>
+        images.map(image => Math.round(image.getBoundingClientRect().height)));
+      const pending = await boxes();
+      holding = false;
+      await Promise.all(held.map(route => route.continue()));
+      await loadFigures(page);
+      const loaded = await boxes();
+      assert.deepEqual(pending, loaded, `${paper.slug} at ${viewport.width}px: figures keep their size while loading`);
+      await context.close();
+    }
+  }
+  console.log('Figures reserve their space before they load');
+}
+
 // Tall figures stay within one screen at desktop width, and captions use the body font.
 async function checkFigureSizing(browser) {
   for (const paper of PAPERS) {
@@ -323,6 +348,7 @@ runCheck(async () => {
     await checkBibtexIsText(browser);
     await checkWithoutJavaScript(browser);
     await checkFigureSizing(browser);
+    await checkFiguresReserveSpace(browser);
     await checkLayout(browser);
   } finally {
     await browser.close();

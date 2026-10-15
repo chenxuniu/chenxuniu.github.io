@@ -122,13 +122,14 @@ $paper-page-accent: #254b7e;
         display: block;
     }
 
-    // Wide figures fill the column; tall ones are capped at about one screen and centred.
+    // Wide figures fill the column; tall ones are capped at 36em tall and centred.
+    // width: 100% lets the width/height attributes reserve the space before the
+    // image loads; the layout sets --figure-max-width to the width at 36em tall.
     img {
         display: block;
-        width: auto;
-        max-width: 100%;
+        width: 100%;
+        max-width: unquote("min(100%, var(--figure-max-width, 100%))");
         height: auto;
-        max-height: 36em;
         margin: 0 auto;
         border: 1px solid #eee;
     }
