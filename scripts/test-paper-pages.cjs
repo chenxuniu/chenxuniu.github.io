@@ -125,6 +125,13 @@ async function checkPage(browser, paper, cards) {
   const block = page.locator('.paper-page__bib');
   assert.equal(await block.getAttribute('data-bib-state'), 'loaded');
   assert.equal(await block.textContent(), expected.trim());
+  assert.equal(await page.getByRole('region', { name: 'BibTeX', exact: true }).locator('.paper-page__bib').count(), 1,
+    'The BibTeX section names the block');
+  // aria-label and aria-labelledby name nothing on an element without a role, such as a plain pre.
+  const unnamed = await page.locator('.paper-page [aria-label], .paper-page [aria-labelledby]').evaluateAll(elements =>
+    elements.filter(element => !element.hasAttribute('role') && ['DIV', 'SPAN', 'P', 'PRE'].includes(element.tagName))
+      .map(element => element.className));
+  assert.deepEqual(unnamed, [], `${paper.slug}: labels sit only on elements that can be named`);
   const copy = page.getByRole('button', { name: `Copy BibTeX: ${paper.shortTitle}`, exact: true });
   await copy.click();
   await page.waitForFunction(element => element.textContent.trim() === 'Copied', await copy.elementHandle());
@@ -165,6 +172,29 @@ async function checkBibtexFailure(browser) {
   assert.equal(errors.length, 0, errors.join('\n'));
   await context.close();
   console.log('A failed BibTeX request keeps the download link and reports a failed copy');
+}
+
+// The preview fails once; a later Copy that succeeds fills the block as well.
+async function checkBibtexRetry(browser) {
+  const paper = PAPERS[0];
+  let failures = 1;
+  const { context, page, errors } = await openWithBibtexRoute(browser, paper, route => {
+    if (failures === 0) return route.continue();
+    failures -= 1;
+    return route.fulfill({ status: 404, body: 'missing' });
+  });
+  const block = page.locator('.paper-page__bib');
+  assert.equal(await block.getAttribute('data-bib-state'), 'failed');
+  const expected = await (await page.request.get(BASE_URL + paper.bib)).text();
+  const copy = page.getByRole('button', { name: `Copy BibTeX: ${paper.shortTitle}`, exact: true });
+  await copy.click();
+  await page.waitForFunction(element => element.textContent.trim() === 'Copied', await copy.elementHandle());
+  assert.equal(await page.evaluate(() => navigator.clipboard.readText()), expected);
+  assert.equal(await block.getAttribute('data-bib-state'), 'loaded', 'A successful Copy fills the failed preview');
+  assert.equal(await block.textContent(), expected.trim());
+  assert.equal(errors.length, 0, errors.join('\n'));
+  await context.close();
+  console.log('A Copy after a failed preview fills the BibTeX block');
 }
 
 async function checkBibtexIsText(browser) {
@@ -219,8 +249,9 @@ async function checkEntryPoints(browser) {
     'PAPERS lists every _papers file');
 
   const publications = await openPage(browser, '/publications/');
+  const cardCount = await publications.page.locator('.paper-box').count();
   const others = assertLinksToPages(await linksIn(publications.page, '.paper-title a'), '/publications/');
-  assert.equal(others.length, 6, 'The six papers without a page keep their DOI, arXiv or PDF link');
+  assert.equal(others.length, cardCount - PAPERS.length, 'The papers without a page keep their DOI, arXiv or PDF link');
   await publications.context.close();
 
   const research = await openPage(browser, '/research/');
@@ -244,7 +275,7 @@ async function checkEntryPoints(browser) {
   await input.fill('papers');
   await input.press('Enter');
   const terminal = await linksIn(home.page, '[data-terminal-paper]');
-  assert.equal(terminal.length, 11);
+  assert.equal(terminal.length, cardCount, 'The terminal lists every publication');
   assert.equal(terminal[0].href, '/publications/one-over-w-law/');
   assertLinksToPages(terminal, 'terminal papers');
   assert.equal(home.errors.length, 0, home.errors.join('\n'));
@@ -255,12 +286,16 @@ async function checkEntryPoints(browser) {
 async function checkBackToFilteredList(browser) {
   const { context, page, errors } = await openPage(browser, '/publications/?theme=energy-ai-hpc');
   await page.locator('.paper-filters').waitFor({ state: 'visible' });
+  const total = await page.locator('.paper-box').count();
+  const themed = await page.locator('.paper-box[data-themes~="energy-ai-hpc"]').count();
+  assert.ok(themed > 0 && themed < total, 'The theme filters the list');
   await page.locator('.paper-title a', { hasText: 'TokenPowerBench' }).click();
   await page.waitForURL('**/publications/tokenpowerbench/');
   await page.goBack();
   await page.waitForURL('**/publications/?theme=energy-ai-hpc');
   await page.locator('.paper-filters').waitFor({ state: 'visible' });
-  assert.equal(await page.getByRole('status').innerText(), 'Showing 5 of 11 publications');
+  assert.equal(await page.getByRole('status').innerText(), `Showing ${themed} of ${total} publications`);
+  assert.equal(await page.locator('.paper-box:not([hidden])').count(), themed);
   assert.equal(errors.length, 0, errors.join('\n'));
   await context.close();
   console.log('Back from a paper page returns to the filtered list');
@@ -316,6 +351,28 @@ async function checkFigureSizing(browser) {
   console.log('Figures fit the screen and captions are readable');
 }
 
+// A long unbroken string, such as a URL, wraps inside each text block instead of
+// widening the page at the narrowest viewport.
+async function checkLongWordsWrap(browser) {
+  const word = `https://example.org/${'a'.repeat(160)}`;
+  const blocks = ['.paper-page__title', '.paper-page__authors', '.paper-page__tldr p',
+    '.paper-page__abstract p', '.paper-page__figure figcaption'];
+  const { context, page, errors } = await openPage(browser, pagePath(PAPERS[0]), { viewport: VIEWPORTS[2] });
+  await settle(page);
+  for (const selector of blocks) {
+    const probe = await page.locator(selector).first().evaluateHandle((element, text) => {
+      const span = document.createElement('span');
+      span.textContent = ` ${text}`;
+      return element.appendChild(span);
+    }, word);
+    await assertNoHorizontalOverflow(page, `${selector} with a ${word.length}-character word at ${VIEWPORTS[2].width}px`);
+    await probe.evaluate(span => span.remove());
+  }
+  assert.equal(errors.length, 0, errors.join('\n'));
+  await context.close();
+  console.log('Long words wrap inside paper page text');
+}
+
 async function checkLayout(browser) {
   for (const paper of PAPERS) {
     for (const viewport of VIEWPORTS) {
@@ -346,10 +403,12 @@ runCheck(async () => {
     await checkEntryPoints(browser);
     await checkBackToFilteredList(browser);
     await checkBibtexFailure(browser);
+    await checkBibtexRetry(browser);
     await checkBibtexIsText(browser);
     await checkWithoutJavaScript(browser);
     await checkFigureSizing(browser);
     await checkFiguresReserveSpace(browser);
+    await checkLongWordsWrap(browser);
     await checkLayout(browser);
   } finally {
     await browser.close();

@@ -4,6 +4,12 @@
 
 $paper-page-accent: #254b7e;
 
+// A long unbroken string (a URL in an abstract, say) wraps instead of widening the page.
+// The BibTeX block keeps `white-space: pre` and scrolls instead.
+.paper-page {
+    overflow-wrap: anywhere;
+}
+
 // Doubled classes outrank the `.page__content p`, `h1` and `a` rules.
 .paper-page__back.paper-page__back {
     margin: 0 0 1em;
@@ -36,7 +42,6 @@ $paper-page-accent: #254b7e;
     margin: 0 0 .5em;
     font-size: $type-size-3;
     line-height: 1.3;
-    overflow-wrap: break-word;
 }
 
 .paper-page__authors.paper-page__authors {

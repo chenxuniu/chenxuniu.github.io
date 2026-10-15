@@ -50,28 +50,35 @@
     apply(initialTheme, initialTheme !== '' && knownThemes.indexOf(initialTheme) === -1);
   }
 
+  // Paper pages render a download link inside the BibTeX block; once the file
+  // loads, its text (set as text, never HTML) replaces the link.
+  function showBibtex(url, text) {
+    Array.prototype.forEach.call(document.querySelectorAll('[data-bib-src]'), function (block) {
+      if (block.dataset.bibSrc !== url) return;
+      block.textContent = text.trim();
+      block.dataset.bibState = 'loaded';
+    });
+  }
+
+  // Whichever asks first, the preview or a Copy click, a successful request
+  // fills the preview, so a Copy after a failed preview fills it too.
   function fetchBibtex(url) {
     if (!bibtexRequests.has(url)) {
       var request = fetch(url).then(function (response) {
         if (!response.ok) throw new Error('BibTeX request failed with HTTP ' + response.status);
         return response.text();
       });
-      // Forget failures so the next attempt asks the server again.
-      request.catch(function () { bibtexRequests.delete(url); });
+      // Forget failures so the next attempt asks the server again (and can fill the preview).
+      request.then(function (text) { showBibtex(url, text); }, function () { bibtexRequests.delete(url); });
       bibtexRequests.set(url, request);
     }
     return bibtexRequests.get(url);
   }
 
-  // Paper pages render a download link inside the BibTeX block; once the file
-  // loads, its text (set as text, never HTML) replaces the link.
   function setupBibtexPreview() {
     if (!window.fetch) return;
     Array.prototype.forEach.call(document.querySelectorAll('[data-bib-src]'), function (block) {
-      fetchBibtex(block.dataset.bibSrc).then(function (text) {
-        block.textContent = text.trim();
-        block.dataset.bibState = 'loaded';
-      }, function () {
+      fetchBibtex(block.dataset.bibSrc).catch(function () {
         block.dataset.bibState = 'failed';
       });
     });

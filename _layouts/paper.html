@@ -55,7 +55,7 @@ layout: default
         <button type="button" class="paper-copy-bib" data-bib-url="{{ paper_bib_url | escape }}" aria-label="Copy BibTeX: {{ paper.short_title | default: paper_display_title | escape }}" hidden>Copy</button>
       </div>
       {% comment %} assets/js/publications.js replaces the link with the file's text. {% endcomment %}
-      <pre class="paper-page__bib" data-bib-src="{{ paper_bib_url | escape }}" tabindex="0" aria-labelledby="paper-bibtex"><a href="{{ paper_bib_url }}">Download BibTeX</a></pre>
+      <pre class="paper-page__bib" data-bib-src="{{ paper_bib_url | escape }}" tabindex="0"><a href="{{ paper_bib_url }}">Download BibTeX</a></pre>
     </section>
   {% endunless %}{% endif %}
 </div>
