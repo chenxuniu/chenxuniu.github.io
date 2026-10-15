@@ -14,6 +14,8 @@
 {% for theme in site.data.research_themes %}
   {% assign theme_papers = site.data.publications | where_exp: "paper", "paper.themes contains theme.id" %}
   {% assign theme_projects = site.data.projects | where_exp: "project", "project.themes contains theme.id" %}
+  {% include sort-publications.html papers=theme_papers %}
+  {% assign theme_papers = citation_sorted_papers %}
   <section class="research-theme" id="{{ theme.id }}" aria-labelledby="{{ theme.id }}-title">
     <h2 id="{{ theme.id }}-title">{{ theme.name | escape }}</h2>
     <div class="research-theme__body">

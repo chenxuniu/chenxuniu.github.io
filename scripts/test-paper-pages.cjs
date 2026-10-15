@@ -228,9 +228,10 @@ async function checkEntryPoints(browser) {
   await research.context.close();
 
   const home = await openPage(browser, '/');
+  // test-publications.cjs owns the order (citation count); this only checks where the titles lead.
   const selected = await linksIn(home.page, '.paper-title a');
-  assert.deepEqual(selected.map(link => link.href),
-    ['/publications/tokenpowerbench/', '/publications/fixme/', '/publications/llm-inference-engines/']);
+  assert.deepEqual(new Set(selected.map(link => link.href)),
+    new Set(['/publications/tokenpowerbench/', '/publications/fixme/', '/publications/llm-inference-engines/']));
   const news = await linksIn(home.page, '.news-entry a');
   assert.deepEqual(news.map(link => link.href), ['/publications/one-over-w-law/', '/publications/microevo/',
     'https://doi.org/10.1145/3785462.3815795', '/publications/tokenpowerbench/', '/publications/fixme/']);

@@ -12,6 +12,14 @@ function visibleTitles(page) {
   return page.locator('.paper-box:visible .paper-title').allInnerTexts();
 }
 
+async function assertCitationOrder(page) {
+  const counts = await page.locator('.paper-box:visible .paper-citations strong')
+    .allInnerTexts();
+  const numeric = counts.map(Number);
+  assert.deepEqual(numeric, [...numeric].sort((a, b) => b - a),
+    'Publications appear in descending numeric citation order');
+}
+
 async function checkFilters(browser) {
   const { context, page, errors } = await openPage(browser, '/publications/');
   const filters = page.getByRole('group', { name: 'Filter publications by research theme' });
@@ -20,6 +28,7 @@ async function checkFilters(browser) {
   const all = filters.getByRole('button', { name: 'All (11)' });
   assert.equal(await all.getAttribute('aria-pressed'), 'true');
   assert.equal((await visibleTitles(page)).length, 11);
+  await assertCitationOrder(page);
   const titleLinks = page.locator('.paper-title a');
   assert.equal(await titleLinks.filter({ hasText: 'TokenPowerBench:' }).getAttribute('href'),
     '/publications/tokenpowerbench/', 'Papers with a page link to it');
@@ -32,6 +41,7 @@ async function checkFilters(browser) {
     assert.equal(await button.getAttribute('aria-pressed'), 'true');
     assert.equal(await all.getAttribute('aria-pressed'), 'false');
     assert.equal((await visibleTitles(page)).length, theme.count, theme.name);
+    await assertCitationOrder(page);
     assert.equal(new URL(page.url()).searchParams.get('theme'), theme.id);
     assert.equal(await status.innerText(), `Showing ${theme.count} of 11 publications`);
   }
@@ -86,6 +96,7 @@ async function checkCopy(browser) {
 
   const home = await openPage(browser, '/');
   assert.equal(await home.page.getByRole('button', { name: /^Copy BibTeX:/ }).count(), 3);
+  await assertCitationOrder(home.page);
   assert.equal(await home.page.getByRole('group', { name: 'Filter publications by research theme' }).count(), 0,
     'Selected publications on the homepage are not filtered');
   assert.equal(home.errors.length, 0, home.errors.join('\n'));
@@ -185,6 +196,7 @@ async function checkCopyRobustness(browser) {
 async function checkWithoutJavaScript(browser) {
   const { context, page } = await openPage(browser, '/publications/', { javaScriptEnabled: false });
   assert.equal(await page.locator('.paper-box:visible').count(), 11);
+  await assertCitationOrder(page);
   assert.equal(await page.locator('.paper-filters').isVisible(), false);
   assert.equal(await page.locator('.paper-copy-bib:visible').count(), 0);
   assert.equal(await page.locator('.paper-links a', { hasText: 'BibTeX' }).count(), 11);
