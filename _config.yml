@@ -134,6 +134,20 @@ defaults:
     values:
       layout: default
       author_profile: true
+  # _papers: one page per paper at /publications/<slug>/
+  - scope:
+      path: ""
+      type: papers
+    values:
+      layout: paper
+      author_profile: true
+
+
+# Collections
+collections:
+  papers:
+    output: true
+    permalink: /publications/:name/
 
 
 # Sass/SCSS
