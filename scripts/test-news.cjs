@@ -47,6 +47,8 @@ runCheck(async () => {
       };
     }));
     assert.deepEqual(items, EXPECTED_NEWS);
+    // A `link.paper` slug that matches no paper renders unlinked text, never an empty link.
+    assert.equal(await page.locator('.news-entry a[href=""], [data-terminal-news] a[href=""]').count(), 0);
     const targets = await page.locator('.news-entry a').evaluateAll(links => links.map(link =>
       [link.getAttribute('href'), link.target, link.rel]));
     for (const [href, target, rel] of targets) {
