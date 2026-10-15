@@ -84,6 +84,7 @@
   venue: "AAAI 2026"
   scholar_id: "ufrVoPGSRksC"
   short_title: "TokenPowerBench"
+  slug: "tokenpowerbench"
   themes: ["energy-ai-hpc"]
   year: 2026
   cv_authors: "**C. Niu**, W. Zhang, J. Li, Y. Zhao, T. Wang, X. Wang, and Y. Chen."
