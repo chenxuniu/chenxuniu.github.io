@@ -77,6 +77,8 @@ Schema:
 tldr: "One sentence, about 30 words, plain text."
 figures:               # two or three entries
   - src: "/images/papers/<slug>/figure-<n>.png"
+    width: 1600          # pixel size of the image file, so the page does not shift while it loads
+    height: 700
     alt: "What the figure shows, for screen readers and failed loads."
     caption: "Figure <n>. Caption shortened from the paper."
 ---
@@ -102,7 +104,7 @@ In `_data/publications.yml`:
   cv_authors: "H. Chen, X. Liu, Y. Liu, J. Jiang, X. Liu, **C. Niu**, and B. He."
   cv_venue: "Conference on Neural Information Processing Systems (NeurIPS '26)"
   cv_note: "Accepted; proceedings version forthcoming."
-  image: "/images/neurips2026-figure1.png"
+  image: "/images/papers/one-over-w-law/figure-1.png"
   note: "Camera-ready version; proceedings version forthcoming."
   authors: "Huamin Chen, Xunzhuo Liu, Yuhan Liu, Junchen Jiang, Xue Liu, **Chenxu Niu**, and Bowei He."
   links:
@@ -115,7 +117,7 @@ In `_data/publications.yml`:
 It has no `scholar_id` because Google Scholar does not list the paper yet; the card's citation row and the terminal's `citations` table already skip papers without one. It is not `selected`.
 
 - `assets/bib/neurips2026-one-over-w-law.bib` is a new `@inproceedings` entry (key `chen2026onew`, booktitle "Advances in Neural Information Processing Systems", year 2026, no pages or DOI yet).
-- `images/neurips2026-figure1.png` is the card image: Figure 1 of the paper at 1600×700, matching the other recent card images.
+- The card image is the page's own Figure 1 (`/images/papers/one-over-w-law/figure-1.png`, 1602×676), so the file is not duplicated; cards letterbox it with `object-fit: contain` like the other images.
 
 ### News
 
@@ -157,7 +159,7 @@ Details:
 GitHub Pages' Jekyll cannot read `/assets/bib/*.bib` into a page at build time (`include_relative` cannot reach outside the page's directory). Instead:
 
 - The page renders `<pre class="paper-page__bib" data-bib-src="/assets/bib/<file>.bib">` containing a "Download BibTeX" link as the no-JavaScript fallback, and a Copy button that uses the existing `.paper-copy-bib` markup and behaviour.
-- `assets/js/publications.js` gains `setupBibtexPreview()`, which fetches each `[data-bib-src]` file and replaces the fallback with the entry's text. If the fetch fails, the fallback link stays.
+- `assets/js/publications.js` gains `setupBibtexPreview()`, which fetches each `[data-bib-src]` file and replaces the fallback with the entry's text (as text, never HTML). If the fetch fails, the fallback link stays. When it finishes, the block gets `data-bib-state="loaded"` or `"failed"`.
 - Preview and copy share one cached fetch per BibTeX URL, so copying does not request the file a second time. The Safari clipboard handling stays as it is.
 
 ### Title and description
@@ -182,7 +184,7 @@ Internal links open in the same tab without `target`. External links keep `targe
 Callers:
 
 - `_includes/publication-list.html`: the card title (homepage selected list and `/publications/`). The links row under the title is unchanged.
-- `_pages/research.md`: paper titles under each theme.
+- `_includes/research-themes.html` (rendered by `/research/`): paper titles under each theme.
 - `_includes/hpc-terminal.html`, `papers` command: papers with a page link to it; the rest keep their PDF link.
 - `_includes/news-text.html`: items with `link.paper`.
 
@@ -214,7 +216,7 @@ Extracted from the PDFs already in `assets/pdf/` with `pdftotext`, then cleaned:
 | `microevo` | 5, 8, 9 | 5: Overview of MicroEvo: LLM-driven initialization and expansion, Pareto-UCT selection in the MCTS tree, PPA evaluation, active knowledge accumulation and state-aware directives. 8: Pareto fronts of different design-space exploration methods in the CPI–Power and CPI–Area spaces. 9: Convergence efficiency and time-to-target comparison. |
 | `llm-inference-engines` | 1, 2, 5 | 1: Energy per token across all engines and workloads. 2: Component-wise (GPU, CPU, DRAM) energy per token across inference engines. 5: Energy per token versus throughput. |
 
-Each figure is cropped from its PDF page with poppler's `pdftoppm` (`-r`, `-x`, `-y`, `-W`, `-H`) to a PNG about 1600 px wide, kept under about 300 KB, and saved as `images/papers/<slug>/figure-<n>.png`, where `<n>` is the paper's figure number. No new dependency is added; the command goes into the maintenance docs.
+Each figure is cropped from its PDF page with poppler's `pdftoppm` (`-r`, `-x`, `-y`, `-W`, `-H`) to a PNG at most 1600 px wide, kept under about 300 KB, and saved as `images/papers/<slug>/figure-<n>.png`, where `<n>` is the paper's figure number. A figure that is a large raster screenshot in the PDF (FIXME Figure 5) is saved as JPEG instead, because its PNG is about 2 MB. No new dependency is added; the command goes into the maintenance docs.
 
 ## Documentation
 
