@@ -25,9 +25,9 @@
         <h3 class="research-theme__label">Publications</h3>
         <ul class="research-theme__papers">
           {% for paper in theme_papers %}
-            {% include paper-primary-url.html paper=paper %}
+            {% include paper-link.html paper=paper %}
             <li>
-              {% if paper_primary_url != "" %}<a href="{{ paper_primary_url }}" target="_blank" rel="noopener noreferrer">{{ paper.title | escape }}</a>{% else %}{{ paper.title | escape }}{% endif %}
+              {% if paper_link_url != "" %}<a href="{{ paper_link_url }}"{% unless paper_link_internal %} target="_blank" rel="noopener noreferrer"{% endunless %}>{{ paper.title | escape }}</a>{% else %}{{ paper.title | escape }}{% endif %}
               <span class="research-theme__venue">{{ paper.venue | escape }}</span>
             </li>
           {% endfor %}

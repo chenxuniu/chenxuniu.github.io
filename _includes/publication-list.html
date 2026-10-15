@@ -7,9 +7,9 @@
     </div>
   </div>
   <div class="paper-box-text">
-    {% include paper-primary-url.html paper=paper %}
-    {% if paper_primary_url != "" %}
-      <p class="paper-title"><a href="{{ paper_primary_url }}" target="_blank" rel="noopener noreferrer">{{ paper.title }}</a></p>
+    {% include paper-link.html paper=paper %}
+    {% if paper_link_url != "" %}
+      <p class="paper-title"><a href="{{ paper_link_url }}"{% unless paper_link_internal %} target="_blank" rel="noopener noreferrer"{% endunless %}>{{ paper.title }}</a></p>
     {% else %}
       <p class="paper-title">{{ paper.title }}</p>
     {% endif %}

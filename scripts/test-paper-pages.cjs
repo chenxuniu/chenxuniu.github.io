@@ -1,4 +1,6 @@
 const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
 const { BASE_URL, VIEWPORTS, launchBrowser, openPage, settle, assertNoHorizontalOverflow, runCheck } =
   require('./e2e-browser.cjs');
 
@@ -190,6 +192,79 @@ async function checkWithoutJavaScript(browser) {
   console.log('Paper pages stay usable without JavaScript');
 }
 
+async function linksIn(page, selector) {
+  return page.locator(selector).evaluateAll(links => links.map(link => ({
+    text: link.textContent.trim(), href: link.getAttribute('href'),
+    target: link.getAttribute('target'), rel: link.getAttribute('rel'),
+  })));
+}
+
+// Every paper page is linked once per list and opens in the same tab; all other
+// links keep opening in a new tab. Returns the links that are not paper pages.
+function assertLinksToPages(links, label) {
+  const pages = new Set(PAPERS.map(pagePath));
+  const internal = links.filter(link => pages.has(link.href));
+  assert.deepEqual(new Set(internal.map(link => link.href)), pages, `${label}: every paper page is linked`);
+  assert.equal(internal.length, pages.size, `${label}: each paper page is linked once`);
+  assert.ok(internal.every(link => link.target === null && link.rel === null), `${label}: paper pages open in the same tab`);
+  const others = links.filter(link => !pages.has(link.href));
+  assert.ok(others.every(link => link.target === '_blank' && link.rel === 'noopener noreferrer'),
+    `${label}: other papers keep opening in a new tab`);
+  return others;
+}
+
+async function checkEntryPoints(browser) {
+  const files = fs.readdirSync(path.join(__dirname, '../_papers')).filter(name => name.endsWith('.md'));
+  assert.deepEqual(new Set(files.map(name => name.replace(/\.md$/, ''))), new Set(PAPERS.map(paper => paper.slug)),
+    'PAPERS lists every _papers file');
+
+  const publications = await openPage(browser, '/publications/');
+  const others = assertLinksToPages(await linksIn(publications.page, '.paper-title a'), '/publications/');
+  assert.equal(others.length, 6, 'The six papers without a page keep their DOI, arXiv or PDF link');
+  await publications.context.close();
+
+  const research = await openPage(browser, '/research/');
+  assertLinksToPages(await linksIn(research.page, '.research-theme__papers a'), '/research/');
+  await research.context.close();
+
+  const home = await openPage(browser, '/');
+  const selected = await linksIn(home.page, '.paper-title a');
+  assert.deepEqual(selected.map(link => link.href),
+    ['/publications/tokenpowerbench/', '/publications/fixme/', '/publications/llm-inference-engines/']);
+  const news = await linksIn(home.page, '.news-entry a');
+  assert.deepEqual(news.map(link => link.href), ['/publications/one-over-w-law/', '/publications/microevo/',
+    'https://doi.org/10.1145/3785462.3815795', '/publications/tokenpowerbench/', '/publications/fixme/']);
+  assert.ok(news.filter(link => link.href.startsWith('/')).every(link => link.target === null),
+    'News links to paper pages open in the same tab');
+
+  await home.page.getByRole('button', { name: 'Open HPC + AI terminal' }).click();
+  const dialog = home.page.getByRole('dialog', { name: 'HPC + AI' });
+  const input = dialog.getByRole('textbox', { name: 'Terminal command' });
+  await input.fill('papers');
+  await input.press('Enter');
+  const terminal = await linksIn(home.page, '[data-terminal-paper]');
+  assert.equal(terminal.length, 11);
+  assert.equal(terminal[0].href, '/publications/one-over-w-law/');
+  assertLinksToPages(terminal, 'terminal papers');
+  assert.equal(home.errors.length, 0, home.errors.join('\n'));
+  await home.context.close();
+  console.log('Cards, research themes, News and the terminal link to the paper pages');
+}
+
+async function checkBackToFilteredList(browser) {
+  const { context, page, errors } = await openPage(browser, '/publications/?theme=energy-ai-hpc');
+  await page.locator('.paper-filters').waitFor({ state: 'visible' });
+  await page.locator('.paper-title a', { hasText: 'TokenPowerBench' }).click();
+  await page.waitForURL('**/publications/tokenpowerbench/');
+  await page.goBack();
+  await page.waitForURL('**/publications/?theme=energy-ai-hpc');
+  await page.locator('.paper-filters').waitFor({ state: 'visible' });
+  assert.equal(await page.getByRole('status').innerText(), 'Showing 5 of 11 publications');
+  assert.equal(errors.length, 0, errors.join('\n'));
+  await context.close();
+  console.log('Back from a paper page returns to the filtered list');
+}
+
 // Tall figures stay within one screen at desktop width, and captions use the body font.
 async function checkFigureSizing(browser) {
   for (const paper of PAPERS) {
@@ -242,6 +317,8 @@ runCheck(async () => {
   const browser = await launchBrowser();
   try {
     await checkPages(browser);
+    await checkEntryPoints(browser);
+    await checkBackToFilteredList(browser);
     await checkBibtexFailure(browser);
     await checkBibtexIsText(browser);
     await checkWithoutJavaScript(browser);

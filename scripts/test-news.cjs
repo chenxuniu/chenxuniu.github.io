@@ -5,12 +5,12 @@ const { launchBrowser, openPage, runCheck } = require('./e2e-browser.cjs');
 const EXPECTED_NEWS = [
   {
     logo: '/images/icons/conferences/neurips-2026.png', logoClass: 'news-logo', datetime: '2026-09',
-    href: '/assets/pdf/neurips2026-one-over-w-law.pdf', emphasized: true,
+    href: '/publications/one-over-w-law/', emphasized: true,
     text: '2026.09 Our paper The 1/W Law: Context Length is the Dominant Energy Lever in LLM Inference Fleets. has been accepted at NeurIPS 2026 (camera-ready PDF).',
   },
   {
     logo: '/images/icons/conferences/iccad-2026.webp', logoClass: 'news-logo news-logo--iccad', datetime: '2026-08',
-    href: 'https://arxiv.org/abs/2608.06183', emphasized: false,
+    href: '/publications/microevo/', emphasized: false,
     text: '2026.08 An arXiv preprint of our paper MicroEvo: Knowledge-Guided LLM Sampling for Efficient Microarchitecture Design Space Exploration. is now available. The paper has been accepted for presentation at ICCAD 2026; the proceedings version is forthcoming.',
   },
   {
@@ -20,12 +20,12 @@ const EXPECTED_NEWS = [
   },
   {
     logo: '/images/icons/conferences/aaai-2026.png', logoClass: 'news-logo news-logo--aaai', datetime: '2026-04',
-    href: '/assets/pdf/aaai2026-tokenpowerbench.pdf', emphasized: false,
+    href: '/publications/tokenpowerbench/', emphasized: false,
     text: '2026.04 Our paper TokenPowerBench: Benchmarking the Power Consumption of LLM Inference. has been published in the Proceedings of AAAI 2026 (acceptance rate: 17.6%).',
   },
   {
     logo: '/images/icons/conferences/aaai-2026.png', logoClass: 'news-logo news-logo--aaai', datetime: '2026-04',
-    href: '/assets/pdf/aaai2026-fixme.pdf', emphasized: false,
+    href: '/publications/fixme/', emphasized: false,
     text: '2026.04 Our paper FIXME: Towards End-to-End Benchmarking of LLM-Aided Design Verification. has been published in the Proceedings of AAAI 2026 (acceptance rate: 17.6%).',
   },
 ];
@@ -47,9 +47,12 @@ runCheck(async () => {
       };
     }));
     assert.deepEqual(items, EXPECTED_NEWS);
-    const external = await page.locator('.news-entry a').evaluateAll(links =>
-      links.every(link => link.target === '_blank' && link.rel === 'noopener noreferrer'));
-    assert.ok(external, 'News links open in a new tab without an opener');
+    const targets = await page.locator('.news-entry a').evaluateAll(links => links.map(link =>
+      [link.getAttribute('href'), link.target, link.rel]));
+    for (const [href, target, rel] of targets) {
+      if (href.includes('://')) assert.deepEqual([target, rel], ['_blank', 'noopener noreferrer'], href);
+      else assert.deepEqual([target, rel], ['', ''], `${href} opens in the same tab`);
+    }
     assert.equal(errors.length, 0, errors.join('\n'));
     await context.close();
     console.log('Homepage News renders unchanged from data');

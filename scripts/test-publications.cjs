@@ -21,10 +21,10 @@ async function checkFilters(browser) {
   assert.equal(await all.getAttribute('aria-pressed'), 'true');
   assert.equal((await visibleTitles(page)).length, 11);
   const titleLinks = page.locator('.paper-title a');
-  assert.equal(await titleLinks.filter({ hasText: 'TokenPowerBench' }).getAttribute('href'),
-    'https://doi.org/10.1609/aaai.v40i38.40535', 'Titles link to the DOI first');
+  assert.equal(await titleLinks.filter({ hasText: 'TokenPowerBench:' }).getAttribute('href'),
+    '/publications/tokenpowerbench/', 'Papers with a page link to it');
   assert.equal(await titleLinks.filter({ hasText: 'TokenPowerSandbox' }).getAttribute('href'),
-    'https://doi.org/10.48550/arXiv.2608.18149');
+    'https://doi.org/10.48550/arXiv.2608.18149', 'Titles link to the DOI first');
 
   for (const theme of THEMES) {
     const button = filters.getByRole('button', { name: `${theme.name} (${theme.count})` });

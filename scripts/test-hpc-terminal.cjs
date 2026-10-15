@@ -57,7 +57,7 @@ async function check() {
       await run('papers');
       const papers = log.locator('[data-terminal-paper]');
       assert.equal(await papers.count(), 11);
-      assert.equal(await papers.first().getAttribute('href'), '/assets/pdf/neurips2026-one-over-w-law.pdf');
+      assert.equal(await papers.first().getAttribute('href'), '/publications/one-over-w-law/');
       const pdf = await page.request.get(new URL(await papers.first().getAttribute('href'), page.url()).href);
       assert.equal(pdf.status(), 200);
       await run('projects');
