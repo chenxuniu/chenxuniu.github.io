@@ -1,22 +1,24 @@
 # Newest first. Rendered on the homepage (_includes/news-list.html) and by the
 # terminal's `news` command. `before` and `after` may contain inline HTML.
+# `link.url` is a URL; `link.paper` is a slug from _data/publications.yml and links to that paper's page.
+# If the slug matches no paper, `link.url` is used instead, and without one the text is not linked.
 - date: "2026-09"
   logo: "/images/icons/conferences/neurips-2026.png"
   before: "Our paper"
   link:
     text: "The 1/W Law: Context Length is the Dominant Energy Lever in LLM Inference Fleets."
-    url: "/assets/pdf/neurips2026-one-over-w-law.pdf"
+    paper: "one-over-w-law"
     emphasis: true
-  after: "has been accepted at <strong>NeurIPS 2026</strong> (camera-ready PDF)."
+  after: "has been accepted at <strong>NeurIPS 2026</strong>; the camera-ready PDF is on the paper page."
 
 - date: "2026-08"
   logo: "/images/icons/conferences/iccad-2026.webp"
   logo_class: "news-logo--iccad"
-  before: "An arXiv preprint of our paper"
+  before: "Our paper"
   link:
     text: "MicroEvo: Knowledge-Guided LLM Sampling for Efficient Microarchitecture Design Space Exploration."
-    url: "https://arxiv.org/abs/2608.06183"
-  after: "is now available. The paper has been accepted for presentation at <strong>ICCAD 2026</strong>; the proceedings version is forthcoming."
+    paper: "microevo"
+  after: "has been accepted for presentation at <strong>ICCAD 2026</strong>. An arXiv preprint is available now; the proceedings version is forthcoming."
 
 - date: "2026-07"
   logo: "/images/icons/conferences/pearc-2026.jpg"
@@ -33,7 +35,7 @@
   before: "Our paper"
   link:
     text: "TokenPowerBench: Benchmarking the Power Consumption of LLM Inference."
-    url: "/assets/pdf/aaai2026-tokenpowerbench.pdf"
+    paper: "tokenpowerbench"
   after: "has been published in the Proceedings of <strong>AAAI 2026</strong> (acceptance rate: 17.6%)."
 
 - date: "2026-04"
@@ -42,5 +44,5 @@
   before: "Our paper"
   link:
     text: "FIXME: Towards End-to-End Benchmarking of LLM-Aided Design Verification."
-    url: "/assets/pdf/aaai2026-fixme.pdf"
+    paper: "fixme"
   after: "has been published in the Proceedings of <strong>AAAI 2026</strong> (acceptance rate: 17.6%)."

@@ -1,0 +1,6 @@
+{% comment %}
+  Sets paper_link_url and paper_link_internal for include.paper. A paper with a
+  `slug` whose _papers page exists links to that page (paper_link_internal true,
+  opened in the same tab); any other paper falls back to paper-primary-url.html
+  (DOI, else arXiv, else PDF; paper_link_internal false; the URL may be empty).
+{% endcomment %}{% assign paper_link_page = nil %}{% if include.paper.slug %}{% assign paper_link_page = site.papers | where: "slug", include.paper.slug | first %}{% endif %}{% if paper_link_page %}{% assign paper_link_url = paper_link_page.url | relative_url %}{% assign paper_link_internal = true %}{% else %}{% include paper-primary-url.html paper=include.paper %}{% assign paper_link_url = paper_primary_url %}{% assign paper_link_internal = false %}{% endif %}
