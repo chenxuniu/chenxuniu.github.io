@@ -410,6 +410,7 @@
 
 @import "hpc-terminal";
 @import "publications";
+@import "paper-page";
 @import "research";
 
 @include breakpoint(max-width $small) {

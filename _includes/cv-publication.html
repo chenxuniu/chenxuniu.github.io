@@ -1,10 +1,8 @@
 {% assign paper = include.paper %}
 {% assign authors_html = paper.cv_authors | default: paper.authors | markdownify | remove: '<p>' | remove: '</p>' | strip_newlines %}
-{% assign title_last_char = paper.title | slice: -1, 1 %}
-{% assign title_length = paper.title | size | minus: 1 %}
-{% if title_last_char == '.' %}{% assign display_title = paper.title | slice: 0, title_length %}{% else %}{% assign display_title = paper.title %}{% endif %}
+{% include paper-display-title.html title=paper.title %}
 <li>
-  {{ authors_html }} <strong class="cv-pub-title">{{ display_title | escape }}</strong>.
+  {{ authors_html }} <strong class="cv-pub-title">{{ paper_display_title | escape }}</strong>.
   <cite>{{ paper.cv_venue | default: paper.venue | escape }}</cite>{% if paper.pages %}, pp. {{ paper.pages | escape }}{% endif %}, {{ paper.year }}.{% if paper.cv_note %} {{ paper.cv_note | escape }}{% endif %}
   {% if paper.links.size > 0 %}
     <span class="cv-pub-links">
