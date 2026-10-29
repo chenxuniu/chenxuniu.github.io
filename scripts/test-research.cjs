@@ -4,7 +4,7 @@ const { VIEWPORTS, launchBrowser, openPage, settle, assertNoHorizontalOverflow, 
 const escapeRegExp = text => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 const THEMES = [
-  { id: 'energy-ai-hpc', name: 'Energy-Efficient AI & HPC Systems', papers: 4, projects: 3 },
+  { id: 'energy-ai-hpc', name: 'Energy-Efficient AI & HPC Systems', papers: 5, projects: 3 },
   { id: 'llm-hardware-design', name: 'LLMs for Hardware Design', papers: 2, projects: 0 },
   { id: 'scientific-data', name: 'Scientific Data Management', papers: 4, projects: 0 },
 ];
