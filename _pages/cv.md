@@ -65,18 +65,12 @@ redirect_from:
 
   <section class="cv-section" aria-labelledby="cv-publications">
     <h2 id="cv-publications">Peer-Reviewed and Accepted Publications</h2>
-    {% assign publication_number = 1 %}
+    {% assign publication_number = 0 %}
     {% for paper in site.data.publications %}
       {% unless paper.venue contains 'arXiv' %}{% assign publication_number = publication_number | plus: 1 %}{% endunless %}
     {% endfor %}
     <h3 class="cv-pub-year">2026</h3>
     <ol class="cv-publications" reversed start="{{ publication_number }}">
-      <li>
-        H. Chen, X. Liu, Y. Liu, J. Jiang, X. Liu, <strong>C. Niu</strong>, and B. He.
-        <strong class="cv-pub-title">The 1/W Law: Context Length is the Dominant Energy Lever in LLM Inference Fleets</strong>.
-        <cite>Conference on Neural Information Processing Systems (NeurIPS '26)</cite>, 2026. Accepted; proceedings version forthcoming.
-      </li>
-      {% assign publication_number = publication_number | minus: 1 %}
       {% assign current_year = 2026 %}
       {% for paper in site.data.publications %}
         {% unless paper.venue contains 'arXiv' %}

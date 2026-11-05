@@ -1,0 +1,5 @@
+{% comment %}
+  Sets page_title: for a _papers page, its paper's display title from
+  _data/publications.yml (Jekyll would otherwise title it after the file name);
+  for every other page, page.title.
+{% endcomment %}{% assign page_title = page.title %}{% if page.collection == "papers" %}{% assign page_title_paper = site.data.publications | where: "slug", page.slug | first %}{% if page_title_paper %}{% include paper-display-title.html title=page_title_paper.title %}{% assign page_title = paper_display_title %}{% endif %}{% endif %}

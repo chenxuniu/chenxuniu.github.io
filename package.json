@@ -3,7 +3,7 @@
   "scripts": {
     "cv:pdf": "node scripts/export-cv-pdf.cjs",
     "cv:build": "bundle exec jekyll build && node scripts/export-cv-pdf.cjs",
-    "test:e2e": "node scripts/test-news.cjs && node scripts/test-publications.cjs && node scripts/test-research.cjs && node scripts/test-hpc-terminal.cjs"
+    "test:e2e": "node scripts/test-news.cjs && node scripts/test-publications.cjs && node scripts/test-research.cjs && node scripts/test-hpc-terminal.cjs && node scripts/test-paper-pages.cjs"
   },
   "devDependencies": {
     "playwright": "1.63.0"

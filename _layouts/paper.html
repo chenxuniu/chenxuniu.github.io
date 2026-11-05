@@ -1,0 +1,61 @@
+---
+layout: default
+---
+{% comment %} Content comes from _papers/<slug>.md; metadata from the _data/publications.yml entry with the same slug. {% endcomment %}
+{% assign paper = site.data.publications | where: "slug", page.slug | first %}
+{% include paper-display-title.html title=paper.title %}
+{% assign paper_bib = paper.links | where: "label", "BibTeX" | first %}
+<div class="paper-page">
+  <p class="paper-page__back"><a href="{{ '/publications/' | relative_url }}"><i class="fas fa-arrow-left" aria-hidden="true"></i> All publications</a></p>
+
+  <header class="paper-page__header">
+    <p class="paper-page__meta"><span class="paper-page__venue">{{ paper.venue | escape }}</span>{% if paper.note %} <span class="paper-page__note">{{ paper.note | escape }}</span>{% endif %}</p>
+    <h1 class="paper-page__title">{{ paper_display_title | escape }}</h1>
+    <p class="paper-page__authors">{{ paper.authors | markdownify | remove: '<p>' | remove: '</p>' | strip_newlines }}</p>
+    {% if paper.links %}
+      <ul class="paper-page__links" aria-label="Paper resources">
+        {% for link in paper.links %}
+          {% assign link_url = link.url %}
+          {% unless link_url contains '://' %}{% assign link_url = link_url | relative_url %}{% endunless %}
+          <li><a class="paper-page__button" href="{{ link_url }}" target="_blank" rel="noopener noreferrer">{{ link.label | escape }}</a></li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </header>
+
+  <section class="paper-page__tldr" aria-labelledby="paper-tldr">
+    <h2 id="paper-tldr">TL;DR</h2>
+    <p>{{ page.tldr | escape }}</p>
+  </section>
+
+  <section class="paper-page__section" aria-labelledby="paper-abstract">
+    <h2 id="paper-abstract">Abstract</h2>
+    <div class="paper-page__abstract">{{ content }}</div>
+  </section>
+
+  {% if page.figures.size > 0 %}
+    <section class="paper-page__section" aria-labelledby="paper-figures">
+      <h2 id="paper-figures">Figures</h2>
+      {% for figure in page.figures %}
+        {% assign figure_src = figure.src | relative_url %}
+        {% comment %} --figure-max-width keeps a figure at most 36em tall (see _paper-page.scss). {% endcomment %}
+        <figure class="paper-page__figure">
+          <a href="{{ figure_src }}" target="_blank" rel="noopener noreferrer"><img src="{{ figure_src }}" alt="{{ figure.alt | escape }}" width="{{ figure.width }}" height="{{ figure.height }}" style="--figure-max-width: {{ figure.width | times: 36.0 | divided_by: figure.height | round: 2 }}em" loading="lazy" decoding="async"></a>
+          <figcaption>{{ figure.caption | escape }}</figcaption>
+        </figure>
+      {% endfor %}
+    </section>
+  {% endif %}
+
+  {% if paper_bib %}{% unless paper_bib.url contains '://' %}
+    {% assign paper_bib_url = paper_bib.url | relative_url %}
+    <section class="paper-page__section" aria-labelledby="paper-bibtex">
+      <div class="paper-page__section-heading">
+        <h2 id="paper-bibtex">BibTeX</h2>
+        <button type="button" class="paper-copy-bib" data-bib-url="{{ paper_bib_url | escape }}" aria-label="Copy BibTeX: {{ paper.short_title | default: paper_display_title | escape }}" hidden>Copy</button>
+      </div>
+      {% comment %} assets/js/publications.js replaces the link with the file's text. {% endcomment %}
+      <pre class="paper-page__bib" data-bib-src="{{ paper_bib_url | escape }}" tabindex="0" aria-labelledby="paper-bibtex"><a href="{{ paper_bib_url }}">Download BibTeX</a></pre>
+    </section>
+  {% endunless %}{% endif %}
+</div>

@@ -1,7 +1,7 @@
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
-const { chromium } = require('playwright');
+const { BASE_URL, VIEWPORTS, launchBrowser } = require('./e2e-browser.cjs');
 
 // Expected citation rows come from the same snapshot the site renders.
 function citationSnapshot() {
@@ -12,16 +12,13 @@ function citationSnapshot() {
 }
 
 async function check() {
-  const browser = await chromium.launch({
-    executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
-    headless: true,
-  });
+  const browser = await launchBrowser();
   try {
-    for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 }, { width: 320, height: 568 }]) {
+    for (const viewport of VIEWPORTS) {
       const page = await browser.newPage({ viewport });
       const errors = [];
       page.on('pageerror', error => errors.push(error.message));
-      await page.goto('http://127.0.0.1:4000/', { waitUntil: 'networkidle' });
+      await page.goto(BASE_URL + '/', { waitUntil: 'networkidle' });
       const trigger = page.getByRole('button', { name: 'Open HPC + AI terminal' });
       assert.equal(await trigger.count(), 1, 'The footer should have a terminal button');
       await trigger.click();
@@ -56,11 +53,11 @@ async function check() {
       const themes = log.locator('[data-terminal-theme]');
       assert.deepEqual(await themes.evaluateAll(links => links.map(link => link.getAttribute('href'))),
         ['/research/#energy-ai-hpc', '/research/#llm-hardware-design', '/research/#scientific-data']);
-      assert.match(await log.innerText(), /Energy-Efficient AI & HPC Systems\s+4 papers/);
+      assert.match(await log.innerText(), /Energy-Efficient AI & HPC Systems\s+5 papers/);
       await run('papers');
       const papers = log.locator('[data-terminal-paper]');
-      assert.equal(await papers.count(), 10);
-      assert.equal(await papers.first().getAttribute('href'), '/assets/pdf/arxiv2026-tokenpowersandbox-v1.pdf');
+      assert.equal(await papers.count(), 11);
+      assert.equal(await papers.first().getAttribute('href'), '/publications/one-over-w-law/');
       const pdf = await page.request.get(new URL(await papers.first().getAttribute('href'), page.url()).href);
       assert.equal(pdf.status(), 200);
       await run('projects');
@@ -106,14 +103,15 @@ async function check() {
       await run('sinfo');
       const partitions = log.locator('[data-terminal-partition]');
       assert.equal(await partitions.count(), 3);
-      assert.match(await partitions.first().innerText(), /energy-ai-hpc\*?\s+up\s+4/);
+      assert.match(await partitions.first().innerText(), /energy-ai-hpc\*?\s+up\s+5/);
       // A partition is busy when its newest paper (2025 for scientific data) is at most a year old.
       const scientificState = 2025 >= new Date().getFullYear() - 1 ? 'alloc' : 'idle';
       assert.match(await partitions.nth(2).innerText(), new RegExp(`scientific-data\\s+up\\s+4\\s+${scientificState}`));
 
       await run('squeue');
       const jobs = log.locator('[data-terminal-job]');
-      assert.equal(await jobs.count(), 10);
+      assert.equal(await jobs.count(), 11);
+      assert.match(await log.locator('[data-terminal-job]').first().innerText(), /\bR\b.*NeurIPS 2026/);
       assert.match(await log.locator('[data-terminal-job="3fE2CSJIrl8C"]').innerText(), /\bR\b/);
       assert.match(await log.locator('[data-terminal-job="ufrVoPGSRksC"]').innerText(), /\bCD\b/);
       await assertFits(`squeue at ${viewport.width}px`);
@@ -157,14 +155,14 @@ async function check() {
       console.log(`Terminal interactions and layout passed at ${viewport.width}px`);
     }
     const page = await browser.newPage();
-    await page.goto('http://127.0.0.1:4000/publications/', { waitUntil: 'networkidle' });
+    await page.goto(BASE_URL + '/publications/', { waitUntil: 'networkidle' });
     await page.getByRole('button', { name: 'Open HPC + AI terminal' }).click();
     await page.getByRole('dialog', { name: 'HPC + AI' }).waitFor({ state: 'visible' });
     console.log('Terminal available on the full publications page');
     await page.close();
     const noScript = await browser.newContext({ javaScriptEnabled: false });
     const staticPage = await noScript.newPage();
-    await staticPage.goto('http://127.0.0.1:4000/');
+    await staticPage.goto(BASE_URL + '/');
     assert.equal(await staticPage.locator('.hpc-terminal-trigger').isVisible(), false);
     assert.equal(await staticPage.locator('.site-footer').isVisible(), true);
     await noScript.close();

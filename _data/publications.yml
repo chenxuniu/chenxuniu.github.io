@@ -1,3 +1,21 @@
+- title: "The 1/W Law: Context Length is the Dominant Energy Lever in LLM Inference Fleets."
+  venue: "NeurIPS 2026"
+  short_title: "1/W Law"
+  slug: "one-over-w-law"
+  themes: ["energy-ai-hpc"]
+  year: 2026
+  cv_authors: "H. Chen, X. Liu, Y. Liu, J. Jiang, X. Liu, **C. Niu**, and B. He."
+  cv_venue: "Conference on Neural Information Processing Systems (NeurIPS '26)"
+  cv_note: "Accepted; proceedings version forthcoming."
+  image: "/images/papers/one-over-w-law/figure-1.png"
+  note: "Camera-ready version; proceedings version forthcoming."
+  authors: "Huamin Chen, Xunzhuo Liu, Yuhan Liu, Junchen Jiang, Xue Liu, **Chenxu Niu**, and Bowei He."
+  links:
+    - label: "PDF"
+      url: "/assets/pdf/neurips2026-one-over-w-law.pdf"
+    - label: "BibTeX"
+      url: "/assets/bib/neurips2026-one-over-w-law.bib"
+
 - title: "TokenPowerSandbox: Evidence-Gated CPU-First Screening for Energy-Aware LLM Serving."
   venue: "arXiv 2026"
   scholar_id: "3fE2CSJIrl8C"
@@ -23,6 +41,7 @@
   venue: "ICCAD 2026"
   scholar_id: "MXK_kJrjxJIC"
   short_title: "MicroEvo"
+  slug: "microevo"
   themes: ["llm-hardware-design"]
   year: 2026
   cv_authors: "J. Xiong, R. Li, **C. Niu**, G. Gao, C. Xing, Y. Zhang, X. Wan, J. Cui, C. Bai, Y. Hua, Y. Wang, M. Ling, X. Wang, and T. Xie."
@@ -66,6 +85,7 @@
   venue: "AAAI 2026"
   scholar_id: "ufrVoPGSRksC"
   short_title: "TokenPowerBench"
+  slug: "tokenpowerbench"
   themes: ["energy-ai-hpc"]
   year: 2026
   cv_authors: "**C. Niu**, W. Zhang, J. Li, Y. Zhao, T. Wang, X. Wang, and Y. Chen."
@@ -91,6 +111,7 @@
   venue: "AAAI 2026"
   scholar_id: "Se3iqnhoufwC"
   short_title: "FIXME"
+  slug: "fixme"
   themes: ["llm-hardware-design"]
   year: 2026
   cv_authors: "G.-W. Wan, S. Wong, S. Su, **C. Niu**, N. Wang, X. Wan, Q. Chen, M. Xing, J. Zhang, J. Ye, Y. Wang, R. Song, T. Ni, Q. Xu, N. Guan, Z. Jiang, X. Wang, Y. Chen, and J. Yang."
@@ -112,6 +133,7 @@
   venue: "HotCarbon 2025"
   scholar_id: "W7OEmFMy1HYC"
   short_title: "Energy Efficient or Exhaustive?"
+  slug: "llm-inference-engines"
   themes: ["energy-ai-hpc"]
   year: 2025
   cv_authors: "**C. Niu**, W. Zhang, Y. Zhao, and Y. Chen."
