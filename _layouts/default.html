@@ -18,7 +18,7 @@ layout: compress
       {% include sidebar.html %}
     
       <article class="page" itemscope itemtype="https://schema.org/WebPage">
-        {% if page.title %}<meta itemprop="headline" content="{{ page.title | markdownify | strip_html | strip_newlines | escape_once }}">{% endif %}
+        {% include page-title.html %}{% if page_title %}<meta itemprop="headline" content="{{ page_title | markdownify | strip_html | strip_newlines | escape_once }}">{% endif %}
         <div class="page__inner-wrap">
           <section class="page__content" itemprop="text">
             {{ content }}

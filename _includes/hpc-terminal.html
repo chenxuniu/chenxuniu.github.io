@@ -143,12 +143,17 @@
 <template data-terminal-command="papers">
   <ol class="hpc-terminal__list hpc-terminal__papers" reversed>
     {% for paper in site.data.publications %}
-      {% assign paper_url = '/publications/' %}
-      {% for link in paper.links %}
-        {% if link.label contains 'PDF' %}{% assign paper_url = link.url %}{% break %}{% endif %}
-      {% endfor %}
+      {% include paper-link.html paper=paper %}
+      {% if paper_link_internal %}
+        {% assign paper_url = paper_link_url %}
+      {% else %}
+        {% assign paper_url = '/publications/' | relative_url %}
+        {% for link in paper.links %}
+          {% if link.label contains 'PDF' %}{% assign paper_url = link.url | relative_url %}{% break %}{% endif %}
+        {% endfor %}
+      {% endif %}
       <li>
-        <a href="{{ paper_url | relative_url }}" data-terminal-paper target="_blank" rel="noopener noreferrer">{{ paper.title | escape }}</a>
+        <a href="{{ paper_url }}" data-terminal-paper{% unless paper_link_internal %} target="_blank" rel="noopener noreferrer"{% endunless %}>{{ paper.title | escape }}</a>
         <span class="hpc-terminal__muted">{{ paper.venue | escape }}{% if paper.note %} / {{ paper.note | escape }}{% endif %}</span>
       </li>
     {% endfor %}

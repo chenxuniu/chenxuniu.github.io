@@ -1,0 +1,4 @@
+{% comment %}
+  Sets paper_display_title to include.title without the trailing period that
+  _data/publications.yml titles carry.
+{% endcomment %}{% assign paper_display_title = include.title %}{% assign paper_display_title_last = include.title | slice: -1, 1 %}{% if paper_display_title_last == '.' %}{% assign paper_display_title_length = include.title | size | minus: 1 %}{% assign paper_display_title = include.title | slice: 0, paper_display_title_length %}{% endif %}
