@@ -1,3 +1,25 @@
+- title: "The Token-Energy Law of LLM Decode: Active Bytes and Realized Time Account for Joules per Token."
+  venue: "arXiv 2026"
+  scholar_id: "ULOm3_A8WrAC"
+  short_title: "Token-Energy Law"
+  themes: ["energy-ai-hpc"]
+  year: 2026
+  cv_authors: "**C. Niu**, B. Sencer, W. Zhang, and Y. Chen."
+  cv_venue: "arXiv preprint 2610.28576 (v1)"
+  image: "/images/token-energy-law-figure2.png"
+  selected: false
+  note: "arXiv preprint (v1)."
+  authors: "**Chenxu Niu**, Batuhan Sencer, Wei Zhang, and Yong Chen."
+  links:
+    - label: "PDF (arXiv v1)"
+      url: "/assets/pdf/arxiv2026-token-energy-law-v1.pdf"
+    - label: "arXiv"
+      url: "https://arxiv.org/abs/2610.28576"
+    - label: "DOI"
+      url: "https://doi.org/10.48550/arXiv.2610.28576"
+    - label: "BibTeX"
+      url: "/assets/bib/arxiv2026-token-energy-law.bib"
+
 - title: "TokenPowerSandbox: Evidence-Gated CPU-First Screening for Energy-Aware LLM Serving."
   venue: "arXiv 2026"
   scholar_id: "3fE2CSJIrl8C"
