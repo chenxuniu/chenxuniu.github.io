@@ -46,6 +46,7 @@ async function checkFilters(browser) {
     assert.equal(response.ok(), true, `${label} for Token-Energy Law is available`);
   }
   const image = law.locator('img');
+  assert.equal(await image.getAttribute('src'), '/images/token-energy-law-at-a-glance.png');
   await image.scrollIntoViewIfNeeded();
   await page.waitForFunction(element => element.complete && element.naturalWidth > 0, await image.elementHandle());
 
