@@ -60,7 +60,7 @@ async function check() {
       assert.match(await log.innerText(), /Energy-Efficient AI & HPC Systems\s+5 papers/);
       await run('papers');
       const papers = log.locator('[data-terminal-paper]');
-      assert.equal(await papers.count(), 11);
+      assert.equal(await papers.count(), 12);
       assert.equal(await papers.first().getAttribute('href'), '/assets/pdf/arxiv2026-token-energy-law-v1.pdf');
       const pdf = await page.request.get(new URL(await papers.first().getAttribute('href'), page.url()).href);
       assert.equal(pdf.status(), 200);
@@ -114,7 +114,7 @@ async function check() {
 
       await run('squeue');
       const jobs = log.locator('[data-terminal-job]');
-      assert.equal(await jobs.count(), 11);
+      assert.equal(await jobs.count(), 12);
       assert.match(await log.locator('[data-terminal-job="3fE2CSJIrl8C"]').innerText(), /\bR\b/);
       assert.match(await log.locator('[data-terminal-job="ufrVoPGSRksC"]').innerText(), /\bCD\b/);
       await assertFits(`squeue at ${viewport.width}px`);

@@ -4,7 +4,7 @@ const { BASE_URL, VIEWPORTS, launchBrowser, openPage, settle, assertNoHorizontal
 
 const THEMES = [
   { id: 'energy-ai-hpc', name: 'Energy-Efficient AI & HPC Systems', count: 5 },
-  { id: 'llm-hardware-design', name: 'LLMs for Hardware Design', count: 2 },
+  { id: 'llm-hardware-design', name: 'LLMs for Hardware Design', count: 3 },
   { id: 'scientific-data', name: 'Scientific Data Management', count: 4 },
 ];
 
@@ -25,9 +25,9 @@ async function checkFilters(browser) {
   const filters = page.getByRole('group', { name: 'Filter publications by research theme' });
   await filters.waitFor({ state: 'visible' });
   const status = page.getByRole('status');
-  const all = filters.getByRole('button', { name: 'All (11)' });
+  const all = filters.getByRole('button', { name: 'All (12)' });
   assert.equal(await all.getAttribute('aria-pressed'), 'true');
-  assert.equal((await visibleTitles(page)).length, 11);
+  assert.equal((await visibleTitles(page)).length, 12);
   await assertCitationOrder(page);
   const titleLinks = page.locator('.paper-title a');
   assert.equal(await titleLinks.filter({ hasText: 'TokenPowerBench' }).getAttribute('href'),
@@ -50,6 +50,21 @@ async function checkFilters(browser) {
   await image.scrollIntoViewIfNeeded();
   await page.waitForFunction(element => element.complete && element.naturalWidth > 0, await image.elementHandle());
 
+  const rtl = page.locator('.paper-box').filter({ hasText: 'RTLocating:' });
+  assert.equal(await rtl.count(), 1);
+  assert.equal(await rtl.getAttribute('data-themes'), 'llm-hardware-design');
+  assert.equal((await rtl.locator('.paper-note').innerText()).trim(), 'arXiv preprint (v1); under review.');
+  assert.equal(await rtl.locator('.paper-title a').getAttribute('href'), 'https://doi.org/10.48550/arXiv.2603.00434');
+  assert.match(await rtl.locator('.paper-citations').getAttribute('href'), /roLk4NBRz8UC/);
+  for (const label of ['PDF (arXiv v1)', 'BibTeX']) {
+    const url = await rtl.getByRole('link', { name: label, exact: true }).getAttribute('href');
+    assert.equal((await page.request.get(BASE_URL + url)).ok(), true, `RTLocating ${label} is available`);
+  }
+  const rtlImage = rtl.locator('img');
+  assert.equal(await rtlImage.getAttribute('src'), '/images/rtlocating-figure2.png');
+  await rtlImage.scrollIntoViewIfNeeded();
+  await page.waitForFunction(element => element.complete && element.naturalWidth > 0, await rtlImage.elementHandle());
+
   for (const theme of THEMES) {
     const button = filters.getByRole('button', { name: `${theme.name} (${theme.count})` });
     await button.click();
@@ -58,28 +73,29 @@ async function checkFilters(browser) {
     assert.equal((await visibleTitles(page)).length, theme.count, theme.name);
     await assertCitationOrder(page);
     assert.equal(new URL(page.url()).searchParams.get('theme'), theme.id);
-    assert.equal(await status.innerText(), `Showing ${theme.count} of 11 publications`);
+    assert.equal(await status.innerText(), `Showing ${theme.count} of 12 publications`);
   }
   const scientific = await visibleTitles(page);
   assert.ok(scientific.every(title => /^(ICEAGE|PSQS|Kv2vec|Exploring Metadata Search)/.test(title)),
     scientific.join('\n'));
 
   await all.click();
-  assert.equal((await visibleTitles(page)).length, 11);
+  assert.equal((await visibleTitles(page)).length, 12);
   assert.equal(new URL(page.url()).search, '');
   assert.equal(errors.length, 0, errors.join('\n'));
   await context.close();
 
   const linked = await openPage(browser, '/publications/?theme=llm-hardware-design');
   const titles = await visibleTitles(linked.page);
-  assert.equal(titles.length, 2);
+  assert.equal(titles.length, 3);
   assert.ok(titles.some(title => title.startsWith('FIXME')) && titles.some(title => title.startsWith('MicroEvo')));
+  assert.ok(titles.some(title => title.startsWith('RTLocating')));
   assert.equal(linked.errors.length, 0, linked.errors.join('\n'));
   await linked.context.close();
 
   const unknown = await openPage(browser, '/publications/?theme=%3Cscript%3E');
-  assert.equal((await visibleTitles(unknown.page)).length, 11, 'Unknown themes show every paper');
-  assert.equal(await unknown.page.getByRole('button', { name: 'All (11)' }).getAttribute('aria-pressed'), 'true');
+  assert.equal((await visibleTitles(unknown.page)).length, 12, 'Unknown themes show every paper');
+  assert.equal(await unknown.page.getByRole('button', { name: 'All (12)' }).getAttribute('aria-pressed'), 'true');
   assert.equal(unknown.errors.length, 0, unknown.errors.join('\n'));
   await unknown.context.close();
   console.log('Theme filters, shareable URLs and unknown themes passed');
@@ -89,7 +105,7 @@ async function checkCopy(browser) {
   const { context, page, errors } = await openPage(browser, '/publications/');
   await context.grantPermissions(['clipboard-read', 'clipboard-write'], { origin: BASE_URL });
   const copyButtons = page.getByRole('button', { name: /^Copy BibTeX:/ });
-  assert.equal(await copyButtons.count(), 11, 'Every BibTeX link gets a copy button');
+  assert.equal(await copyButtons.count(), 12, 'Every BibTeX link gets a copy button');
   const target = await copyButtons.first().boundingBox();
   assert.ok(target.height >= 24 && target.width >= 24, `Copy target is at least 24px: ${JSON.stringify(target)}`);
   const button = page.getByRole('button', { name: /^Copy BibTeX: TokenPowerBench/ });
@@ -112,6 +128,7 @@ async function checkCopy(browser) {
   const home = await openPage(browser, '/');
   assert.equal(await home.page.getByRole('button', { name: /^Copy BibTeX:/ }).count(), 3);
   assert.equal(await home.page.locator('.paper-title').filter({ hasText: 'The Token-Energy Law of LLM Decode' }).count(), 0);
+  assert.equal(await home.page.locator('.paper-title').filter({ hasText: 'RTLocating:' }).count(), 0);
   await assertCitationOrder(home.page);
   assert.equal(await home.page.getByRole('group', { name: 'Filter publications by research theme' }).count(), 0,
     'Selected publications on the homepage are not filtered');
@@ -134,9 +151,9 @@ async function checkPaperWithoutThemes(browser) {
   await page.goto(BASE_URL + '/publications/?theme=energy-ai-hpc', { waitUntil: 'domcontentloaded' });
   await page.locator('.paper-filters').waitFor({ state: 'visible' });
   assert.equal((await visibleTitles(page)).length, 5, 'An unthemed paper is hidden while a theme is selected');
-  assert.equal(await page.getByRole('status').innerText(), 'Showing 5 of 11 publications');
-  await page.getByRole('button', { name: 'All (11)' }).click();
-  assert.equal((await visibleTitles(page)).length, 11);
+  assert.equal(await page.getByRole('status').innerText(), 'Showing 5 of 12 publications');
+  await page.getByRole('button', { name: 'All (12)' }).click();
+  assert.equal((await visibleTitles(page)).length, 12);
   assert.equal(errors.length, 0, errors.join('\n'));
   await context.close();
   console.log('Papers without themes only appear under All');
@@ -211,11 +228,11 @@ async function checkCopyRobustness(browser) {
 
 async function checkWithoutJavaScript(browser) {
   const { context, page } = await openPage(browser, '/publications/', { javaScriptEnabled: false });
-  assert.equal(await page.locator('.paper-box:visible').count(), 11);
+  assert.equal(await page.locator('.paper-box:visible').count(), 12);
   await assertCitationOrder(page);
   assert.equal(await page.locator('.paper-filters').isVisible(), false);
   assert.equal(await page.locator('.paper-copy-bib:visible').count(), 0);
-  assert.equal(await page.locator('.paper-links a', { hasText: 'BibTeX' }).count(), 11);
+  assert.equal(await page.locator('.paper-links a', { hasText: 'BibTeX' }).count(), 12);
   await context.close();
   console.log('Publications stay complete without JavaScript');
 }

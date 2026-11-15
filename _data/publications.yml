@@ -130,6 +130,29 @@
     - label: "BibTeX"
       url: "/assets/bib/aaai2026-fixme.bib"
 
+- title: "RTLocating: Intent-aware RTL Localization for Hardware Design Iteration."
+  venue: "arXiv 2026"
+  scholar_id: "roLk4NBRz8UC"
+  short_title: "RTLocating"
+  themes: ["llm-hardware-design"]
+  year: 2026
+  cv_authors: "C. Xing, Y. Lu, L. Qi, **C. Niu**, J. Li, X. Wang, Y. Chen, and J. Yang."
+  cv_venue: "arXiv preprint 2603.00434 (v1)"
+  cv_note: "Under review."
+  image: "/images/rtlocating-figure2.png"
+  selected: false
+  note: "arXiv preprint (v1); under review."
+  authors: "Changwen Xing, Yanfeng Lu, Lei Qi, **Chenxu Niu**, Jie Li, Xi Wang, Yong Chen, and Jun Yang."
+  links:
+    - label: "PDF (arXiv v1)"
+      url: "/assets/pdf/arxiv2026-rtlocating-v1.pdf"
+    - label: "arXiv"
+      url: "https://arxiv.org/abs/2603.00434"
+    - label: "DOI"
+      url: "https://doi.org/10.48550/arXiv.2603.00434"
+    - label: "BibTeX"
+      url: "/assets/bib/arxiv2026-rtlocating.bib"
+
 - title: "Energy Efficient or Exhaustive? Benchmarking Power Consumption of LLM Inference Engines."
   venue: "HotCarbon 2025"
   scholar_id: "W7OEmFMy1HYC"

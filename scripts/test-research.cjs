@@ -5,7 +5,7 @@ const escapeRegExp = text => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 const THEMES = [
   { id: 'energy-ai-hpc', name: 'Energy-Efficient AI & HPC Systems', papers: 5, projects: 3 },
-  { id: 'llm-hardware-design', name: 'LLMs for Hardware Design', papers: 2, projects: 0 },
+  { id: 'llm-hardware-design', name: 'LLMs for Hardware Design', papers: 3, projects: 0 },
   { id: 'scientific-data', name: 'Scientific Data Management', papers: 4, projects: 0 },
 ];
 
@@ -50,10 +50,10 @@ async function checkThemes(browser) {
   const missing = (await publications.page.locator('.paper-title').allInnerTexts()).filter(title => !listed.has(title.trim()));
   assert.deepEqual(missing, [], 'Every publication belongs to at least one known research theme');
   await publications.context.close();
-  await page.locator('section#llm-hardware-design').getByRole('link', { name: 'View all 2 publications' }).click();
+  await page.locator('section#llm-hardware-design').getByRole('link', { name: 'View all 3 publications' }).click();
   await page.waitForURL('**/publications/?theme=llm-hardware-design');
   await page.locator('.paper-filters').waitFor({ state: 'visible' });
-  assert.equal(await page.locator('.paper-box:visible').count(), 2);
+  assert.equal(await page.locator('.paper-box:visible').count(), 3);
   assert.equal(errors.length, 0, errors.join('\n'));
   await context.close();
   console.log('Research themes, papers, projects and filtered links passed');
