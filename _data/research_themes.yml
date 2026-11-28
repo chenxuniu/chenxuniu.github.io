@@ -17,3 +17,9 @@
   summary: "Scientific datasets are only useful if researchers can find what is inside them. This work makes self-describing scientific files searchable: learned representations of metadata attributes, parallel semantic querying, and LLM-powered exploration and answer generation for scientific data discovery."
   image: "/images/ICEAGE.png"
   image_alt: "Overview figure from ICEAGE, an LLM-powered engine for scientific data discovery"
+
+- id: "security"
+  name: "Security"
+  summary: "AI agents in HPC clusters can access data and tools on a user's behalf. This work uses behavioral attestation to check agents' actions at runtime and contain activity that violates task-specific policies."
+  image: "/images/attestation-aegis-overview.png"
+  image_alt: "AEGIS architecture for behavioral attestation and containment of HPC AI agents"

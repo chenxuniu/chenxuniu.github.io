@@ -1,3 +1,25 @@
+- title: "Attestation is All You Need: Toward a Zero-Trust Architecture for HPC AI Agents."
+  venue: "arXiv 2026"
+  scholar_id: "M3ejUd6NZC8C"
+  short_title: "Attestation is All You Need"
+  themes: ["security"]
+  year: 2026
+  cv_authors: "J. Li, **C. Niu**, T. Wang, and Y. Chen."
+  cv_venue: "arXiv preprint 2611.32958 (v1)"
+  image: "/images/attestation-aegis-overview.png"
+  selected: false
+  note: "arXiv preprint (v1)."
+  authors: "Jie Li, **Chenxu Niu**, Tongyang Wang, and Yong Chen."
+  links:
+    - label: "PDF (arXiv v1)"
+      url: "https://arxiv.org/pdf/2611.32958v1"
+    - label: "arXiv"
+      url: "https://arxiv.org/abs/2611.32958"
+    - label: "DOI"
+      url: "https://doi.org/10.48550/arXiv.2611.32958"
+    - label: "BibTeX"
+      url: "/assets/bib/arxiv2026-attestation.bib"
+
 - title: "The Token-Energy Law of LLM Decode: Active Bytes and Realized Time Account for Joules per Token."
   venue: "arXiv 2026"
   scholar_id: "ULOm3_A8WrAC"

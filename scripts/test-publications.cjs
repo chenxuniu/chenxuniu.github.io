@@ -6,7 +6,10 @@ const THEMES = [
   { id: 'energy-ai-hpc', name: 'Energy-Efficient AI & HPC Systems', count: 5 },
   { id: 'llm-hardware-design', name: 'LLMs for Hardware Design', count: 3 },
   { id: 'scientific-data', name: 'Scientific Data Management', count: 4 },
+  { id: 'security', name: 'Security', count: 1 },
 ];
+const TOTAL_PAPERS = 13;
+const ALL_PAPERS_LABEL = `All (${TOTAL_PAPERS})`;
 
 function visibleTitles(page) {
   return page.locator('.paper-box:visible .paper-title').allInnerTexts();
@@ -20,14 +23,38 @@ async function assertCitationOrder(page) {
     'Publications appear in descending numeric citation order');
 }
 
+async function checkSecurityPreprint(browser) {
+  const { context, page, errors } = await openPage(browser, '/publications/?theme=security');
+  await page.locator('.paper-filters').waitFor({ state: 'visible' });
+  const filter = page.getByRole('button', { name: 'Security (1)', exact: true });
+  assert.equal(await filter.count(), 1, 'Publications offers a Security filter');
+  assert.equal(await filter.getAttribute('aria-pressed'), 'true');
+  assert.deepEqual(await visibleTitles(page), [
+    'Attestation is All You Need: Toward a Zero-Trust Architecture for HPC AI Agents.',
+  ]);
+  const paper = page.locator('.paper-box:visible');
+  assert.equal(await paper.locator('.paper-authors strong').innerText(), 'Chenxu Niu');
+  assert.match(await paper.locator('.paper-note').innerText(), /arXiv preprint/);
+  assert.equal(await paper.getByRole('link', { name: 'PDF (arXiv v1)', exact: true }).getAttribute('href'),
+    'https://arxiv.org/pdf/2611.32958v1');
+  assert.match(await paper.locator('.paper-citations').getAttribute('href'), /M3ejUd6NZC8C/);
+  const image = paper.locator('img');
+  await image.scrollIntoViewIfNeeded();
+  await page.waitForFunction(element => element.complete && element.naturalWidth > 0, await image.elementHandle());
+  const bibUrl = await paper.getByRole('link', { name: 'BibTeX', exact: true }).getAttribute('href');
+  assert.equal((await page.request.get(BASE_URL + bibUrl)).ok(), true);
+  assert.deepEqual(errors, []);
+  await context.close();
+}
+
 async function checkFilters(browser) {
   const { context, page, errors } = await openPage(browser, '/publications/');
   const filters = page.getByRole('group', { name: 'Filter publications by research theme' });
   await filters.waitFor({ state: 'visible' });
   const status = page.getByRole('status');
-  const all = filters.getByRole('button', { name: 'All (12)' });
+  const all = filters.getByRole('button', { name: ALL_PAPERS_LABEL });
   assert.equal(await all.getAttribute('aria-pressed'), 'true');
-  assert.equal((await visibleTitles(page)).length, 12);
+  assert.equal((await visibleTitles(page)).length, TOTAL_PAPERS);
   await assertCitationOrder(page);
   const titleLinks = page.locator('.paper-title a');
   assert.equal(await titleLinks.filter({ hasText: 'TokenPowerBench' }).getAttribute('href'),
@@ -73,14 +100,15 @@ async function checkFilters(browser) {
     assert.equal((await visibleTitles(page)).length, theme.count, theme.name);
     await assertCitationOrder(page);
     assert.equal(new URL(page.url()).searchParams.get('theme'), theme.id);
-    assert.equal(await status.innerText(), `Showing ${theme.count} of 12 publications`);
+    assert.equal(await status.innerText(), `Showing ${theme.count} of ${TOTAL_PAPERS} publications`);
   }
+  await filters.getByRole('button', { name: 'Scientific Data Management (4)' }).click();
   const scientific = await visibleTitles(page);
   assert.ok(scientific.every(title => /^(ICEAGE|PSQS|Kv2vec|Exploring Metadata Search)/.test(title)),
     scientific.join('\n'));
 
   await all.click();
-  assert.equal((await visibleTitles(page)).length, 12);
+  assert.equal((await visibleTitles(page)).length, TOTAL_PAPERS);
   assert.equal(new URL(page.url()).search, '');
   assert.equal(errors.length, 0, errors.join('\n'));
   await context.close();
@@ -94,8 +122,8 @@ async function checkFilters(browser) {
   await linked.context.close();
 
   const unknown = await openPage(browser, '/publications/?theme=%3Cscript%3E');
-  assert.equal((await visibleTitles(unknown.page)).length, 12, 'Unknown themes show every paper');
-  assert.equal(await unknown.page.getByRole('button', { name: 'All (12)' }).getAttribute('aria-pressed'), 'true');
+  assert.equal((await visibleTitles(unknown.page)).length, TOTAL_PAPERS, 'Unknown themes show every paper');
+  assert.equal(await unknown.page.getByRole('button', { name: ALL_PAPERS_LABEL }).getAttribute('aria-pressed'), 'true');
   assert.equal(unknown.errors.length, 0, unknown.errors.join('\n'));
   await unknown.context.close();
   console.log('Theme filters, shareable URLs and unknown themes passed');
@@ -105,7 +133,7 @@ async function checkCopy(browser) {
   const { context, page, errors } = await openPage(browser, '/publications/');
   await context.grantPermissions(['clipboard-read', 'clipboard-write'], { origin: BASE_URL });
   const copyButtons = page.getByRole('button', { name: /^Copy BibTeX:/ });
-  assert.equal(await copyButtons.count(), 12, 'Every BibTeX link gets a copy button');
+  assert.equal(await copyButtons.count(), TOTAL_PAPERS, 'Every BibTeX link gets a copy button');
   const target = await copyButtons.first().boundingBox();
   assert.ok(target.height >= 24 && target.width >= 24, `Copy target is at least 24px: ${JSON.stringify(target)}`);
   const button = page.getByRole('button', { name: /^Copy BibTeX: TokenPowerBench/ });
@@ -129,6 +157,7 @@ async function checkCopy(browser) {
   assert.equal(await home.page.getByRole('button', { name: /^Copy BibTeX:/ }).count(), 3);
   assert.equal(await home.page.locator('.paper-title').filter({ hasText: 'The Token-Energy Law of LLM Decode' }).count(), 0);
   assert.equal(await home.page.locator('.paper-title').filter({ hasText: 'RTLocating:' }).count(), 0);
+  assert.equal(await home.page.getByText('Attestation is All You Need', { exact: false }).count(), 0);
   await assertCitationOrder(home.page);
   assert.equal(await home.page.getByRole('group', { name: 'Filter publications by research theme' }).count(), 0,
     'Selected publications on the homepage are not filtered');
@@ -151,9 +180,9 @@ async function checkPaperWithoutThemes(browser) {
   await page.goto(BASE_URL + '/publications/?theme=energy-ai-hpc', { waitUntil: 'domcontentloaded' });
   await page.locator('.paper-filters').waitFor({ state: 'visible' });
   assert.equal((await visibleTitles(page)).length, 5, 'An unthemed paper is hidden while a theme is selected');
-  assert.equal(await page.getByRole('status').innerText(), 'Showing 5 of 12 publications');
-  await page.getByRole('button', { name: 'All (12)' }).click();
-  assert.equal((await visibleTitles(page)).length, 12);
+  assert.equal(await page.getByRole('status').innerText(), `Showing 5 of ${TOTAL_PAPERS} publications`);
+  await page.getByRole('button', { name: ALL_PAPERS_LABEL }).click();
+  assert.equal((await visibleTitles(page)).length, TOTAL_PAPERS);
   assert.equal(errors.length, 0, errors.join('\n'));
   await context.close();
   console.log('Papers without themes only appear under All');
@@ -228,11 +257,11 @@ async function checkCopyRobustness(browser) {
 
 async function checkWithoutJavaScript(browser) {
   const { context, page } = await openPage(browser, '/publications/', { javaScriptEnabled: false });
-  assert.equal(await page.locator('.paper-box:visible').count(), 12);
+  assert.equal(await page.locator('.paper-box:visible').count(), TOTAL_PAPERS);
   await assertCitationOrder(page);
   assert.equal(await page.locator('.paper-filters').isVisible(), false);
   assert.equal(await page.locator('.paper-copy-bib:visible').count(), 0);
-  assert.equal(await page.locator('.paper-links a', { hasText: 'BibTeX' }).count(), 12);
+  assert.equal(await page.locator('.paper-links a', { hasText: 'BibTeX' }).count(), TOTAL_PAPERS);
   await context.close();
   console.log('Publications stay complete without JavaScript');
 }
@@ -251,6 +280,7 @@ async function checkLayout(browser) {
 runCheck(async () => {
   const browser = await launchBrowser();
   try {
+    await checkSecurityPreprint(browser);
     await checkFilters(browser);
     await checkCopy(browser);
     await checkPaperWithoutThemes(browser);

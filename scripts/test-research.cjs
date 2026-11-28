@@ -7,6 +7,7 @@ const THEMES = [
   { id: 'energy-ai-hpc', name: 'Energy-Efficient AI & HPC Systems', papers: 5, projects: 3 },
   { id: 'llm-hardware-design', name: 'LLMs for Hardware Design', papers: 3, projects: 0 },
   { id: 'scientific-data', name: 'Scientific Data Management', papers: 4, projects: 0 },
+  { id: 'security', name: 'Security', papers: 1, projects: 0 },
 ];
 
 async function checkNavigation(browser) {
@@ -27,9 +28,11 @@ async function checkThemes(browser) {
   assert.match((await page.locator('h1').first().innerText()).trim(), /Research$/);
   const overview = page.getByRole('navigation', { name: 'Research themes' });
   for (const theme of THEMES) {
+    const paperLabel = theme.papers === 1 ? 'paper' : 'papers';
+    const publicationLabel = theme.papers === 1 ? 'publication' : 'publications';
     const card = overview.getByRole('link', { name: new RegExp(escapeRegExp(theme.name)) });
     assert.equal(await card.getAttribute('href'), `#${theme.id}`);
-    assert.match(await card.innerText(), new RegExp(`${theme.papers} papers`));
+    assert.match(await card.innerText(), new RegExp(`\\b${theme.papers} ${paperLabel}\\b`));
 
     const section = page.locator(`section#${theme.id}`);
     assert.equal((await section.locator('h2').innerText()).trim(), theme.name);
@@ -40,7 +43,7 @@ async function checkThemes(browser) {
     await image.scrollIntoViewIfNeeded();
     await page.waitForFunction(element => element.complete && element.naturalWidth > 0, await image.elementHandle());
     assert.ok((await image.getAttribute('alt')).length > 0);
-    const viewAll = section.getByRole('link', { name: `View all ${theme.papers} publications` });
+    const viewAll = section.getByRole('link', { name: `View all ${theme.papers} ${publicationLabel}` });
     assert.equal(await viewAll.getAttribute('href'), `/publications/?theme=${theme.id}`);
   }
   const introMargin = await page.locator('.research-intro').evaluate(element => parseFloat(getComputedStyle(element).marginTop));

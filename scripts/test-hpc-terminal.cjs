@@ -56,13 +56,14 @@ async function check() {
       assert.match(await log.innerText(), /Scientific data management/i);
       const themes = log.locator('[data-terminal-theme]');
       assert.deepEqual(await themes.evaluateAll(links => links.map(link => link.getAttribute('href'))),
-        ['/research/#energy-ai-hpc', '/research/#llm-hardware-design', '/research/#scientific-data']);
+        ['/research/#energy-ai-hpc', '/research/#llm-hardware-design', '/research/#scientific-data', '/research/#security']);
       assert.match(await log.innerText(), /Energy-Efficient AI & HPC Systems\s+5 papers/);
       await run('papers');
       const papers = log.locator('[data-terminal-paper]');
-      assert.equal(await papers.count(), 12);
-      assert.equal(await papers.first().getAttribute('href'), '/assets/pdf/arxiv2026-token-energy-law-v1.pdf');
-      const pdf = await page.request.get(new URL(await papers.first().getAttribute('href'), page.url()).href);
+      assert.equal(await papers.count(), 13);
+      assert.equal(await papers.first().getAttribute('href'), 'https://arxiv.org/pdf/2611.32958v1');
+      const localPaper = papers.filter({ hasText: 'The Token-Energy Law of LLM Decode' });
+      const pdf = await page.request.get(new URL(await localPaper.getAttribute('href'), page.url()).href);
       assert.equal(pdf.status(), 200);
       await run('projects');
       assert.equal(await log.locator('[data-terminal-project]').count(), 3);
@@ -101,12 +102,12 @@ async function check() {
 
       await run('nvidia-smi');
       assert.match(await log.innerText(), /NVIDIA-SMI/);
-      assert.equal(await log.locator('[data-terminal-gpu]').count(), 3);
+      assert.equal(await log.locator('[data-terminal-gpu]').count(), 4);
       assert.match(await log.locator('[data-terminal-process]').allInnerTexts().then(rows => rows.join('\n')), /TokenPowerBench/);
 
       await run('sinfo');
       const partitions = log.locator('[data-terminal-partition]');
-      assert.equal(await partitions.count(), 3);
+      assert.equal(await partitions.count(), 4);
       assert.match(await partitions.first().innerText(), /energy-ai-hpc\*?\s+up\s+5/);
       // A partition is busy when its newest paper (2025 for scientific data) is at most a year old.
       const scientificState = 2025 >= new Date().getFullYear() - 1 ? 'alloc' : 'idle';
@@ -114,7 +115,7 @@ async function check() {
 
       await run('squeue');
       const jobs = log.locator('[data-terminal-job]');
-      assert.equal(await jobs.count(), 12);
+      assert.equal(await jobs.count(), 13);
       assert.match(await log.locator('[data-terminal-job="3fE2CSJIrl8C"]').innerText(), /\bR\b/);
       assert.match(await log.locator('[data-terminal-job="ufrVoPGSRksC"]').innerText(), /\bCD\b/);
       await assertFits(`squeue at ${viewport.width}px`);
